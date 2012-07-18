@@ -31,7 +31,7 @@ describe 'Admin API', ->
       anapi 'active_users', (err, r) ->
         no_error err
         contains r, {
-          since: 86400
+          since: '86400'
           users: []
         }
         done()
@@ -41,12 +41,12 @@ describe 'Admin API', ->
       anapi 'job_history', (err, r) ->
         no_error err
         contains r, {
-          since: 86400
+          since: '86400'
           builds:
-            succeeded: 0
-            failed: 0
-            successrate: 0
-          testdrives: 0
+            succeeded: '0'
+            failed: '0'
+            successrate: '0'
+          testdrives: '0'
         }
         done()
 
@@ -65,15 +65,15 @@ describe 'Admin API', ->
       anapi 'summary', (err, r) ->
         no_error err
         contains r, {
-          since: 86400
+          since: '86400'
           last_bug_status_refresh_time: undefined
-          unassigned_failures_count: 10
+          unassigned_failures_count: '10'
           builds:
-            succeeded: 0
-            failed: 0
-            errored: 0
-            successrate: 0
-          testdrives: 0
+            succeeded: '0'
+            failed: '0'
+            errored: '0'
+            successrate: '0'
+          testdrives: '0'
           active_users: []
           disks: [
             {
@@ -100,23 +100,23 @@ describe 'Admin API', ->
           rmds: 'ok'
           kiwi_runners: [
             {
-              id: 1
+              id: '1'
               address: 'localhost:3001'
               status: 'pinged'
               last_pinged: '2009-07-16 09:27:32 UTC'
-              slots: 1
-              used_slots: 0
+              slots: '1'
+              used_slots: '0'
               load: '2.68'
             }
           ]
           testdrive_runners: [
             {
-              id: 2
+              id: '2'
               address: 'localhost:3002'
               status: 'unreachable'
               last_pinged: '2009-06-25 14:21:02 UTC'
-              slots: 8
-              used_slots: 0
+              slots: '8'
+              used_slots: '0'
               load: '0.34'
             }
           ]
