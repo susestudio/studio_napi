@@ -1,0 +1,5 @@
+<about>
+  <server_name>kerogen.suse.de:3000</server_name>
+  <environment>development</environment>
+  <git_revision>074b2a42d48c7b8256c1b9328a7b29a944aeb8c7</git_revision>
+</about>

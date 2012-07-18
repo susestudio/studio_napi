@@ -1,0 +1,9 @@
+<job_history>
+  <since scale="seconds">86400</since>
+  <builds>
+    <succeeded>0</succeeded>
+    <failed>0</failed>
+    <successrate>0</successrate>
+  </builds>
+  <testdrives>0</testdrives>
+</job_history>

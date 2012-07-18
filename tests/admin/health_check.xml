@@ -1,0 +1,39 @@
+<health_check>
+  <state>error</state>
+  <mysql>ok</mysql>
+  <thoth>ok</thoth>
+  <rmds>ok</rmds>
+  <kiwi_runners>
+    <kiwi_runner>
+      <id>1</id>
+      <address>localhost:3001</address>
+      <status>pinged</status>
+      <last_pinged>2009-07-16 09:27:32 UTC</last_pinged>
+      <slots>1</slots>
+      <used_slots>0</used_slots>
+      <load>2.68</load>
+    </kiwi_runner>
+  </kiwi_runners>
+  <testdrive_runners>
+    <testdrive_runner>
+      <id>2</id>
+      <address>localhost:3002</address>
+      <status>unreachable</status>
+      <last_pinged>2009-06-25 14:21:02 UTC</last_pinged>
+      <slots>8</slots>
+      <used_slots>0</used_slots>
+      <load>0.34</load>
+    </testdrive_runner>
+  </testdrive_runners>
+  <disks>
+    <disk path="/">
+      <used>61%</used>
+      <available>7999651840</available>
+    </disk>
+    <disk path="/dev">
+      <used>1%</used>
+      <available>1038233600</available>
+    </disk>
+  </disks>
+</health_check>
+

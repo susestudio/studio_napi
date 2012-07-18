@@ -1,0 +1,26 @@
+<summary>
+  <since scale="seconds">86400</since>
+  <last_bug_status_refresh_time/>
+  <unassigned_failures_count>10</unassigned_failures_count>
+  <builds>
+    <succeeded>0</succeeded>
+    <failed>0</failed>
+    <errored>0</errored>
+    <successrate>0</successrate>
+  </builds>
+  <testdrives>0</testdrives>
+  <active_users type="array">
+  </active_users>
+  <disks type="array">
+    <disk>
+      <filesystem>/dev/sda7</filesystem>
+      <total>121449922560</total>
+      <used>104339582976</used>
+      <used_percentage>91%</used_percentage>
+      <available>10940973056</available>
+      <mount_point>/build</mount_point>
+    </disk>
+  </disks>
+  <bugs type="array">
+  </bugs>
+</summary>
