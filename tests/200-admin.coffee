@@ -66,7 +66,7 @@ describe 'Admin API', ->
         no_error err
         contains r, {
           since: '86400'
-          last_bug_status_refresh_time: undefined
+          last_bug_status_refresh_time: {}
           unassigned_failures_count: '10'
           builds:
             succeeded: '0'
