@@ -1,0 +1,58 @@
+.. vim: ft=rst sts=2 sw=2 tw=70
+.. default-role:: literal
+
+======================================================================
+                             studio_napi
+======================================================================
+----------------------------------------------------------------------
+              SUSE Studio API client library for Node.js
+----------------------------------------------------------------------
+
+:Author: Roman Neuhauser
+:Contact: rneuhauser@suse.cz
+:Copyright: This document is in the public domain.
+
+.. This file is marked up using reStructuredText.
+   Lines beginning with ".." are reST directives.
+   "foo_" or "`foo bar`_" is a link, defined at ".. _foo" or
+   ".. _foo bar".
+   "::" introduces a literal block (usually some form of code).
+   "`foo`" is some kind of identifier.
+   Suspicious backslashes in the text ("`std::string`\s") are required
+   for reST to recognize the preceding character as syntax.
+
+.. important links:
+
+.. _studio_napi: https://github.com/roman-neuhauser/studio_napi
+.. _SUSE Studio: http://susestudio.com/
+.. _Node.js: http://nodejs.org/
+.. _NPM: http://npmjs.org/
+.. _NPM Registry: http://search.npmjs.org/
+
+Overview
+========
+
+studio_napi_ is a client library for the `SUSE Studio`_ HTTP API
+targetting `Node.js`_.
+
+
+Status
+======
+
+`studio_napi` is in the prototyping phase.  There are some unit tests
+for a mostly faked out partial implementation.
+
+
+Prerequisities
+==============
+
+* `Node.js`_ 0.6.x or higher
+* NPM_ (any version appropriate for your version of Node.js)
+* several packages installable with `npm` (see package.json)
+
+
+Installation
+============
+
+`studio_napi` will appear in the `NPM Registry`_ once it's ready.
+
