@@ -1,12 +1,5 @@
 fs = require 'fs'
-clone = require 'clone'
-xml2js = require 'xml2js'
-
-xml2js_options = clone xml2js.defaults["0.2"]
-xml2js_options.emptyTag = undefined
-xml2js_options.explicitArray = false
-xml2js_options.attrkey = "@"
-xml2js_options.charkey = "#"
+xml = require './xml'
 
 asis = (parsed) -> parsed
 since = (parsed) ->
@@ -50,10 +43,9 @@ exports.api = (method, args..., done) ->
   unless methods[method]
     return done "#{method}: unknown method"
   else
-    parser = new xml2js.Parser(xml2js_options)
     fs.readFile "tests/admin/#{method}.xml", (err, data) ->
       return done err if err
-      parser.parseString data, (err, result) ->
+      xml.parse data, (err, result) ->
         return done err if err
         methods[method] result[method]
         done undefined, result
