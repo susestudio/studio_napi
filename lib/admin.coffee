@@ -5,7 +5,6 @@ xml2js = require 'xml2js'
 xml2js_options = clone xml2js.defaults["0.2"]
 xml2js_options.emptyTag = undefined
 xml2js_options.explicitArray = false
-xml2js_options.explicitRoot = false
 xml2js_options.attrkey = "@"
 xml2js_options.charkey = "#"
 
@@ -56,5 +55,6 @@ exports.api = (method, args..., done) ->
       return done err if err
       parser.parseString data, (err, result) ->
         return done err if err
-        done undefined, methods[method] result
+        methods[method] result[method]
+        done undefined, result
 

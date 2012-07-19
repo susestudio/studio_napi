@@ -19,7 +19,7 @@ describe 'Admin API', ->
     it 'should give hostname, RoR env, git commitish', (done) ->
       anapi 'about', (err, r) ->
         no_error err
-        contains r, {
+        contains r, about: {
           server_name: 'kerogen.suse.de:3000'
           environment: 'development'
           git_revision: '074b2a42d48c7b8256c1b9328a7b29a944aeb8c7'
@@ -30,7 +30,7 @@ describe 'Admin API', ->
     it 'should give build/testdrive data', (done) ->
       anapi 'active_users', (err, r) ->
         no_error err
-        contains r, {
+        contains r, active_users: {
           since: '86400'
           users: []
         }
@@ -40,7 +40,7 @@ describe 'Admin API', ->
     it 'should give build/testdrive stats', (done) ->
       anapi 'job_history', (err, r) ->
         no_error err
-        contains r, {
+        contains r, job_history: {
           since: '86400'
           builds:
             succeeded: '0'
@@ -54,7 +54,7 @@ describe 'Admin API', ->
     it 'should give build/testdrive data', (done) ->
       anapi 'running_jobs', (err, r) ->
         no_error err
-        contains r, {
+        contains r, running_jobs: {
           builds: []
           testdrives: []
         }
@@ -64,7 +64,7 @@ describe 'Admin API', ->
     it 'should give uptime, build/testdrive/user/bug stats, df, etc', (done) ->
       anapi 'summary', (err, r) ->
         no_error err
-        contains r, {
+        contains r, summary: {
           since: '86400'
           last_bug_status_refresh_time: {}
           unassigned_failures_count: '10'
@@ -93,7 +93,7 @@ describe 'Admin API', ->
     it 'should give crap', (done) ->
       anapi 'health_check', (err, r) ->
         no_error err
-        contains r, {
+        contains r, health_check: {
           state: 'error'
           mysql: 'ok'
           thoth: 'ok'
