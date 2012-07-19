@@ -1,0 +1,42 @@
+.. vim: ft=rst sts=2 sw=2 tw=70
+.. default-role:: literal
+
+Things about APIv2 that irk me
+==============================
+
+* studio should support JSON response bodies.
+
+  personally i wouldn't mind ditching XML completely,
+  but it should at least be provided as an option.
+
+* same things should have same representations.
+
+  compare `/summary/disks` vs `/health_check/disks`.
+
+* having *most* data in elements and *some* data
+  in attributes means two ways to handle data,
+  the arbitrary choice adds to cognitive load,
+  with no gain.
+* all timestamps should use the ISO8601 representation. ::
+
+    <last_pinged>2009-07-16 09:27:32 UTC</last_pinged>
+
+  should be one of ::
+
+    <last_pinged>2009-07-16T09:27:32</last_pinged>
+    <last_pinged>2009-07-16T09:27:32.000</last_pinged>
+
+  (`date -u '+%FT%T'`).
+
+* `<since/>` elements: what is the reference point
+  for the duration? ::
+
+    <since scale="seconds">86400</since>
+
+  there would be no ambiguity (and no attribute, so
+  easier parsing) if this was given as a timestamp: ::
+
+    <since>2009-07-16T09:27:32</since>
+
+* `/job_history/builds` omits `<errored/>`.  it should not.
+* `/health_check/mysql`: really?
