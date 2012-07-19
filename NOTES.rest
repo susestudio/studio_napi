@@ -7,7 +7,7 @@ Things about APIv2 that irk me
 * studio should support JSON response bodies.
 
   personally i wouldn't mind ditching XML completely,
-  but it should at least be provided as an option.
+  but JSON should at least be provided as an option.
 
 * same things should have same representations.
 
