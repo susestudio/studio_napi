@@ -2,7 +2,7 @@ clone = require 'clone'
 xml2js = require 'xml2js'
 
 xml2js_options = clone xml2js.defaults["0.2"]
-xml2js_options.emptyTag = undefined
+xml2js_options.emptyTag = []
 xml2js_options.explicitArray = false
 xml2js_options.attrkey = "@"
 xml2js_options.charkey = "#"
