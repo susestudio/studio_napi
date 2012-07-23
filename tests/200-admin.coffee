@@ -2,16 +2,7 @@ expect = (require 'chai').expect
 #sinon = (require 'sinon')
 anapi = (require '../lib/admin').api
 
-# FIXME: does not handle arrays well
-contains = (actual, expected) ->
-  for p, v of expected
-    if v instanceof Object
-      contains actual[p], v
-    else
-      (expect actual[p], p).to.equal v
-
-no_error = (err) ->
-  (expect err, 'err').to.equal undefined
+{contains, no_error} = require './tools'
 
 describe 'Admin API', ->
 
