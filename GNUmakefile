@@ -1,4 +1,4 @@
 check:
-	mocha --compilers coffee:coffee-script tests
+	mocha --recursive --compilers coffee:coffee-script tests
 
 .PHONY: check
