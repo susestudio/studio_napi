@@ -1,5 +1,3 @@
-fs = require 'fs'
-xml = require './xml'
 common = require './common'
 
 asis = common.asis
@@ -13,6 +11,8 @@ runners = (parsed, kind) ->
   unless parsed["#{kind}s"] instanceof Array
     parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]
   parsed
+
+roots = {}
 
 methods =
   about: asis
@@ -43,14 +43,4 @@ methods =
       parsed.disks = (disk for disk in parsed.disks['#'])
     since parsed
 
-exports.api = (method, args..., done) ->
-  unless methods[method]
-    return done "#{method}: unknown method"
-  else
-    fs.readFile "tests/admin/#{method}.xml", (err, data) ->
-      return done err if err
-      xml.parse data, (err, result) ->
-        return done err if err
-        methods[method] result[method]
-        done undefined, result
-
+exports.api = common.api 'admin', methods, roots

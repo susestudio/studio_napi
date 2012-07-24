@@ -90,15 +90,4 @@ methods =
   software: (xo) ->
     xo
 
-exports.api = (method, args..., done) ->
-  unless methods[method]
-    return done "#{method}: unknown method"
-  else
-    fs.readFile "tests/user/#{method}.xml", (err, data) ->
-      return done err if err
-      xml.parse data, (err, result) ->
-        return done err if err
-        root = roots[method] or method
-        result[root] = methods[method] result[root]
-        done undefined, result
-
+exports.api = common.api 'user', methods, roots
