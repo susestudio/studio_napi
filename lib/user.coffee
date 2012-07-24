@@ -86,7 +86,21 @@ methods =
     xo
 
   software: (xo) ->
-    xo
+    fix = (p) ->
+      if p['#'] then { name: p['#'], version: p['@'].version }
+      else { name: p }
+
+    packages = (fix(p) for p in xo.package)
+    packages.sort (l, r) ->
+      l.name.localeCompare r.name
+    xo.pattern.sort (l, r) ->
+      l.localeCompare r
+
+    {
+      appliance_id: xo['@'].appliance_id
+      patterns: xo.pattern
+      packages: packages
+    }
 
   testdrive: asis
 
