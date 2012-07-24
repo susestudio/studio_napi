@@ -16,6 +16,10 @@ no_error = (err) ->
 global.contains = contains
 global.no_error = no_error
 
+global.async = (done, test) -> (args...) ->
+  test args...
+  done()
+
 exports.rpc = (dir) -> (httpmethod, apimethod, done) ->
   fs.readFile "tests/#{dir}/#{apimethod}.xml", done
 

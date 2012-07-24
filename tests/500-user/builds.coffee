@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'lists finished builds for an appliance', (done) ->
-    unapi GET 'builds', (err, r) ->
+    unapi GET 'builds', async done, (err, r) ->
       no_error err
       contains r, builds: [
         {
@@ -24,4 +24,4 @@ describe 'User API', ->
           download_url: 'http://susestudio.com/download/bf1a0f08884ebac13f30b0fc62dfc44a/Cornelius_JeOS.x86_64-0.0.1.oem.tar.gz'
         }
       ]
-      done()
+

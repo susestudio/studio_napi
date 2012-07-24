@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'gives information about all uploaded rpms for a base system', (done) ->
-    unapi GET 'rpms', (err, r) ->
+    unapi GET 'rpms', async done, (err, r) ->
       no_error err
       contains r, rpms: {
         base_system: 'SLED11'
@@ -21,5 +21,4 @@ describe 'User API', ->
           }
         ]
       }
-      done()
 

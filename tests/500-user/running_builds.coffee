@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'gives status of all running build of an appliance', (done) ->
-    unapi GET 'running_builds', (err, r) ->
+    unapi GET 'running_builds', async done, (err, r) ->
       no_error err
       contains r, running_builds: [
         {
@@ -18,5 +18,4 @@ describe 'User API', ->
           message: 'Fetching appliance configuration'
         }
       ]
-      done()
 

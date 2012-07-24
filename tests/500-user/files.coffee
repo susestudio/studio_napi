@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'gives metadata for all overlay files in an appliance', (done) ->
-    unapi GET 'files', (err, r) ->
+    unapi GET 'files', async done, (err, r) ->
       no_error err
       contains r, files: [
         {
@@ -31,5 +31,4 @@ describe 'User API', ->
           download_url: 'http://susestudio.com/api/v1/user/files/22/data'
         }
       ]
-      done()
 

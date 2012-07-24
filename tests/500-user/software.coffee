@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'gives all selected packages and patterns of an appliance', (done) ->
-    unapi GET 'software', (err, r) ->
+    unapi GET 'software', async done, (err, r) ->
       no_error err
       if 0 then contains r, software: {
         appliance_id: '42'
@@ -44,5 +44,4 @@ describe 'User API', ->
           { type: 'package', name: 'fate' }
         ]
       }
-      done()
 

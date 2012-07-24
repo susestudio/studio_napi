@@ -41,7 +41,7 @@ key = '''
 describe 'User API', ->
 
   it 'gives info for a GPG key', (done) ->
-    unapi GET 'gpg_keys', (err, r) ->
+    unapi GET 'gpg_keys', async done, (err, r) ->
       no_error err
       contains r, gpg_keys: [
         {
@@ -51,5 +51,4 @@ describe 'User API', ->
         }
       ]
       (expect r.gpg_keys[0].key).to.include(key)
-      done()
 

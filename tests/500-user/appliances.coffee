@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'lists all appliances of the current user', (done) ->
-    unapi GET 'appliances', (err, r) ->
+    unapi GET 'appliances', async done, (err, r) ->
       no_error err
       contains r, appliances: [
         {
@@ -61,5 +61,4 @@ describe 'User API', ->
           ]
         }
       ]
-      done()
 

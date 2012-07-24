@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'gives current state of an appliance', (done) ->
-    unapi GET 'appliance_status', (err, r) ->
+    unapi GET 'appliance_status', async done, (err, r) ->
       no_error err
       contains r, status:
         state: 'error'
@@ -20,5 +20,4 @@ describe 'User API', ->
               package: 'kernel-default'
           }
         ]
-      done()
 
