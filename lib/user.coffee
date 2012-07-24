@@ -87,5 +87,11 @@ methods =
 
   software: (xo) ->
     xo
+  
+  testdrive: asis
+
+  testdrives: (xo) ->
+    as_array xo.testdrive
+
 
 exports.api = common.api methods, roots
