@@ -87,7 +87,7 @@ methods =
 
   software: (xo) ->
     xo
-  
+
   testdrive: asis
 
   testdrives: (xo) ->
