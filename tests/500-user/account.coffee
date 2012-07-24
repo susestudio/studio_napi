@@ -1,5 +1,3 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
 unapi = (require '../../lib/user').api tools.rpc 'user'
