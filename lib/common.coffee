@@ -1,4 +1,3 @@
-fs = require 'fs'
 xml = require './xml'
 
 global.GET = (method, done) -> ['get', method, done]
@@ -24,13 +23,13 @@ deattr = (xo) ->
 exports.asis = asis
 exports.as_array = as_array
 
-exports.api = (dir, methods, roots) -> (httpmethod, apimethod, done) ->
+exports.api = (methods, roots) -> (rpc) -> (httpmethod, apimethod, done) ->
   unless apimethod? and done?
     [httpmethod, apimethod, done] = httpmethod
   unless methods[apimethod]
     return done "#{apimethod}: unknown method"
   else
-    fs.readFile "tests/#{dir}/#{apimethod}.xml", (err, data) ->
+    rpc httpmethod, apimethod, (err, data) ->
       return done err if err
       xml.parse data, (err, result) ->
         return done err if err

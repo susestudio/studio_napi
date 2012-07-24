@@ -1,3 +1,5 @@
+fs = require 'fs'
+xml = require '../lib/xml'
 expect = (require 'chai').expect
 
 # FIXME: does not handle arrays well
@@ -11,5 +13,9 @@ contains = (actual, expected) ->
 no_error = (err) ->
   (expect err, 'err').to.equal undefined
 
-exports.contains = contains
-exports.no_error = no_error
+global.contains = contains
+global.no_error = no_error
+
+exports.rpc = (dir) -> (httpmethod, apimethod, done) ->
+  fs.readFile "tests/#{dir}/#{apimethod}.xml", done
+

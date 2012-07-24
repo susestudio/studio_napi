@@ -43,4 +43,4 @@ methods =
       parsed.disks = (disk for disk in parsed.disks['#'])
     since parsed
 
-exports.api = common.api 'admin', methods, roots
+exports.api = common.api methods, roots

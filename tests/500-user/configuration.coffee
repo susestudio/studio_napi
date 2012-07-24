@@ -1,7 +1,8 @@
 expect = (require 'chai').expect
-unapi = (require '../../lib/user').api
 
-{contains, no_error} = require '../tools'
+tools = require '../tools'
+
+unapi = (require '../../lib/user').api tools.rpc 'user'
 
 describe 'User API "configuration"', ->
 

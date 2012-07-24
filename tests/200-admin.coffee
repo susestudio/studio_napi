@@ -1,8 +1,8 @@
 expect = (require 'chai').expect
 #sinon = (require 'sinon')
-anapi = (require '../lib/admin').api
+tools = require './tools'
 
-{contains, no_error} = require './tools'
+anapi = (require '../lib/admin').api tools.rpc 'admin'
 
 describe 'Admin API', ->
 

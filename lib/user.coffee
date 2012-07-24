@@ -1,5 +1,3 @@
-fs = require 'fs'
-xml = require './xml'
 common = require './common'
 
 asis = common.asis
@@ -90,4 +88,4 @@ methods =
   software: (xo) ->
     xo
 
-exports.api = common.api 'user', methods, roots
+exports.api = common.api methods, roots
