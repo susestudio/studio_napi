@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'lists running testdrives for current user', (done) ->
-    unapi 'testdrives', (err, r) ->
+    unapi GET 'testdrives', (err, r) ->
       no_error err
       contains r, testdrives:[
         {

@@ -7,7 +7,7 @@ unapi = (require '../../lib/user').api tools.rpc 'user'
 describe 'User API', ->
 
   it 'gives info on a testdrive', (done) ->
-    unapi 'testdrive', (err, r) ->
+    unapi GET 'testdrive', (err, r) ->
       no_error err
       contains r, testdrive:
         id: '1234'
