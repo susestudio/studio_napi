@@ -1,6 +1,6 @@
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 key = '''
   -----BEGIN PGP PUBLIC KEY BLOCK-----

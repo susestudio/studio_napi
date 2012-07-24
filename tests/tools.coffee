@@ -22,6 +22,9 @@ global.async = (done, test) -> (args...) ->
   test args...
   done()
 
-exports.rpc = (dir) -> (httpmethod, apimethod, done) ->
+exports.rpc = rpc = (dir) -> (httpmethod, apimethod, done) ->
   fs.readFile "tests/#{dir}/#{apimethod}.xml", done
+
+exports.api = (dir) ->
+  (require "../lib/#{dir}").api rpc dir
 
