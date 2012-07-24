@@ -8,28 +8,26 @@ describe 'Admin API', ->
 
   describe 'about', ->
     it 'should give hostname, RoR env, git commitish', (done) ->
-      anapi GET 'about', (err, r) ->
+      anapi GET 'about', async done, (err, r) ->
         no_error err
         contains r, about: {
           server_name: 'kerogen.suse.de:3000'
           environment: 'development'
           git_revision: '074b2a42d48c7b8256c1b9328a7b29a944aeb8c7'
         }
-        done()
 
   describe 'active_users', ->
     it 'should give build/testdrive data', (done) ->
-      anapi GET 'active_users', (err, r) ->
+      anapi GET 'active_users', async done, (err, r) ->
         no_error err
         contains r, active_users: {
           since: '86400'
           users: []
         }
-        done()
 
   describe 'job_history', ->
     it 'should give build/testdrive stats', (done) ->
-      anapi GET 'job_history', (err, r) ->
+      anapi GET 'job_history', async done, (err, r) ->
         no_error err
         contains r, job_history: {
           since: '86400'
@@ -39,21 +37,19 @@ describe 'Admin API', ->
             successrate: '0'
           testdrives: '0'
         }
-        done()
 
   describe 'running_jobs', ->
     it 'should give build/testdrive data', (done) ->
-      anapi GET 'running_jobs', (err, r) ->
+      anapi GET 'running_jobs', async done, (err, r) ->
         no_error err
         contains r, running_jobs: {
           builds: []
           testdrives: []
         }
-        done()
 
   describe 'summary', ->
     it 'should give uptime, build/testdrive/user/bug stats, df, etc', (done) ->
-      anapi GET 'summary', (err, r) ->
+      anapi GET 'summary', async done, (err, r) ->
         no_error err
         contains r, summary: {
           since: '86400'
@@ -78,11 +74,10 @@ describe 'Admin API', ->
           ]
           bugs: []
         }
-        done()
 
   describe 'health_check', ->
     it 'should give crap', (done) ->
-      anapi GET 'health_check', (err, r) ->
+      anapi GET 'health_check', async done, (err, r) ->
         no_error err
         contains r, health_check: {
           state: 'error'
@@ -124,4 +119,4 @@ describe 'Admin API', ->
             }
           ]
         }
-        done()
+
