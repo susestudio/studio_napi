@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives all repositories for an appliance', (done) ->
-    unapi 'repositories', (err, r) ->
+    unapi GET 'repositories', (err, r) ->
       no_error err
       contains r, repositories: [
         {

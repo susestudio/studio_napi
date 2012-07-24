@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives information about all uploaded rpms for a base system', (done) ->
-    unapi 'rpms', (err, r) ->
+    unapi GET 'rpms', (err, r) ->
       no_error err
       contains r, rpms: {
         base_system: 'SLED11'

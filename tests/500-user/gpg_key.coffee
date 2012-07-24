@@ -40,7 +40,7 @@ key = '''
 describe 'User API', ->
 
   it 'gives info for a GPG key', (done) ->
-    unapi 'gpg_key', (err, r) ->
+    unapi GET 'gpg_key', (err, r) ->
       no_error err
       contains r, gpg_key: {
         id: '27'

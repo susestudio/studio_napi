@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives information about the account', (done) ->
-    unapi 'account', (err, r) ->
+    unapi GET 'account', (err, r) ->
       no_error err
       contains r, account: {
         username: 'uexample'

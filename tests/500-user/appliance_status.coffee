@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives current state of an appliance', (done) ->
-    unapi 'appliance_status', (err, r) ->
+    unapi GET 'appliance_status', (err, r) ->
       no_error err
       contains r, status:
         state: 'error'

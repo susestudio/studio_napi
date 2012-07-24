@@ -178,63 +178,63 @@ describe 'User API "configuration"', ->
   } # }}}
 
   it 'includes locale information', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.locale')
         .deep.equal(exp.configuration.locale)
       done()
 
   it 'includes network information', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.network')
         .deep.equal(exp.configuration.network)
       done()
 
   it 'includes firewall information', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.firewall')
         .deep.equal(exp.configuration.firewall)
       done()
 
   it 'includes configured users', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.users')
         .deep.equal(exp.configuration.users)
       done()
 
   it 'includes configured EULAs', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.eulas')
         .deep.equal(exp.configuration.eulas)
       done()
 
   it 'includes database configs', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.databases')
         .deep.equal(exp.configuration.databases)
       done()
 
   it 'includes configured autostart programs', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.autostarts')
         .deep.equal(exp.configuration.autostarts)
       done()
 
   it 'includes basic image settings', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.settings')
         .deep.equal(exp.configuration.settings)
       done()
 
   it 'includes LVM config', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.lvm')
         .deep.equal(exp.configuration.lvm)
@@ -242,7 +242,7 @@ describe 'User API "configuration"', ->
 
   describe 'custom scripts', ->
     it 'includes custom build script', (done) ->
-      unapi 'configuration', (err, r) ->
+      unapi GET 'configuration', (err, r) ->
         no_error err
         (expect r).to.have.deep.property('configuration.scripts.build')
         (expect r).to.have.deep.property(
@@ -255,7 +255,7 @@ describe 'User API "configuration"', ->
         done()
 
     it 'includes custom boot script', (done) ->
-      unapi 'configuration', (err, r) ->
+      unapi GET 'configuration', (err, r) ->
         no_error err
         (expect r).to.have.deep.property('configuration.scripts.boot')
         (expect r).to.have.deep.property(
@@ -268,14 +268,14 @@ describe 'User API "configuration"', ->
         done()
 
   it 'includes custom scripts', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       (expect r).to.have.deep.property('configuration.scripts')
       (expect r.configuration.scripts).to.deep.equal(exp.configuration.scripts)
       done()
 
   it 'gives configuration of an appliance', (done) ->
-    unapi 'configuration', (err, r) ->
+    unapi GET 'configuration', (err, r) ->
       no_error err
       contains r, exp
       done()

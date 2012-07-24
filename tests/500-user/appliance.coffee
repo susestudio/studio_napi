@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives information about the appliance', (done) ->
-    unapi 'appliance', (err, r) ->
+    unapi GET 'appliance', (err, r) ->
       no_error err
       contains r, appliance: {
         id: '24'

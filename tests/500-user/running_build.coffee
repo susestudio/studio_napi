@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives status of a running build', (done) ->
-    unapi 'running_build', (err, r) ->
+    unapi GET 'running_build', (err, r) ->
       no_error err
       contains r, running_build: {
         id: '38'

@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives all selected packages and patterns of an appliance', (done) ->
-    unapi 'software', (err, r) ->
+    unapi GET 'software', (err, r) ->
       no_error err
       if 0 then contains r, software: {
         appliance_id: '42'

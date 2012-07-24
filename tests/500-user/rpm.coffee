@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives information about an uploaded rpm', (done) ->
-    unapi 'rpm', (err, r) ->
+    unapi GET 'rpm', (err, r) ->
       no_error err
       contains r, rpm: {
         id: '54'

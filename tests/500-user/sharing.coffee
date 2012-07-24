@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives users permitted to clone an appliance', (done) ->
-    unapi 'sharing', (err, r) ->
+    unapi GET 'sharing', (err, r) ->
       no_error err
       contains r, appliance: {
         id: '22'

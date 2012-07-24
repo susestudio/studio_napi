@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives metadata for an overlay file', (done) ->
-    unapi 'file', (err, r) ->
+    unapi GET 'file', (err, r) ->
       no_error err
       contains r, file: {
         id: '21'

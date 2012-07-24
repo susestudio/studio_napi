@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives status of all running build of an appliance', (done) ->
-    unapi 'running_builds', (err, r) ->
+    unapi GET 'running_builds', (err, r) ->
       no_error err
       contains r, running_builds: [
         {

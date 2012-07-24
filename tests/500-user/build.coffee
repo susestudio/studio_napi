@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives info for a build', (done) ->
-    unapi 'build', (err, r) ->
+    unapi GET 'build', (err, r) ->
       no_error err
       contains r, build:
         id: '28'

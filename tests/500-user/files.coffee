@@ -6,7 +6,7 @@ unapi = (require '../../lib/user').api
 describe 'User API', ->
 
   it 'gives metadata for all overlay files in an appliance', (done) ->
-    unapi 'files', (err, r) ->
+    unapi GET 'files', (err, r) ->
       no_error err
       contains r, files: [
         {

@@ -8,7 +8,7 @@ describe 'Admin API', ->
 
   describe 'about', ->
     it 'should give hostname, RoR env, git commitish', (done) ->
-      anapi 'about', (err, r) ->
+      anapi GET 'about', (err, r) ->
         no_error err
         contains r, about: {
           server_name: 'kerogen.suse.de:3000'
@@ -19,7 +19,7 @@ describe 'Admin API', ->
 
   describe 'active_users', ->
     it 'should give build/testdrive data', (done) ->
-      anapi 'active_users', (err, r) ->
+      anapi GET 'active_users', (err, r) ->
         no_error err
         contains r, active_users: {
           since: '86400'
@@ -29,7 +29,7 @@ describe 'Admin API', ->
 
   describe 'job_history', ->
     it 'should give build/testdrive stats', (done) ->
-      anapi 'job_history', (err, r) ->
+      anapi GET 'job_history', (err, r) ->
         no_error err
         contains r, job_history: {
           since: '86400'
@@ -43,7 +43,7 @@ describe 'Admin API', ->
 
   describe 'running_jobs', ->
     it 'should give build/testdrive data', (done) ->
-      anapi 'running_jobs', (err, r) ->
+      anapi GET 'running_jobs', (err, r) ->
         no_error err
         contains r, running_jobs: {
           builds: []
@@ -53,7 +53,7 @@ describe 'Admin API', ->
 
   describe 'summary', ->
     it 'should give uptime, build/testdrive/user/bug stats, df, etc', (done) ->
-      anapi 'summary', (err, r) ->
+      anapi GET 'summary', (err, r) ->
         no_error err
         contains r, summary: {
           since: '86400'
@@ -82,7 +82,7 @@ describe 'Admin API', ->
 
   describe 'health_check', ->
     it 'should give crap', (done) ->
-      anapi 'health_check', (err, r) ->
+      anapi GET 'health_check', (err, r) ->
         no_error err
         contains r, health_check: {
           state: 'error'
