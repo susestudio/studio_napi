@@ -106,56 +106,56 @@ It provides Linux, Apache, MySQL, and Perl.</description>
     <build>
       <enabled>true</enabled>
       <script>#!/bin/bash -e
-      #
-      # This script is executed at the end of appliance creation.  Here you can do
-      # one-time actions to modify your appliance before it is ever used, like
-      # removing files and directories to make it smaller, creating symlinks,
-      # generating indexes, etc.
-      #
-      # The 'kiwi_type' variable will contain the format of the appliance (oem =
-      # disk image, vmx = VMware, iso = CD/DVD, xen = Xen).
-      #
-      
-      # read in some variables
-      . /studio/profile
-      
-      #======================================
-      # Prune extraneous files
-      #--------------------------------------
-      # Remove all documentation
-      docfiles=`find /usr/share/doc/packages -type f |grep -iv "copying\|license\|copyright"`
-      rm -f $docfiles
-      rm -rf /usr/share/info
-      rm -rf /usr/share/man
-      
-      # fix the setlocale error
-      sed -i 's/en_US.UTF-8/POSIX/g' /etc/sysconfig/language
-      
-      exit 0</script>
+#
+# This script is executed at the end of appliance creation.  Here you can do
+# one-time actions to modify your appliance before it is ever used, like
+# removing files and directories to make it smaller, creating symlinks,
+# generating indexes, etc.
+#
+# The 'kiwi_type' variable will contain the format of the appliance (oem =
+# disk image, vmx = VMware, iso = CD/DVD, xen = Xen).
+#
+
+# read in some variables
+. /studio/profile
+
+#======================================
+# Prune extraneous files
+#--------------------------------------
+# Remove all documentation
+docfiles=`find /usr/share/doc/packages -type f |grep -iv "copying\|license\|copyright"`
+rm -f $docfiles
+rm -rf /usr/share/info
+rm -rf /usr/share/man
+
+# fix the setlocale error
+sed -i 's/en_US.UTF-8/POSIX/g' /etc/sysconfig/language
+
+exit 0</script>
     </build>
     <boot>
       <enabled>true</enabled>
       <script>#!/bin/bash
-      #
-      # This script is executed whenever your appliance boots.  Here you can add
-      # commands to be executed before the system enters the first runlevel.  This
-      # could include loading kernel modules, starting daemons that aren't managed
-      # by init files, asking questions at the console, etc.
-      #
-      # The 'kiwi_type' variable will contain the format of the appliance (oem =
-      # disk image, vmx = VMware, iso = CD/DVD, xen = Xen).
-      #
-      
-      # read in some variables
-      . /studio/profile
-      
-      if [ -f /etc/init.d/suse_studio_firstboot ]
-      then
-        
-        # Put commands to be run on the first boot of your appliance here
-        echo "Running SUSE Studio first boot script..."
-      
-      fi</script>
+#
+# This script is executed whenever your appliance boots.  Here you can add
+# commands to be executed before the system enters the first runlevel.  This
+# could include loading kernel modules, starting daemons that aren't managed
+# by init files, asking questions at the console, etc.
+#
+# The 'kiwi_type' variable will contain the format of the appliance (oem =
+# disk image, vmx = VMware, iso = CD/DVD, xen = Xen).
+#
+
+# read in some variables
+. /studio/profile
+
+if [ -f /etc/init.d/suse_studio_firstboot ]
+then
+
+  # Put commands to be run on the first boot of your appliance here
+  echo "Running SUSE Studio first boot script..."
+
+fi</script>
     </boot>
     <autoyast>
       <enabled>false</enabled>
