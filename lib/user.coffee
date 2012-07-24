@@ -1,12 +1,9 @@
 fs = require 'fs'
 xml = require './xml'
+common = require './common'
 
-asis = (parsed) -> parsed
-as_array = (parsed) ->
-    if parsed instanceof Array
-      parsed
-    else
-      [parsed]
+asis = common.asis
+as_array = common.as_array
 
 roots =
   api_version: 'version'

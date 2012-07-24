@@ -1,10 +1,14 @@
 fs = require 'fs'
 xml = require './xml'
+common = require './common'
 
-asis = (parsed) -> parsed
+asis = common.asis
+as_array = common.as_array
+
 since = (parsed) ->
   parsed.since = parsed.since['#']
   parsed
+
 runners = (parsed, kind) ->
   unless parsed["#{kind}s"] instanceof Array
     parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]

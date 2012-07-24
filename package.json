@@ -13,6 +13,8 @@
 , "files": [
     "GNUmakefile"
   , "lib/admin.coffee"
+  , "lib/common.coffee"
+  , "lib/user.coffee"
   , "lib/index.coffee"
   , "tests/200-admin.coffee"
   ]
