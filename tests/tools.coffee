@@ -13,6 +13,8 @@ contains = (actual, expected) ->
 no_error = (err) ->
   (expect err, 'err').to.equal undefined
 
+global.expect = expect
+
 global.contains = contains
 global.no_error = no_error
 
