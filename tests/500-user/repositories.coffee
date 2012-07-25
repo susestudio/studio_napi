@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives all repositories for an appliance', (done) ->
-    unapi GET 'repositories', async done, (err, r) ->
+    unapi GET '/repositories', {base_system: '11.1'}, async done, (err, r) ->
       no_error err
       contains r, repositories: [
         {

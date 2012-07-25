@@ -4,38 +4,57 @@ asis = common.asis
 as_array = common.as_array
 
 roots =
-  api_version: 'version'
-  appliance_status: 'status'
-  sharing: 'appliance'
+  'GET /account': 'account'
+  'GET /api_version': 'version'
+  'GET /appliances': 'appliances'
+  'GET /appliances/:app': 'appliance'
+  'GET /appliances/:app/configuration': 'configuration'
+  'GET /appliances/:app/gpg_key/:key': 'gpg_key'
+  'GET /appliances/:app/gpg_keys': 'gpg_keys'
+  'GET /appliances/:app/sharing': 'appliance'
+  'GET /appliances/:app/software': 'software'
+  'GET /appliances/:app/status': 'status'
+  'GET /builds': 'builds'
+  'GET /builds/:bld': 'build'
+  'GET /files': 'files'
+  'GET /files/:file': 'file'
+  'GET /repositories': 'repositories'
+  'GET /repositories/:repo': 'repository'
+  'GET /rpms': 'rpms'
+  'GET /rpms/:rpm': 'rpm'
+  'GET /running_builds': 'running_builds'
+  'GET /running_builds/:bld': 'running_build'
+  'GET /testdrives': 'testdrives'
+  'POST /testdrives': 'testdrive'
 
 methods =
-  account: (xo) ->
+  'GET /account': (xo) ->
     xo.openid_urls = as_array xo.openid_urls.openid_url
     xo
 
-  api_version: asis
+  'GET /api_version': asis
 
-  appliance: (xo) ->
+  'GET /appliances/:app': (xo) ->
     xo.builds = as_array xo.builds.build
     xo
 
-  appliance_status: (xo) ->
+  'GET /appliances/:app/status': (xo) ->
     xo.issues = as_array xo.issues.issue
     xo
 
-  appliances: (xo) ->
+  'GET /appliances': (xo) ->
     xo = as_array xo.appliance
     for a in xo
       a.builds = as_array a.builds.build
     xo
 
-  build: asis
+  'GET /builds/:bld': asis
 
-  builds: (xo) ->
+  'GET /builds': (xo) ->
     xo = as_array xo.build
     xo
 
-  configuration: (xo) ->
+  'GET /appliances/:app/configuration': (xo) ->
     xo.tags = as_array xo.tags.tag
     xo.firewall.open_ports = as_array xo.firewall.open_port
     delete xo.firewall.open_port
@@ -50,24 +69,24 @@ methods =
     xo.lvm.volumes = as_array xo.lvm.volumes.volume
     xo
 
-  file: asis
+  'GET /files/:file': asis
 
-  files: (xo) ->
+  'GET /files': (xo) ->
     as_array xo.file
 
-  gpg_key: asis
+  'GET /appliances/:app/gpg_key/:key': asis
 
-  gpg_keys: (xo) ->
+  'GET /appliances/:app/gpg_keys': (xo) ->
     as_array xo.gpg_key
 
-  repositories: (xo) ->
+  'GET /repositories': (xo) ->
     as_array xo.repository
 
-  repository: asis
+  'GET /repositories/:repo': asis
 
-  rpm: asis
+  'GET /rpms/:rpm': asis
 
-  rpms: (xo) ->
+  'GET /rpms': (xo) ->
     xo.base_system = xo['@'].base_system
     delete xo['@']
     xo.rpms = as_array xo.rpm
@@ -76,16 +95,16 @@ methods =
     delete xo.rpm
     xo
 
-  running_build: asis
+  'GET /running_builds/:bld': asis
 
-  running_builds: (xo) ->
+  'GET /running_builds': (xo) ->
     as_array xo.running_build
 
-  sharing: (xo) ->
+  'GET /appliances/:app/sharing': (xo) ->
     xo.read_users = as_array xo.read_users.username
     xo
 
-  software: (xo) ->
+  'GET /appliances/:app/software': (xo) ->
     fix = (p) ->
       if p['#'] then { name: p['#'], version: p['@'].version }
       else { name: p }
@@ -102,9 +121,9 @@ methods =
       packages: packages
     }
 
-  testdrive: asis
+  'POST /testdrives': asis
 
-  testdrives: (xo) ->
+  'GET /testdrives': (xo) ->
     as_array xo.testdrive
 
 

@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives info on a testdrive', (done) ->
-    unapi GET 'testdrive', async done, (err, r) ->
+    unapi POST '/testdrives', {build_id: 69}, async done, (err, r) ->
       no_error err
       contains r, testdrive:
         id: '1234'

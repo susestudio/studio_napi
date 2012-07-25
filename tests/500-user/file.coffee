@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives metadata for an overlay file', (done) ->
-    unapi GET 'file', async done, (err, r) ->
+    unapi GET '/files/:file', async done, (err, r) ->
       no_error err
       contains r, file: {
         id: '21'

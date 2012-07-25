@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives all selected packages and patterns of an appliance', (done) ->
-    unapi GET 'software', async done, (err, r) ->
+    unapi GET '/appliances/:app/software', async done, (err, r) ->
       no_error err
       contains r, software: {
         appliance_id: '42'

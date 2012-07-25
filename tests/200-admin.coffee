@@ -6,9 +6,9 @@ anapi = (require '../lib/admin').api tools.rpc 'admin'
 
 describe 'Admin API', ->
 
-  describe 'about', ->
+  describe '/about', ->
     it 'should give hostname, RoR env, git commitish', (done) ->
-      anapi GET 'about', async done, (err, r) ->
+      anapi GET '/about', async done, (err, r) ->
         no_error err
         contains r, about: {
           server_name: 'kerogen.suse.de:3000'
@@ -16,18 +16,18 @@ describe 'Admin API', ->
           git_revision: '074b2a42d48c7b8256c1b9328a7b29a944aeb8c7'
         }
 
-  describe 'active_users', ->
+  describe '/active_users', ->
     it 'should give build/testdrive data', (done) ->
-      anapi GET 'active_users', async done, (err, r) ->
+      anapi GET '/active_users', async done, (err, r) ->
         no_error err
         contains r, active_users: {
           since: '86400'
           users: []
         }
 
-  describe 'job_history', ->
+  describe '/job_history', ->
     it 'should give build/testdrive stats', (done) ->
-      anapi GET 'job_history', async done, (err, r) ->
+      anapi GET '/job_history', async done, (err, r) ->
         no_error err
         contains r, job_history: {
           since: '86400'
@@ -38,18 +38,18 @@ describe 'Admin API', ->
           testdrives: '0'
         }
 
-  describe 'running_jobs', ->
+  describe '/running_jobs', ->
     it 'should give build/testdrive data', (done) ->
-      anapi GET 'running_jobs', async done, (err, r) ->
+      anapi GET '/running_jobs', async done, (err, r) ->
         no_error err
         contains r, running_jobs: {
           builds: []
           testdrives: []
         }
 
-  describe 'summary', ->
+  describe '/summary', ->
     it 'should give uptime, build/testdrive/user/bug stats, df, etc', (done) ->
-      anapi GET 'summary', async done, (err, r) ->
+      anapi GET '/summary', async done, (err, r) ->
         no_error err
         contains r, summary: {
           since: '86400'
@@ -75,9 +75,9 @@ describe 'Admin API', ->
           bugs: []
         }
 
-  describe 'health_check', ->
+  describe '/health_check', ->
     it 'should give crap', (done) ->
-      anapi GET 'health_check', async done, (err, r) ->
+      anapi GET '/health_check', {runner_threshold: 75}, async done, (err, r) ->
         no_error err
         contains r, health_check: {
           state: 'error'

@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives information about the account', (done) ->
-    unapi GET 'account', async done, (err, r) ->
+    unapi GET '/account', async done, (err, r) ->
       no_error err
       contains r, account: {
         username: 'uexample'

@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives info for a build', (done) ->
-    unapi GET 'build', async done, (err, r) ->
+    unapi GET '/builds/:bld', {bld: 69}, async done, (err, r) ->
       no_error err
       contains r, build:
         id: '28'

@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'lists all appliances of the current user', (done) ->
-    unapi GET 'appliances', async done, (err, r) ->
+    unapi GET '/appliances', async done, (err, r) ->
       no_error err
       contains r, appliances: [
         {

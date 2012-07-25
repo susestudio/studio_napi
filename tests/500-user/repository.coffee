@@ -4,8 +4,8 @@ unapi = tools.api 'user'
 
 describe 'User API', ->
 
-  it 'gives all repositories for an appliance', (done) ->
-    unapi GET 'repository', async done, (err, r) ->
+  it 'gives info for a repository', (done) ->
+    unapi GET '/repositories/:repo', {repo: 42}, async done, (err, r) ->
       no_error err
       contains r, repository: {
         id: '7'

@@ -39,7 +39,7 @@ key = '''
 describe 'User API', ->
 
   it 'gives info for a GPG key', (done) ->
-    unapi GET 'gpg_key', async done, (err, r) ->
+    unapi GET '/appliances/:app/gpg_key/:key', {app: 42, key: 69}, async done, (err, r) ->
       no_error err
       contains r, gpg_key: {
         id: '27'

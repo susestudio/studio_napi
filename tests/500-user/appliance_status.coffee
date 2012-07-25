@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives current state of an appliance', (done) ->
-    unapi GET 'appliance_status', async done, (err, r) ->
+    unapi GET '/appliances/:app/status', {app: 42}, async done, (err, r) ->
       no_error err
       contains r, status:
         state: 'error'

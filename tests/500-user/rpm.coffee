@@ -5,7 +5,7 @@ unapi = tools.api 'user'
 describe 'User API', ->
 
   it 'gives information about an uploaded rpm', (done) ->
-    unapi GET 'rpm', async done, (err, r) ->
+    unapi GET '/rpms/:rpm', {rpm: 42}, async done, (err, r) ->
       no_error err
       contains r, rpm: {
         id: '54'
