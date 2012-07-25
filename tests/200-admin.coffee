@@ -2,7 +2,7 @@ expect = (require 'chai').expect
 #sinon = (require 'sinon')
 tools = require './tools'
 
-anapi = (require '../lib/admin').api tools.rpc 'admin'
+anapi = tools.api 'admin'
 
 describe 'Admin API', ->
 
