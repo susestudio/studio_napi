@@ -51,7 +51,7 @@ api2file =
   'GET /testdrives': 'testdrives'
   'POST /testdrives': 'testdrive'
 
-exports.rpc = rpc = (dir) -> (httpmethod, apimethod, done) ->
+exports.rpc = rpc = (dir) -> (httpmethod, apimethod, args..., done) ->
   file = api2file["#{httpmethod} #{apimethod}"] or apimethod[1..]
   fs.readFile "tests/#{dir}/#{file}.xml", done
 
