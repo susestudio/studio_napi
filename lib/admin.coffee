@@ -12,13 +12,19 @@ runners = (parsed, kind) ->
     parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]
   parsed
 
-roots = {}
+roots =
+  'GET /about': 'about'
+  'GET /active_users': 'active_users'
+  'GET /health_check': 'health_check'
+  'GET /job_history': 'job_history'
+  'GET /running_jobs': 'running_jobs'
+  'GET /summary': 'summary'
 
 methods =
-  about: asis
-  active_users: since
+  'GET /about': asis
+  'GET /active_users': since
 
-  health_check: (parsed) ->
+  'GET /health_check': (parsed) ->
     runners parsed, 'kiwi_runner'
     runners parsed, 'testdrive_runner'
     unless parsed.disks instanceof Array
@@ -33,10 +39,11 @@ methods =
       disks.push d
     parsed
 
-  job_history: since
-  running_jobs: asis
+  'GET /job_history': since
 
-  summary: (parsed) ->
+  'GET /running_jobs': asis
+
+  'GET /summary': (parsed) ->
     unless parsed.disks instanceof Array
       parsed.disks = [parsed.disks.disk]
     else

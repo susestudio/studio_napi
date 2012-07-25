@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'gives all repositories for an appliance', (done) ->
-    unapi GET 'repositories', (err, r) ->
+    unapi GET '/repositories', {base_system: '11.1'}, async done, (err, r) ->
       no_error err
       contains r, repositories: [
         {
@@ -22,5 +20,4 @@ describe 'User API', ->
           }
         }
       ]
-      done()
 

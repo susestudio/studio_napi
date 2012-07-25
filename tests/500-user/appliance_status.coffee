@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'gives current state of an appliance', (done) ->
-    unapi GET 'appliance_status', (err, r) ->
+    unapi GET '/appliances/:app/status', {app: 42}, async done, (err, r) ->
       no_error err
       contains r, status:
         state: 'error'
@@ -20,5 +18,4 @@ describe 'User API', ->
               package: 'kernel-default'
           }
         ]
-      done()
 

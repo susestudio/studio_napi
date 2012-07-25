@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'gives info on a testdrive', (done) ->
-    unapi GET 'testdrive', (err, r) ->
+    unapi POST '/testdrives', {build_id: 69}, async done, (err, r) ->
       no_error err
       contains r, testdrive:
         id: '1234'
@@ -19,4 +17,4 @@ describe 'User API', ->
             host: 'node52.susestudio.com'
             port: '5902'
             password: '1234567890'
-      done()
+

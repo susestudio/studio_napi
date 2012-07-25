@@ -1,8 +1,6 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 key = '''
   -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -41,7 +39,7 @@ key = '''
 describe 'User API', ->
 
   it 'gives info for a GPG key', (done) ->
-    unapi GET 'gpg_key', (err, r) ->
+    unapi GET '/appliances/:app/gpg_key/:key', {app: 42, key: 69}, async done, (err, r) ->
       no_error err
       contains r, gpg_key: {
         id: '27'
@@ -49,5 +47,4 @@ describe 'User API', ->
         target: 'rpm'
       }
       (expect r.gpg_key.key).to.include(key)
-      done()
 

@@ -1,6 +1,8 @@
 xml = require './xml'
 
-global.GET = (method, done) -> ['get', method, done]
+for v in 'DELETE GET POST PUT'.split(' ')
+  do (v) ->
+    global[v] = (method, args..., done) -> [v, method, args..., done]
 
 asis = (parsed) -> parsed
 
@@ -23,17 +25,18 @@ deattr = (xo) ->
 exports.asis = asis
 exports.as_array = as_array
 
-exports.api = (methods, roots) -> (rpc) -> (httpmethod, apimethod, done) ->
+exports.api = (methods, roots) -> (rpc) -> (httpmethod, apimethod, args..., done) ->
   unless apimethod? and done?
-    [httpmethod, apimethod, done] = httpmethod
-  unless methods[apimethod]
-    return done "#{apimethod}: unknown method"
+    [httpmethod, apimethod, args..., done] = httpmethod
+  sig = "#{httpmethod} #{apimethod}"
+  unless methods[sig]
+    return done "#{sig}: unknown method"
   else
     rpc httpmethod, apimethod, (err, data) ->
       return done err if err
       xml.parse data, (err, result) ->
         return done err if err
-        root = roots[apimethod] or apimethod
-        result[root] = methods[apimethod] result[root]
+        root = roots[sig] or apimethod
+        result[root] = methods[sig] result[root]
         done undefined, deattr result
 

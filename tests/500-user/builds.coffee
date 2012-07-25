@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'lists finished builds for an appliance', (done) ->
-    unapi GET 'builds', (err, r) ->
+    unapi GET '/builds', {appliance_id: 42}, async done, (err, r) ->
       no_error err
       contains r, builds: [
         {
@@ -24,4 +22,4 @@ describe 'User API', ->
           download_url: 'http://susestudio.com/download/bf1a0f08884ebac13f30b0fc62dfc44a/Cornelius_JeOS.x86_64-0.0.1.oem.tar.gz'
         }
       ]
-      done()
+

@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'gives information about the account', (done) ->
-    unapi GET 'account', (err, r) ->
+    unapi GET '/account', async done, (err, r) ->
       no_error err
       contains r, account: {
         username: 'uexample'
@@ -21,5 +19,4 @@ describe 'User API', ->
           available: '15GB'
           used: '4%'
       }
-      done()
 

@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'gives metadata for an overlay file', (done) ->
-    unapi GET 'file', (err, r) ->
+    unapi GET '/files/:file', async done, (err, r) ->
       no_error err
       contains r, file: {
         id: '21'
@@ -19,5 +17,4 @@ describe 'User API', ->
         enabled: 'true'
         download_url: 'http://susestudio.com/api/v1/user/files/21/data'
       }
-      done()
 

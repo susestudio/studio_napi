@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'gives information about an uploaded rpm', (done) ->
-    unapi GET 'rpm', (err, r) ->
+    unapi GET '/rpms/:rpm', {rpm: 42}, async done, (err, r) ->
       no_error err
       contains r, rpm: {
         id: '54'
@@ -16,5 +14,4 @@ describe 'User API', ->
         archive: 'false'
         base_system: 'SLED11'
       }
-      done()
 

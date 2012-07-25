@@ -1,13 +1,11 @@
-expect = (require 'chai').expect
-
 tools = require '../tools'
 
-unapi = (require '../../lib/user').api tools.rpc 'user'
+unapi = tools.api 'user'
 
 describe 'User API', ->
 
   it 'lists running testdrives for current user', (done) ->
-    unapi GET 'testdrives', (err, r) ->
+    unapi GET '/testdrives', async done, (err, r) ->
       no_error err
       contains r, testdrives: [
         {
@@ -16,5 +14,4 @@ describe 'User API', ->
           build_id: '22'
         }
       ]
-      done()
   
