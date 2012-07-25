@@ -2,7 +2,7 @@ expect = (require 'chai').expect
 sinon = require 'sinon'
 tools = require './tools'
 
-common = require '../lib/common'
+common = require '../lib/lo/common'
 
 methods =
   'GET /fubar':

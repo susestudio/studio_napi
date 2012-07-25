@@ -1,5 +1,5 @@
 fs = require 'fs'
-xml = require '../lib/xml'
+xml = require '../lib/lo/xml'
 expect = (require 'chai').expect
 
 # FIXME: does not handle arrays well
@@ -56,5 +56,5 @@ exports.rpc = rpc = (dir) -> (httpmethod, apimethod, args..., done) ->
   fs.readFile "tests/#{dir}/#{file}.xml", done
 
 exports.api = (dir) ->
-  (require "../lib/#{dir}").api rpc dir
+  (require "../lib/lo/#{dir}").api rpc dir
 
