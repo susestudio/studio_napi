@@ -25,7 +25,7 @@ deattr = (xo) ->
 exports.asis = asis
 exports.as_array = as_array
 
-exports.api = (methods, roots) -> (rpc) -> (httpmethod, apimethod, args..., done) ->
+exports.api = (methods) -> (rpc) -> (httpmethod, apimethod, args..., done) ->
   unless apimethod? and done?
     [httpmethod, apimethod, args..., done] = httpmethod
   sig = "#{httpmethod} #{apimethod}"
@@ -36,7 +36,7 @@ exports.api = (methods, roots) -> (rpc) -> (httpmethod, apimethod, args..., done
       return done err if err
       xml.parse data, (err, result) ->
         return done err if err
-        root = roots[sig] or apimethod
-        result[root] = methods[sig] result[root]
+        root = methods[sig].root or apimethod
+        result[root] = methods[sig].output result[root]
         done undefined, deattr result
 

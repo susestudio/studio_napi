@@ -12,42 +12,47 @@ runners = (parsed, kind) ->
     parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]
   parsed
 
-roots =
-  'GET /about': 'about'
-  'GET /active_users': 'active_users'
-  'GET /health_check': 'health_check'
-  'GET /job_history': 'job_history'
-  'GET /running_jobs': 'running_jobs'
-  'GET /summary': 'summary'
-
 methods =
-  'GET /about': asis
-  'GET /active_users': since
+  'GET /about':
+    root: 'about'
+    output: asis
 
-  'GET /health_check': (parsed) ->
-    runners parsed, 'kiwi_runner'
-    runners parsed, 'testdrive_runner'
-    unless parsed.disks instanceof Array
-      if parsed.disks.disk instanceof Array
-        parsed.disks = parsed.disks.disk
-      else
+  'GET /active_users':
+    root: 'active_users'
+    output: since
+
+  'GET /health_check':
+    root: 'health_check'
+    output: (parsed) ->
+      runners parsed, 'kiwi_runner'
+      runners parsed, 'testdrive_runner'
+      unless parsed.disks instanceof Array
+        if parsed.disks.disk instanceof Array
+          parsed.disks = parsed.disks.disk
+        else
+          parsed.disks = [parsed.disks.disk]
+      disks = []
+      for d in parsed.disks
+        d.path = d['@'].path
+        delete d['@']
+        disks.push d
+      parsed
+
+  'GET /job_history':
+    root: 'job_history'
+    output: since
+
+  'GET /running_jobs':
+    root: 'running_jobs'
+    output: asis
+
+  'GET /summary':
+    root: 'summary'
+    output: (parsed) ->
+      unless parsed.disks instanceof Array
         parsed.disks = [parsed.disks.disk]
-    disks = []
-    for d in parsed.disks
-      d.path = d['@'].path
-      delete d['@']
-      disks.push d
-    parsed
+      else
+        parsed.disks = (disk for disk in parsed.disks['#'])
+      since parsed
 
-  'GET /job_history': since
-
-  'GET /running_jobs': asis
-
-  'GET /summary': (parsed) ->
-    unless parsed.disks instanceof Array
-      parsed.disks = [parsed.disks.disk]
-    else
-      parsed.disks = (disk for disk in parsed.disks['#'])
-    since parsed
-
-exports.api = common.api methods, roots
+exports.api = common.api methods
