@@ -11,27 +11,19 @@ describe 'High-level Admin API:', ->
       user: 'rneuhauser'
       key: 'ELaM8usq3Ryb'
 
-  it 'about()', (done) ->
-    (expect admin, 'admin').to.have.property 'about'
-    done()
+  methods = '''
+    about
+    active_users
+    job_history
+    running_jobs
+    summary
+    health_check
+  '''.split /\s+/
 
-  it 'active_users()', (done) ->
-    (expect admin, 'admin').to.have.property 'active_users'
-    done()
+  for meth in methods
 
-  it 'job_history()', (done) ->
-    (expect admin, 'admin').to.have.property 'job_history'
-    done()
-
-  it 'running_jobs()', (done) ->
-    (expect admin, 'admin').to.have.property 'running_jobs'
-    done()
-
-  it 'summary()', (done) ->
-    (expect admin, 'admin').to.have.property 'summary'
-    done()
-
-  it 'health_check()', (done) ->
-    (expect admin, 'admin').to.have.property 'health_check'
-    done()
+    do (meth) ->
+      it "has #{meth}() method", (done) ->
+        (expect admin, 'admin').to.have.property(meth)
+        done()
 
