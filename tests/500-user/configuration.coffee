@@ -129,10 +129,10 @@ describe 'User API "configuration"', ->
         # The 'kiwi_type' variable will contain the format of the appliance (oem =
         # disk image, vmx = VMware, iso = CD/DVD, xen = Xen).
         #
-        
+
         # read in some variables
         . /studio/profile
-        
+
         #======================================
         # Prune extraneous files
         #--------------------------------------
@@ -141,10 +141,10 @@ describe 'User API "configuration"', ->
         rm -f $docfiles
         rm -rf /usr/share/info
         rm -rf /usr/share/man
-        
+
         # fix the setlocale error
         sed -i 's/en_US.UTF-8/POSIX/g' /etc/sysconfig/language
-        
+
         exit 0'''
 
       boot:
@@ -159,16 +159,16 @@ describe 'User API "configuration"', ->
         # The 'kiwi_type' variable will contain the format of the appliance (oem =
         # disk image, vmx = VMware, iso = CD/DVD, xen = Xen).
         #
-        
+
         # read in some variables
         . /studio/profile
-        
+
         if [ -f /etc/init.d/suse_studio_firstboot ]
         then
-        
+
           # Put commands to be run on the first boot of your appliance here
           echo "Running SUSE Studio first boot script..."
-        
+
         fi'''
 
       autoyast:

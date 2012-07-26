@@ -14,4 +14,4 @@ describe 'User API', ->
           build_id: '22'
         }
       ]
-  
+

@@ -1,15 +1,15 @@
-<template_set>                                                                                                                      
-  <name>default</name>                                                                                                              
-  <description>SUSE default templates</description>                                                                                 
-  <template>                                                                                                                        
-    <appliance_id>1</appliance_id>                                                                                                  
-    <name>openSUSE 11.1, Just enough OS (JeOS)</name>                                                                               
-    <description>Tiny, minimalistic appliances</description>                                                                        
-    <basesystem>11.1</basesystem>                                                                                                   
-  </template>                                                                                                                       
-  <template>                                                                                                                        
-    <appliance_id>2</appliance_id>                                                                                                  
-    <name>openSUSE 11.1, Server</name>                                                                                              
+<template_set>
+  <name>default</name>
+  <description>SUSE default templates</description>
+  <template>
+    <appliance_id>1</appliance_id>
+    <name>openSUSE 11.1, Just enough OS (JeOS)</name>
+    <description>Tiny, minimalistic appliances</description>
+    <basesystem>11.1</basesystem>
+  </template>
+  <template>
+    <appliance_id>2</appliance_id>
+    <name>openSUSE 11.1, Server</name>
     <description>A text-only base</description>
     <basesystem>11.1</basesystem>
   </template>
