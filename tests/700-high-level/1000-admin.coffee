@@ -25,5 +25,6 @@ describe 'High-level Admin API:', ->
     do (meth) ->
       it "has #{meth}() method", (done) ->
         (expect admin, 'admin').to.have.property(meth)
+          .that.is.a('function')
         done()
 
