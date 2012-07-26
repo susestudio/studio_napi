@@ -33,14 +33,118 @@ Overview
 ========
 
 studio_napi_ is a client library for the `SUSE Studio`_ HTTP API
-targetting `Node.js`_.
-
+targetting `Node.js`_.  Two interfaces are exposed, a low-level
+and a high-level one.  Both interfaces implement both the admin
+and user sides of the API (user is v2).
 
 Status
 ======
 
-`studio_napi` is in the prototyping phase.  There are some unit tests
-for a mostly faked out partial implementation.
+`studio_napi` is in development.  The low-level interface is
+implemented to a large extent, the last remaining bits are being
+fleshed out; the high-level interface has been designed and we
+started the implementation.
+
+
+Low-level Interface
+===================
+
+This is a fairly straightforward async functional interface
+using POJOs in place of XML and streams for binary data.
+
+::
+
+  anapi = (require 'studio_napi').lo.api admin:
+    server: 'http://susestudio.com/'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+  assert = require 'assert'
+  expect = (require 'chai').expect
+
+  anapi GET '/about', (e, r) ->
+
+    assert.ifError e, "/about failed: #{e}"
+
+    for p in 'server_name environment git_revision'.split ' '
+      (expect r).to.have.property p
+
+  anapi GET '/health_check', runner_threshold: 75, (e, r) ->
+
+    assert.ifError e, "/health_check failed: #{e}"
+
+    for p in 'state kiwi_runners testdrive_runners disks'.split ' '
+      (expect r).to.have.property p
+
+
+High-level Interface
+====================
+
+This is an internal DSL.
+
+::
+
+  user = studio.session user:
+    url: 'http://susestudio.com/api/v2/user'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+  user.create appliance:
+    named: 'my system'
+    based_on: 'SLES11 SP2'
+
+  app.configure LVM:
+    enabled: yes
+    group: 'mighty-lvm'
+    comprising:
+      "/var": "800G"
+      "/fuvar": "12T"
+
+  app.configure PostgreSQL: [
+    { user: 'db_user', password: 'secret', databases: 'foo bar' }
+    { user: 'db_admin', password: 'top-secret' }
+  ]
+
+  app.toggle PostgreSQL: on
+  app.toggle MySQL: off
+
+  app.select runlevel: 3
+
+  app.add package:
+    named: 'djbdns'
+    from: 'My Repository'
+    version: '1.2.3'
+
+  app.add pattern:
+    named: 'development'
+    from: 'His Repository'
+
+  app.add user:
+    named: 'toor'
+    id: 1000
+    member_of: 'wheel'
+    identified_by:
+      password: 'secret'
+
+  app.select locale:
+    language: 'POSIX'
+    keyboard: 'English (US)'
+
+  app.configure network:
+    hostname: 'thisbox'
+    address: '1.2.3.4'
+    netmask: '255.255.0.0'
+    gateway: '1.2.1.1'
+    resolvers: '1.3.1.53 1.3.2.53'
+
+  app.configure RAM: '1G'
+  app.configure disk: '3T'
+  app.configure swap: '8G'
+
+  app.toggle PAE: on
+  app.toggle Xen_DOM0: off
+
+  app.commit()
 
 
 Prerequisities
