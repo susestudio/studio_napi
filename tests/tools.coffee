@@ -12,7 +12,7 @@ contains = (actual, expected) ->
       (expect actual[p], diff actual, expected).to.equal v
 
 no_error = (err) ->
-  (expect err, 'err').to.equal undefined
+  (expect err, 'err').to.not.exist
 
 global.expect = expect
 
