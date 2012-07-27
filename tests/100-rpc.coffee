@@ -8,7 +8,7 @@ describe 'RPC (HTTP) client', ->
     httprequest = (reqopts, done) -> done undefined, reqopts
 
     anrpc = admin.rpc httprequest, options:
-      server: 'http://example.org:4269/'
+      url: 'http://example.org:4269/'
       user: 'ytsarev'
       key: 'blabla'
 
@@ -16,7 +16,7 @@ describe 'RPC (HTTP) client', ->
       no_error err
       expected =
         method: 'DELETE'
-        path: '/api/fubar'
+        path: '/api/admin/fubar'
         port: '4269'
         hostname: 'example.org'
       contains res, expected
@@ -26,7 +26,7 @@ describe 'RPC (HTTP) client', ->
     httprequest = (reqopts, done) -> done undefined, reqopts
 
     anrpc = admin.rpc httprequest, options:
-      server: 'http://example.org:6942/'
+      url: 'http://example.org:6942/'
       user: 'ytsarev'
       key: 'blabla'
 
@@ -34,7 +34,7 @@ describe 'RPC (HTTP) client', ->
       no_error err
       expected =
         method: 'PUT'
-        path: '/api/snafu/bar/omg/rofl'
+        path: '/api/admin/snafu/bar/omg/rofl'
         port: '6942'
         hostname: 'example.org'
       contains res, expected

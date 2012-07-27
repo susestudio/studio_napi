@@ -1,4 +1,3 @@
-url = require 'url'
 common = require './common'
 
 asis = common.asis
@@ -56,15 +55,6 @@ methods =
         parsed.disks = (disk for disk in parsed.disks['#'])
       since parsed
 
-exports.rpc = (httpc, options) -> (httpmethod, apimethod, args..., done) ->
-  if args.length
-    apimethod = apimethod.replace /:(\w+)/g, (_, param) -> args[0][param]
-  parsed = url.parse options.options.server
-  reqopts =
-    method: httpmethod
-    path: "/api#{apimethod}"
-    port: parsed.port
-    hostname: parsed.hostname
-  httpc reqopts, done
-
 exports.api = common.api methods
+
+exports.rpc = common.rpc '/api/admin'

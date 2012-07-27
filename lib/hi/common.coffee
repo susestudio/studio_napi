@@ -1,14 +1,15 @@
 assert = require 'assert'
 
-session = (creds) ->
+session = (creds, apimpl = null) ->
   mode = p for p in ['user', 'admin'] when p of creds
-  assert mode, 'did you want an admin session or a user session?'
+  assert mode in ['user', 'admin']
+  , "did you want an admin session or a user session? (got #{mode})"
   sess = creds[mode]
   assert sess.url, "missing session: url"
-  if mode is 'admin'
-    new Admin creds
-  else
-    new User creds
+  impl = require "../lo/#{mode}"
+  unless apimpl?
+    apimpl = impl.api impl.rpc options: sess
+  new { admin: Admin, user: User }[mode] apimpl
 
 Admin = (anapi) ->
   @about = (done) ->

@@ -43,3 +43,21 @@ exports.api = (methods) -> (rpc, xml) ->
         result[root] = methods[sig].output result[root]
         done undefined, deattr result
 
+url = require 'url'
+
+exports.rpc = (urlprefix) -> (httpc, options) ->
+  (httpmethod, apimethod, args..., done) ->
+    if not options?
+      [httpc, options] = [(require 'http').request, httpc]
+    #console.dir httpc: httpc
+    #console.dir options: options
+    if args.length
+      apimethod = apimethod.replace /:(\w+)/g, (_, param) -> args[0][param]
+    parsed = url.parse options.options.url
+    reqopts =
+      method: httpmethod
+      path: "#{urlprefix}#{apimethod}"
+      port: parsed.port
+      hostname: parsed.hostname
+    httpc reqopts, done
+
