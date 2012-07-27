@@ -4,6 +4,15 @@ studio = require '../../lib/hi/common'
 
 describe 'High-level Admin API:', ->
 
+  methods = '''
+    about
+    active_users
+    job_history
+    running_jobs
+    summary
+    health_check
+  '''.split /\s+/
+
   describe 'method presence', ->
 
     admin =
@@ -13,15 +22,6 @@ describe 'High-level Admin API:', ->
         url: 'http://susestudio.com/api/admin'
         user: 'rneuhauser'
         key: 'ELaM8usq3Ryb'
-
-    methods = '''
-      about
-      active_users
-      job_history
-      running_jobs
-      summary
-      health_check
-    '''.split /\s+/
 
     for meth in methods
 
@@ -33,19 +33,23 @@ describe 'High-level Admin API:', ->
 
   describe 'argument passing', ->
 
-    describe 'about()', ->
-      it 'uses GET /about', (done) ->
-        apimpl = sinon.stub().callsArg(2)
+    for meth in methods
 
-        admin = studio.session { admin:
-          url: 'http://susestudio.com/api/admin'
-          user: 'rneuhauser'
-          key: 'ELaM8usq3Ryb'
-        }
-        , (a) -> apimpl a...
+      do (meth) ->
+        describe "#{meth}()", ->
 
-        admin.about (err, r) ->
-          no_error err
-          (expect apimpl.calledWith 'GET', '/about').to.be.true
-          done()
+          it "uses GET /#{meth}", (done) ->
+            apimpl = sinon.stub().callsArg(2)
+
+            admin = studio.session { admin:
+              url: 'http://susestudio.com/api/admin'
+              user: 'rneuhauser'
+              key: 'ELaM8usq3Ryb'
+            }
+            , (a) -> apimpl a...
+
+            admin[meth] (err, r) ->
+              no_error err
+              (expect apimpl.calledWith 'GET', "/#{meth}").to.be.true
+              done()
 
