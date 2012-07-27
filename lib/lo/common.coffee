@@ -48,7 +48,7 @@ url = require 'url'
 exports.rpc = (urlprefix) -> (httpc, options) ->
   (httpmethod, apimethod, args..., done) ->
     if not options?
-      [httpc, options] = [(require 'http').request, httpc]
+      [httpc, options] = [(require './http').napi_req, httpc]
     #console.dir httpc: httpc
     #console.dir options: options
     if args.length
@@ -59,5 +59,6 @@ exports.rpc = (urlprefix) -> (httpc, options) ->
       path: "#{urlprefix}#{apimethod}"
       port: parsed.port
       hostname: parsed.hostname
+      auth: "#{options.options.user}:#{options.options.key}"
     httpc reqopts, done
 

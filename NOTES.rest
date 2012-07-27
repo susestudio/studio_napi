@@ -41,3 +41,8 @@ Things about APIv2 that irk me
 
 * `/job_history/builds` omits `<errored/>`.  it should not.
 * `/health_check/mysql`: really?
+
+* admin api prefix is actually not just '/api/admin' 
+  as provided in studio docu, but '/api/v1/admin' either 
+  '/api/v2/admin' 
+
