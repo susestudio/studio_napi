@@ -1,6 +1,6 @@
 sinon = require 'sinon'
 tools = require '../tools'
-studio = require '../../lib/hi/common'
+studio = require '../../lib/hi'
 
 describe 'High-level Admin API:', ->
 
