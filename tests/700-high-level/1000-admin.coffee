@@ -3,28 +3,30 @@ studio = require '../../lib/hi/common'
 
 describe 'High-level Admin API:', ->
 
-  admin =
+  describe 'method presence', ->
 
-  beforeEach () ->
-    admin = studio.session admin:
-      url: 'http://susestudio.com/api/admin'
-      user: 'rneuhauser'
-      key: 'ELaM8usq3Ryb'
+    admin =
 
-  methods = '''
-    about
-    active_users
-    job_history
-    running_jobs
-    summary
-    health_check
-  '''.split /\s+/
+    beforeEach () ->
+      admin = studio.session admin:
+        url: 'http://susestudio.com/api/admin'
+        user: 'rneuhauser'
+        key: 'ELaM8usq3Ryb'
 
-  for meth in methods
+    methods = '''
+      about
+      active_users
+      job_history
+      running_jobs
+      summary
+      health_check
+    '''.split /\s+/
 
-    do (meth) ->
-      it "has #{meth}() method", (done) ->
-        (expect admin, 'admin').to.have.property(meth)
-          .that.is.a('function')
-        done()
+    for meth in methods
+
+      do (meth) ->
+        it "has #{meth}() method", (done) ->
+          (expect admin, 'admin').to.have.property(meth)
+            .that.is.a('function')
+          done()
 
