@@ -20,7 +20,7 @@ describe 'common.api', ->
       'GET /snafu: unknown method'
 
     napi = (common.api methods) myrpc
-    napi GET '/snafu', {omg: 'wtf'}, mycb
+    napi GET '/snafu', omg: 'wtf', mycb
 
     mycb.verify()
     myrpc.verify()
@@ -29,10 +29,10 @@ describe 'common.api', ->
     myrpc = sinon.mock().once().withArgs \
       'GET'
     , '/fubar'
-    , {omg: 'wtf'}
+    , omg: 'wtf'
 
     napi = (common.api methods) myrpc
-    napi GET '/fubar', {omg: 'wtf'}, ->
+    napi GET '/fubar', omg: 'wtf', ->
 
     myrpc.verify()
 
@@ -40,13 +40,13 @@ describe 'common.api', ->
     myrpc = sinon.mock().once().withArgs(
       'GET'
     , '/fubar'
-    , {omg: 'wtf'}
+    , omg: 'wtf'
     ).callsArgWith(3, 'rofl')
     myxml = sinon.mock().never()
     mycb = sinon.mock().once().withExactArgs 'rofl'
 
     napi = (common.api methods) myrpc, myxml
-    napi GET '/fubar', {omg: 'wtf'}, mycb
+    napi GET '/fubar', omg: 'wtf', mycb
 
     myrpc.verify()
     myxml.verify()
@@ -55,14 +55,14 @@ describe 'common.api', ->
   it 'reports failures from xml parser', ->
     myrpc = sinon.stub()
       .callsArgWith(3, null, 'mydata')
-    xml = { parse: -> }
+    xml = parse: ->
     sinon.stub(xml, 'parse')
       .callsArgWith(1, 'xml parsing error')
 
     mycb = sinon.mock().once().withExactArgs 'xml parsing error'
 
     napi = (common.api methods) myrpc, xml
-    napi GET '/xml-syntax-error', {omg: 'wtf'}, mycb
+    napi GET '/xml-syntax-error', omg: 'wtf', mycb
 
     mycb.verify()
 

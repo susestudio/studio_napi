@@ -1,7 +1,7 @@
 fs = require 'fs'
 xml = require '../lib/lo/xml'
 expect = (require 'chai').expect
-diff = (require 'difflet')({ indent : 2 , comment: true }).compare
+diff = (require 'difflet')(indent: 2, comment: true).compare
 
 # FIXME: does not handle arrays well
 contains = (actual, expected) ->

@@ -4,7 +4,7 @@ unapi = tools.api 'user'
 
 describe 'User API "configuration"', ->
 
-  exp = configuration: { # {{{
+  exp = configuration: # {{{
 
     id: '24'
     name: 'LAMP Server'
@@ -174,7 +174,7 @@ describe 'User API "configuration"', ->
       autoyast:
         enabled: 'false'
 
-  } # }}}
+  # }}}
 
   it 'includes locale information', (done) ->
     unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->

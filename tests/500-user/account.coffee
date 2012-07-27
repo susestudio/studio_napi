@@ -7,7 +7,7 @@ describe 'User API', ->
   it 'gives information about the account', (done) ->
     unapi GET '/account', async done, (err, r) ->
       no_error err
-      contains r, account: {
+      contains r, account:
         username: 'uexample'
         displayname: 'User Example'
         email: 'user@example.com'
@@ -18,5 +18,4 @@ describe 'User API', ->
         disk_quota:
           available: '15GB'
           used: '4%'
-      }
 

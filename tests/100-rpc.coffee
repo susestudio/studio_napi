@@ -12,7 +12,7 @@ describe 'RPC (HTTP) client', ->
       user: 'ytsarev'
       key: 'blabla'
 
-    anrpc 'DELETE', '/fubar', {foo: 'bar'}, (err, res) ->
+    anrpc 'DELETE', '/fubar', foo: 'bar', (err, res) ->
       no_error err
       expected =
         method: 'DELETE'
@@ -30,7 +30,7 @@ describe 'RPC (HTTP) client', ->
       user: 'ytsarev'
       key: 'blabla'
 
-    anrpc 'PUT', '/snafu/:foo/omg/:wtf', {foo: 'bar', wtf: 'rofl'}, (err, res) ->
+    anrpc 'PUT', '/snafu/:foo/omg/:wtf', foo: 'bar', wtf: 'rofl', (err, res) ->
       no_error err
       expected =
         method: 'PUT'

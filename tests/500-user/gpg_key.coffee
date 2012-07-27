@@ -41,10 +41,10 @@ describe 'User API', ->
   it 'gives info for a GPG key', (done) ->
     unapi GET '/appliances/:app/gpg_key/:key', {app: 42, key: 69}, async done, (err, r) ->
       no_error err
-      contains r, gpg_key: {
+      contains r, gpg_key:
         id: '27'
         name: 'test1'
         target: 'rpm'
-      }
+
       (expect r.gpg_key.key).to.include(key)
 

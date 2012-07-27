@@ -26,7 +26,7 @@ describe 'XML parser', ->
       expect(err).to.not.be.ok
       expect(parsed)
         .to.be.an('object')
-        .deep.equal({liters: '42'})
+        .deep.equal(liters: '42')
       done()
 
   it 'outputs single children of a given element name directly', (done) ->
@@ -39,7 +39,7 @@ describe 'XML parser', ->
       expect(err).to.not.be.ok
       expect(parsed)
         .to.be.an('object')
-        .deep.equal({volume: {liters: '42'}})
+        .deep.equal(volume: liters: '42')
       done()
 
   it 'outputs multiple children with the same element name in arrays', (done) ->
@@ -58,14 +58,14 @@ describe 'XML parser', ->
           .with.length(2)
       expect(parsed.drinks.beer[0])
         .to.be.an('object')
-        .deep.equal({brand: 'Branik'})
+        .deep.equal(brand: 'Branik')
       expect(parsed.drinks.beer[1])
         .to.be.an('object')
-        .deep.equal({brand: 'Plzen'})
+        .deep.equal(brand: 'Plzen')
       expect(parsed)
         .to.have.deep.property('drinks.soda')
           .that.is.an('object')
-          .deep.equal({brand: 'Kofola'})
+          .deep.equal(brand: 'Kofola')
       done()
 
   it 'outputs attributes under @ property', (done) ->

@@ -7,7 +7,7 @@ describe 'User API', ->
   it 'gives information about all uploaded rpms for a base system', (done) ->
     unapi GET '/rpms', {base_system: 'SLED11'}, async done, (err, r) ->
       no_error err
-      contains r, rpms: {
+      contains r, rpms:
         base_system: 'SLED11'
         rpms: [
           {
@@ -18,5 +18,4 @@ describe 'User API', ->
             base_system: 'SLED11'
           }
         ]
-      }
 

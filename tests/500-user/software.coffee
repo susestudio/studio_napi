@@ -7,7 +7,7 @@ describe 'User API', ->
   it 'gives all selected packages and patterns of an appliance', (done) ->
     unapi GET '/appliances/:app/software', async done, (err, r) ->
       no_error err
-      contains r, software: {
+      contains r, software:
         appliance_id: '42'
         patterns: [
           'laptop'
@@ -43,5 +43,4 @@ describe 'User API', ->
           { name: 'syslog-ng' }
           { name: 'vim', version: '7.2-7.3' }
         ]
-      }
 
