@@ -52,12 +52,41 @@ Low-level Interface
 This is a fairly straightforward async functional interface
 using POJOs in place of XML and streams for binary data.
 
+`studio_napi/lib/lo` exposes a `session` function which takes
+an object specifying the Studio server to connect to, the desired
+API side (admin or user), and credentials.
+
 ::
 
-  anapi = (require 'studio_napi').lo.api admin:
-    server: 'http://susestudio.com/'
+  anapi = (require 'studio_napi/lib/lo').session admin:
+    url: 'http://susestudio.com/'
     user: 'rneuhauser'
     key: '69sNafUbAR'
+
+::
+
+  unapi = (require 'studio_napi/lib/lo').session user:
+    url: 'http://susestudio.com/'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+The value returned is a function which takes 3 or 4 arguments:
+
+::
+
+  httpmethod, apimethod, [params,] ondone
+
+* HTTP method (one of `DELETE`, `GET`, `POST`, `PUT`)
+* shortened API method path (without the leading `/api/v2`)
+* optionally, an object of API parameters
+* callback function accepting two parameters: `error` and `response`
+  where, provided `error` is falsy, `reponse` contains a POJO derived
+  from the XML response
+
+To support a slightly more DSLish code, `studio_napi` publishes global
+functions corresponding to used HTTP methods; see example.
+
+Example: ::
 
   assert = require 'assert'
   expect = (require 'chai').expect
@@ -80,16 +109,51 @@ using POJOs in place of XML and streams for binary data.
 High-level Interface
 ====================
 
-This is an internal DSL.
+`studio_napi/lib/hi` exposes a `session` function which takes
+an object specifying the Studio server to connect to, the desired
+API side (admin or user), and credentials.
 
-::
+Admin
++++++
+
+The admin side is a simple object with methods corresponding 1:1
+to the low-level admin endpoints:
+
+Example: ::
+
+  admin = (require 'studio_napi/lib/hi').session admin:
+    url: 'http://susestudio.com/'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+  admin.about (e, r) ->
+
+    assert.ifError e, "/about failed: #{e}"
+
+    for p in 'server_name environment git_revision'.split ' '
+      (expect r).to.have.property p
+
+  admin.health_check, runner_threshold: 75, (e, r) ->
+
+    assert.ifError e, "/health_check failed: #{e}"
+
+    for p in 'state kiwi_runners testdrive_runners disks'.split ' '
+      (expect r).to.have.property p
+
+
+User
+++++
+
+The user side is an internal DSL.
+
+Example: ::
 
   user = studio.session user:
     url: 'http://susestudio.com/api/v2/user'
     user: 'rneuhauser'
     key: '69sNafUbAR'
 
-  user.create appliance:
+  app = user.create appliance:
     named: 'my system'
     based_on: 'SLES11 SP2'
 
