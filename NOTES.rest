@@ -37,12 +37,11 @@ Things about APIv2 that irk me
   there would be no ambiguity (and no attribute, so
   easier parsing) if this was given as a timestamp: ::
 
-    <since>2009-07-16T09:27:32</since>
+    <since>2009-07-16T09:27:32Z</since>
 
 * `/job_history/builds` omits `<errored/>`.  it should not.
 * `/health_check/mysql`: really?
 
-* admin api prefix is actually not just '/api/admin'
-  as provided in studio docu, but '/api/v1/admin' either
-  '/api/v2/admin'
+* admin API prefix is actually '/api/v2/admin', not just
+  '/api/admin' as the documentation claims.
 
