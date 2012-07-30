@@ -16,9 +16,10 @@ describe 'RPC (HTTP) client', ->
       no_error err
       expected =
         method: 'DELETE'
-        path: '/api/admin/fubar'
+        path: '/api/v2/admin/fubar'
         port: '4269'
         hostname: 'example.org'
+        auth: 'ytsarev:blabla'
       contains res, expected
       done()
 
@@ -34,9 +35,10 @@ describe 'RPC (HTTP) client', ->
       no_error err
       expected =
         method: 'PUT'
-        path: '/api/admin/snafu/bar/omg/rofl'
+        path: '/api/v2/admin/snafu/bar/omg/rofl'
         port: '6942'
         hostname: 'example.org'
+        auth: 'ytsarev:blabla'
       contains res, expected
       done()
 
