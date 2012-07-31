@@ -30,3 +30,4 @@ filerpc = (dir, api2file) -> (httpmethod, apimethod, args..., done) ->
 exports.fileapi = (dir, api2file) ->
   (require "../lib/lo/#{dir}").api filerpc dir, api2file
 
+exports.filerpc = filerpc

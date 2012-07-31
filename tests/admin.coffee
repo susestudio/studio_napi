@@ -1,6 +1,6 @@
 tools = require './tools'
 
-api2file =
+exports.api2file = api2file =
   'GET /about': 'about'
   'GET /active_users': 'active_users'
   'GET /health_check': 'health_check'

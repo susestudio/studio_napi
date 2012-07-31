@@ -1,10 +1,9 @@
 expect = (require 'chai').expect
-#sinon = (require 'sinon')
 tools = require './admin'
 
 anapi = tools.fileapi
 
-describe 'Admin API', ->
+describe 'Admin API (file RPC)', ->
 
   describe '/about', ->
     it 'gives hostname, RoR env, git commitish', (done) ->
