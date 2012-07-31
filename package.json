@@ -48,6 +48,8 @@
   , "tests/500-user/testdrive.t.coffee"
   , "tests/500-user/testdrives.t.coffee"
 
+  , "tests/admin.coffee"
+  , "tests/user.coffee"
   , "tests/tools.coffee"
 
   , "tests/admin/about.xml"
