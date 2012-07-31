@@ -1,0 +1,26 @@
+tools = require './tools'
+
+api2file =
+  'GET /account': 'account'
+  'GET /appliances': 'appliances'
+  'GET /appliances/:app': 'appliance'
+  'GET /appliances/:app/configuration': 'configuration'
+  'GET /appliances/:app/gpg_key/:key': 'gpg_key'
+  'GET /appliances/:app/gpg_keys': 'gpg_keys'
+  'GET /appliances/:app/sharing': 'sharing'
+  'GET /appliances/:app/software': 'software'
+  'GET /appliances/:app/status': 'appliance_status'
+  'GET /builds': 'builds'
+  'GET /builds/:bld': 'build'
+  'GET /files': 'files'
+  'GET /files/:file': 'file'
+  'GET /repositories': 'repositories'
+  'GET /repositories/:repo': 'repository'
+  'GET /rpms': 'rpms'
+  'GET /rpms/:rpm': 'rpm'
+  'GET /running_builds': 'running_builds'
+  'GET /running_builds/:bld': 'running_build'
+  'GET /testdrives': 'testdrives'
+  'POST /testdrives': 'testdrive'
+
+exports.fileapi = tools.fileapi 'user', api2file

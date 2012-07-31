@@ -1,8 +1,8 @@
 expect = (require 'chai').expect
 #sinon = (require 'sinon')
-tools = require './tools'
+tools = require './admin'
 
-anapi = tools.api 'admin'
+anapi = tools.fileapi
 
 describe 'Admin API', ->
 

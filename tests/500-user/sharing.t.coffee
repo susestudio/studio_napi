@@ -1,6 +1,6 @@
-tools = require '../tools'
+tools = require '../user'
 
-unapi = tools.api 'user'
+unapi = tools.fileapi
 
 describe 'User API', ->
 
