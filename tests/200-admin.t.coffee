@@ -7,7 +7,7 @@ anapi = tools.fileapi
 describe 'Admin API', ->
 
   describe '/about', ->
-    it 'should give hostname, RoR env, git commitish', (done) ->
+    it 'gives hostname, RoR env, git commitish', (done) ->
       anapi GET '/about', async done, (err, r) ->
         no_error err
         contains r, about:
@@ -16,7 +16,7 @@ describe 'Admin API', ->
           git_revision: '074b2a42d48c7b8256c1b9328a7b29a944aeb8c7'
 
   describe '/active_users', ->
-    it 'should give build/testdrive data', (done) ->
+    it 'gives build/testdrive data', (done) ->
       anapi GET '/active_users', async done, (err, r) ->
         no_error err
         contains r, active_users:
@@ -24,7 +24,7 @@ describe 'Admin API', ->
           users: []
 
   describe '/job_history', ->
-    it 'should give build/testdrive stats', (done) ->
+    it 'gives build/testdrive stats', (done) ->
       anapi GET '/job_history', async done, (err, r) ->
         no_error err
         contains r, job_history:
@@ -36,7 +36,7 @@ describe 'Admin API', ->
           testdrives: '0'
 
   describe '/running_jobs', ->
-    it 'should give build/testdrive data', (done) ->
+    it 'gives build/testdrive data', (done) ->
       anapi GET '/running_jobs', async done, (err, r) ->
         no_error err
         contains r, running_jobs:
@@ -44,7 +44,7 @@ describe 'Admin API', ->
           testdrives: []
 
   describe '/summary', ->
-    it 'should give uptime, build/testdrive/user/bug stats, df, etc', (done) ->
+    it 'gives uptime, build/testdrive/user/bug stats, df, etc', (done) ->
       anapi GET '/summary', async done, (err, r) ->
         no_error err
         contains r, summary:
@@ -71,7 +71,7 @@ describe 'Admin API', ->
           bugs: []
 
   describe '/health_check', ->
-    it 'should give crap', (done) ->
+    it 'gives information about the state of the system', (done) ->
       anapi GET '/health_check', {runner_threshold: 75}, async done, (err, r) ->
         no_error err
         contains r, health_check:
