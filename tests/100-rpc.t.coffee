@@ -1,5 +1,5 @@
 expect = (require 'chai').expect
-rpc = (require '../lib/lo/common').rpc '/here/there'
+rpc = (require '../lib/lo/common').rpc
 tools = require './tools'
 
 describe 'RPC (HTTP) client', ->
@@ -8,7 +8,7 @@ describe 'RPC (HTTP) client', ->
     httprequest = (reqopts, done) -> done undefined, reqopts
 
     anrpc = rpc httprequest, options:
-      url: 'http://example.org:4269/'
+      url: 'http://example.org:4269/here/there'
       user: 'ytsarev'
       key: 'blabla'
 
@@ -27,7 +27,7 @@ describe 'RPC (HTTP) client', ->
     httprequest = (reqopts, done) -> done undefined, reqopts
 
     anrpc = rpc httprequest, options:
-      url: 'http://example.org:6942/'
+      url: 'http://example.org:6942/here/there'
       user: 'ytsarev'
       key: 'blabla'
 

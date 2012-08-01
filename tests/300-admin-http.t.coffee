@@ -3,7 +3,7 @@ tools = require './admin'
 admin = require '../lib/lo/admin'
 
 http = require 'http'
-url = require 'url'
+parseurl = (require 'url').parse
 fs = require 'fs'
 path = require 'path'
 
@@ -14,9 +14,9 @@ describe 'Admin API (HTTP RPC)', ->
 
   before (done) ->
     server = http.createServer (req, res) ->
-      parsed = url.parse req.url
-      pathname = parsed.pathname.replace /^\/api\/v2\/admin/, ''
-      sig = "#{req.method} #{pathname}"
+      url = parseurl req.url
+      pathname = path.basename url.pathname
+      sig = "#{req.method} /#{pathname}"
       file = tools.api2file[sig]
       fs.readFile "tests/admin/#{file}.xml", (err, contents) ->
         done err if err
@@ -27,7 +27,7 @@ describe 'Admin API (HTTP RPC)', ->
     server.listen 0, 'localhost', (err) ->
       port = server.address().port
       anapi = admin.api admin.rpc options:
-        url: "http://localhost:#{port}"
+        url: "http://localhost:#{port}/hello/dolly"
         user: 'roman-neuhauser'
         key: 'snafubar'
 

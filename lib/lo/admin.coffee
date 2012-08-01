@@ -57,4 +57,4 @@ methods =
 
 exports.api = common.api methods
 
-exports.rpc = common.rpc '/api/v2/admin'
+exports.rpc = common.rpc

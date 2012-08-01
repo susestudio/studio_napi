@@ -45,19 +45,19 @@ exports.api = (methods) -> (rpc, xml) ->
 
 url = require 'url'
 
-exports.rpc = (urlprefix) -> (httpc, options) ->
+exports.rpc = (httpc, options) ->
   if not options?
     [httpc, options] = [(require './http').request, httpc]
   options = options.options
-  parsed = url.parse options.url
+  server = url.parse options.url
   (httpmethod, apimethod, args..., done) ->
     if args.length
       apimethod = apimethod.replace /:(\w+)/g, (_, param) -> args[0][param]
     reqopts =
       method: httpmethod
-      path: "#{urlprefix}#{apimethod}"
-      port: parsed.port
-      hostname: parsed.hostname
+      path: "#{server.pathname}#{apimethod}"
+      port: server.port
+      hostname: server.hostname
       auth: "#{options.user}:#{options.key}"
     httpc reqopts, done
 
