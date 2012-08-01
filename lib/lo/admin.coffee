@@ -57,4 +57,3 @@ methods =
 
 exports.api = common.api methods
 
-exports.rpc = common.rpc

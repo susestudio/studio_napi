@@ -1,5 +1,6 @@
 expect = (require 'chai').expect
 tools = require './admin'
+common = require '../lib/lo/common'
 admin = require '../lib/lo/admin'
 
 http = require 'http'
@@ -26,7 +27,7 @@ describe 'Admin API (HTTP RPC)', ->
 
     server.listen 0, 'localhost', (err) ->
       port = server.address().port
-      anapi = admin.api admin.rpc options:
+      anapi = admin.api common.rpc options:
         url: "http://localhost:#{port}/hello/dolly"
         user: 'roman-neuhauser'
         key: 'snafubar'
