@@ -94,7 +94,7 @@
   , "tests/user/testdrives.xml"
   ]
 , "scripts": {
-    "test": "make check"
+    "test": "make do-check"
   }
 , "dependencies": {
     "clone": "~0.1"
