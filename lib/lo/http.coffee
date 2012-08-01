@@ -1,7 +1,7 @@
-request = require('http').request
+_request = require('http').request
 
-exports.napi_req = (options, done) ->
-  req = request options, (res) ->
+exports.request = (options, done) ->
+  req = _request options, (res) ->
     body = ''
     res.on 'data', (chunk) ->
       c = chunk.toString()
