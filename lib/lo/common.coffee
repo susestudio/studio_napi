@@ -46,12 +46,12 @@ exports.api = (methods) -> (rpc, xml) ->
 url = require 'url'
 
 exports.rpc = (urlprefix) -> (httpc, options) ->
+  if not options?
+    [httpc, options] = [(require './http').request, httpc]
+  parsed = url.parse options.options.url
   (httpmethod, apimethod, args..., done) ->
-    if not options?
-      [httpc, options] = [(require './http').request, httpc]
     if args.length
       apimethod = apimethod.replace /:(\w+)/g, (_, param) -> args[0][param]
-    parsed = url.parse options.options.url
     reqopts =
       method: httpmethod
       path: "#{urlprefix}#{apimethod}"
