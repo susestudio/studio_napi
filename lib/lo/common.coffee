@@ -48,7 +48,8 @@ url = require 'url'
 exports.rpc = (urlprefix) -> (httpc, options) ->
   if not options?
     [httpc, options] = [(require './http').request, httpc]
-  parsed = url.parse options.options.url
+  options = options.options
+  parsed = url.parse options.url
   (httpmethod, apimethod, args..., done) ->
     if args.length
       apimethod = apimethod.replace /:(\w+)/g, (_, param) -> args[0][param]
@@ -57,6 +58,6 @@ exports.rpc = (urlprefix) -> (httpc, options) ->
       path: "#{urlprefix}#{apimethod}"
       port: parsed.port
       hostname: parsed.hostname
-      auth: "#{options.options.user}:#{options.options.key}"
+      auth: "#{options.user}:#{options.key}"
     httpc reqopts, done
 
