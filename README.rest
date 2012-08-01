@@ -35,7 +35,7 @@ Overview
 studio_napi_ is a client library for the `SUSE Studio`_ HTTP API
 targetting `Node.js`_.  Two interfaces are exposed, a low-level
 and a high-level one.  Both interfaces implement both the admin
-and user sides of the API (user is v2).
+and user sides of the API (v2 at the moment).
 
 Status
 ======
