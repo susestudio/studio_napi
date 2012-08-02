@@ -23,9 +23,18 @@ deattr = (xo) ->
 exports.asis = asis
 exports.as_array = as_array
 
+transform = (transforms) -> (sig, result) ->
+  t = transforms[sig]
+  result[t.root] = t.output result[t.root]
+  deattr result
+
+exports.transform = transform
+
 exports.api = (methods) -> (rpc, xml) ->
 
   xml ?= (require './xml')
+
+  xml2pojo = transform methods
 
   (httpmethod, apimethod, args..., done) ->
     unless apimethod? and done?
@@ -39,9 +48,7 @@ exports.api = (methods) -> (rpc, xml) ->
       return done err if err
       xml.parse data, (err, result) ->
         return done err if err
-        root = methods[sig].root or apimethod
-        result[root] = methods[sig].output result[root]
-        done undefined, deattr result
+        done undefined, xml2pojo sig, result
 
 url = require 'url'
 

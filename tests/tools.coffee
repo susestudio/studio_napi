@@ -23,6 +23,13 @@ global.async = (done, test) -> (args...) ->
   test args...
   done()
 
+parse = (file, done) ->
+  fs.readFile file, (e, r) ->
+    return done e if e
+    xml.parse r, done
+
+exports.parse = parse
+
 filerpc = (dir, api2file) -> (httpmethod, apimethod, args..., done) ->
   file = api2file["#{httpmethod} #{apimethod}"] or apimethod[1..]
   fs.readFile "tests/#{dir}/#{file}.xml", done

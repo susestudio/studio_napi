@@ -3,7 +3,7 @@ common = require './common'
 asis = common.asis
 as_array = common.as_array
 
-methods =
+transforms =
   'GET /account':
     root: 'account'
     output: (xo) ->
@@ -147,5 +147,6 @@ methods =
       as_array xo.testdrive
 
 
-exports.api = common.api methods
+exports.api = common.api transforms
+exports.transform = common.transform transforms
 

@@ -12,7 +12,7 @@ runners = (parsed, kind) ->
     parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]
   parsed
 
-methods =
+transforms =
   'GET /about':
     root: 'about'
     output: asis
@@ -55,5 +55,6 @@ methods =
         parsed.disks = (disk for disk in parsed.disks['#'])
       since parsed
 
-exports.api = common.api methods
+exports.api = common.api transforms
+exports.transform = common.transform transforms
 

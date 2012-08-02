@@ -23,7 +23,7 @@
   , "tests/050-xml.t.coffee"
   , "tests/100-rpc.t.coffee"
   , "tests/150-api.t.coffee"
-  , "tests/200-admin-file.t.coffee"
+  , "tests/200-xml2pojo-admin.t.coffee"
   , "tests/300-admin-http.t.coffee"
   , "tests/500-user/account.t.coffee"
   , "tests/500-user/api_version.t.coffee"

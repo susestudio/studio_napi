@@ -1,31 +1,37 @@
-expect = (require 'chai').expect
-tools = require './admin'
+tools = require './tools'
+fs = require 'fs'
+xml = require '../lib/lo/xml'
+admin = require '../lib/lo/admin'
 
-anapi = tools.fileapi
+transform = admin.transform
+parse = tools.parse
 
-describe 'Admin API (file RPC)', ->
+describe 'XML -> POJO xforms, admin:', ->
 
-  describe '/about', ->
+  describe 'GET /about', ->
     it 'gives hostname, RoR env, git commitish', (done) ->
-      anapi GET '/about', async done, (err, r) ->
+      parse "tests/admin/about.xml", async done, (err, r) ->
         no_error err
+        r = transform 'GET /about', r
         contains r, about:
           server_name: 'kerogen.suse.de:3000'
           environment: 'development'
           git_revision: '074b2a42d48c7b8256c1b9328a7b29a944aeb8c7'
 
-  describe '/active_users', ->
+  describe 'GET /active_users', ->
     it 'gives build/testdrive data', (done) ->
-      anapi GET '/active_users', async done, (err, r) ->
+      parse 'tests/admin/active_users.xml', async done, (err, r) ->
         no_error err
+        r = transform 'GET /active_users', r
         contains r, active_users:
           since: '86400'
           users: []
 
-  describe '/job_history', ->
+  describe 'GET /job_history', ->
     it 'gives build/testdrive stats', (done) ->
-      anapi GET '/job_history', async done, (err, r) ->
+      parse 'tests/admin/job_history.xml', async done, (err, r) ->
         no_error err
+        r = transform 'GET /job_history', r
         contains r, job_history:
           since: '86400'
           builds:
@@ -34,18 +40,20 @@ describe 'Admin API (file RPC)', ->
             successrate: '0'
           testdrives: '0'
 
-  describe '/running_jobs', ->
+  describe 'GET /running_jobs', ->
     it 'gives build/testdrive data', (done) ->
-      anapi GET '/running_jobs', async done, (err, r) ->
+      parse 'tests/admin/running_jobs.xml', async done, (err, r) ->
         no_error err
+        r = transform 'GET /running_jobs', r
         contains r, running_jobs:
           builds: []
           testdrives: []
 
-  describe '/summary', ->
+  describe 'GET /summary', ->
     it 'gives uptime, build/testdrive/user/bug stats, df, etc', (done) ->
-      anapi GET '/summary', async done, (err, r) ->
+      parse 'tests/admin/summary.xml', async done, (err, r) ->
         no_error err
+        r = transform 'GET /summary', r
         contains r, summary:
           since: '86400'
           last_bug_status_refresh_time: {}
@@ -69,10 +77,11 @@ describe 'Admin API (file RPC)', ->
           ]
           bugs: []
 
-  describe '/health_check', ->
+  describe 'GET /health_check', ->
     it 'gives information about the state of the system', (done) ->
-      anapi GET '/health_check', {runner_threshold: 75}, async done, (err, r) ->
+      parse 'tests/admin/health_check.xml', async done, (err, r) ->
         no_error err
+        r = transform 'GET /health_check', r
         contains r, health_check:
           state: 'error'
           mysql: 'ok'
