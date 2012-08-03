@@ -61,7 +61,7 @@ using POJOs in place of XML and streams for binary data.
 an object specifying the Studio server to connect to, the desired
 API side (admin or user), and credentials (see your Studio profile).
 
-Synopsis ::
+**Synopsis** ::
 
   napilo = require 'studio_napi/lib/lo'
 
@@ -70,8 +70,8 @@ Synopsis ::
     user: <username>
     key: <API key>
 
-Examples
-~~~~~~~~
+`napilo.session` Examples
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Admin API: ::
 
@@ -96,9 +96,10 @@ User API: ::
 ++++++++++++++++++++++++++++++
 
 To support a slightly more DSLish code, `studio_napi` publishes global
-functions corresponding to used HTTP methods; see examples.
+functions corresponding to used HTTP methods; see `unapi, anapi
+Examples`_.
 
-Synopsis ::
+**Synopsis** ::
 
   DELETE = (apimethod[, params], done) ->
   GET    = (apimethod[, params], done) ->
@@ -112,7 +113,7 @@ Synopsis ::
 The value returned from `napilo.session` is a function which takes
 3 or 4 arguments:
 
-Synopsis ::
+**Synopsis** ::
 
   anapi = (httpmethod, apimethod[, params], done) ->
   unapi = (httpmethod, apimethod[, params], done) ->
@@ -130,8 +131,8 @@ done: `(error, response) -> ...`
   If `error` is falsy, `reponse` contains a POJO derived from the XML
   response received from Studio server.
 
-Examples
-~~~~~~~~
+`unapi`, `anapi` Examples
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All examples assume the following code: ::
 
@@ -198,7 +199,7 @@ High-level Interface
 an object specifying the Studio server to connect to, the desired
 API side (admin or user), and credentials (see your Studio profile)..
 
-Synopsis ::
+**Synopsis** ::
 
   napihi = require 'studio_napi/lib/hi'
 
@@ -207,8 +208,8 @@ Synopsis ::
     user: <username>
     key: <API key>
 
-Examples
-~~~~~~~~
+`napihi.session` Examples
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Admin API: ::
 
@@ -234,7 +235,10 @@ User API: ::
 The admin side is a simple object with methods corresponding 1:1
 to the low-level admin endpoints:
 
-Example: ::
+`admin` Examples
+~~~~~~~~~~~~~~~~
+
+::
 
   napihi = require 'studio_napi/lib/hi'
 
@@ -261,9 +265,12 @@ Example: ::
 `user`
 ++++++
 
+`user` Examples
+~~~~~~~~~~~~~~~~
+
 The user side is an internal DSL.
 
-Example: ::
+::
 
   user = studio.session user:
     url: 'http://susestudio.com/api/v2/user'
