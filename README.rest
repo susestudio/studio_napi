@@ -58,14 +58,18 @@ API side (admin or user), and credentials.
 
 ::
 
-  anapi = (require 'studio_napi/lib/lo').session admin:
+  napilo = require 'studio_napi/lib/lo'
+
+  anapi = napilo.session admin:
     url: 'http://susestudio.com/api/v2/admin'
     user: 'rneuhauser'
     key: '69sNafUbAR'
 
 ::
 
-  unapi = (require 'studio_napi/lib/lo').session user:
+  napilo = require 'studio_napi/lib/lo'
+
+  unapi = napilo.session user:
     url: 'http://susestudio.com/api/v2/user'
     user: 'rneuhauser'
     key: '69sNafUbAR'
@@ -74,22 +78,46 @@ The value returned is a function which takes 3 or 4 arguments:
 
 ::
 
-  httpmethod, apimethod, [params,] ondone
+  httpmethod, apimethod, [params,] done
 
-* HTTP method (one of `DELETE`, `GET`, `POST`, `PUT`)
-* shortened API method path (without the leading `/api/v2`)
-* optionally, an object of API parameters
-* callback function accepting two parameters: `error` and `response`
-  where, provided `error` is falsy, `reponse` contains a POJO derived
-  from the XML response
+HTTP method
+  one of `DELETE`, `GET`, `POST`, `PUT`.
+apimethod
+  shortened API method path (without the leading `/api/v2`)
+  substrings matching Perl-compatible regular expression /:(\w+)\b/
+  are replaced by params[$1].
+params
+  optionally, an object of API parameters.  params not used in
+  `apimethod` substitutions comprise the query string.
+done: `(error, response) -> ...`
+  if `error` is falsy, `reponse` contains a POJO derived from the XML
+  response received from Studio server.
 
 To support a slightly more DSLish code, `studio_napi` publishes global
 functions corresponding to used HTTP methods; see example.
 
-Example: ::
+Examples
+++++++++
+
+All examples assume the following code: ::
 
   assert = require 'assert'
   expect = (require 'chai').expect
+  napilo = require 'studio_napi/lib/lo'
+
+  anapi = napilo.session admin:
+    url: 'http://susestudio.com/api/v2/admin'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+  unapi = napilo.session user:
+    url: 'http://susestudio.com/api/v2/user'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+A simple GET request: ::
+
+  # GET /api/v2/admin/about
 
   anapi GET '/about', (e, r) ->
 
@@ -97,6 +125,21 @@ Example: ::
 
     for p in 'server_name environment git_revision'.split ' '
       (expect r).to.have.property p
+
+URL path substitutions: ::
+
+  # GET /api/v2/user/appliances/42
+
+  unapi GET '/appliances/:app', {app: 42}, (e, r) ->
+
+    assert.ifError e, "/appliances/:app failed: #{e}"
+
+    (expect r).to.have.property 'appliance'
+
+Parameters which are not substituted into `apimethod` form the query
+string: ::
+
+  # GET /api/v2/admin/health_check?runner_threshold=75
 
   anapi GET '/health_check', runner_threshold: 75, (e, r) ->
 
@@ -106,12 +149,35 @@ Example: ::
       (expect r).to.have.property p
 
 
+.. note:: FIXME
+
+  POST form uploads, file uploads, request bodies are neither
+  described nor implemented ATM.
+
 High-level Interface
 ====================
 
 `studio_napi/lib/hi` exposes a `session` function which takes
 an object specifying the Studio server to connect to, the desired
 API side (admin or user), and credentials.
+
+::
+
+  napihi = require 'studio_napi/lib/hi'
+
+  admin = napihi.session admin:
+    url: 'http://susestudio.com/api/v2/admin'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+::
+
+  napihi = require 'studio_napi/lib/hi'
+
+  user = napihi.session user:
+    url: 'http://susestudio.com/api/v2/user'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
 
 Admin
 +++++
@@ -121,7 +187,9 @@ to the low-level admin endpoints:
 
 Example: ::
 
-  admin = (require 'studio_napi/lib/hi').session admin:
+  napihi = require 'studio_napi/lib/hi'
+
+  admin = napihi.session admin:
     url: 'http://susestudio.com/api/v2/admin'
     user: 'rneuhauser'
     key: '69sNafUbAR'
