@@ -91,6 +91,21 @@ User API: ::
     user: 'rneuhauser'
     key: '69sNafUbAR'
 
+
+`DELETE`, `GET`, `POST`, `PUT`
+++++++++++++++++++++++++++++++
+
+To support a slightly more DSLish code, `studio_napi` publishes global
+functions corresponding to used HTTP methods; see examples.
+
+Synopsis ::
+
+  DELETE = (apimethod[, params], done) ->
+  GET    = (apimethod[, params], done) ->
+  POST   = (apimethod[, params], done) ->
+  PUT    = (apimethod[, params], done) ->
+
+
 `unapi`, `anapi`
 ++++++++++++++++
 
@@ -114,19 +129,6 @@ params
 done: `(error, response) -> ...`
   If `error` is falsy, `reponse` contains a POJO derived from the XML
   response received from Studio server.
-
-`DELETE`, `GET`, `POST`, `PUT`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To support a slightly more DSLish code, `studio_napi` publishes global
-functions corresponding to used HTTP methods; see examples.
-
-Synopsis ::
-
-  DELETE = (apimethod[, params], done) ->
-  GET    = (apimethod[, params], done) ->
-  POST   = (apimethod[, params], done) ->
-  PUT    = (apimethod[, params], done) ->
 
 Examples
 ~~~~~~~~
