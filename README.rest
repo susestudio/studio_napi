@@ -21,6 +21,8 @@
    Suspicious backslashes in the text ("`std::string`\s") are required
    for reST to recognize the preceding character as syntax.
 
+.. contents::
+
 .. important links:
 
 .. _studio_napi: https://github.com/roman-neuhauser/studio_napi
@@ -52,11 +54,26 @@ Low-level Interface
 This is a fairly straightforward async functional interface
 using POJOs in place of XML and streams for binary data.
 
+`napilo.session`
+++++++++++++++++
+
 `studio_napi/lib/lo` exposes a `session` function which takes
 an object specifying the Studio server to connect to, the desired
-API side (admin or user), and credentials.
+API side (admin or user), and credentials (see your Studio profile).
 
-::
+Synopsis ::
+
+  napilo = require 'studio_napi/lib/lo'
+
+  napilo.session (admin|user):
+    url: <url>
+    user: <username>
+    key: <API key>
+
+Examples
+~~~~~~~~
+
+Admin API: ::
 
   napilo = require 'studio_napi/lib/lo'
 
@@ -65,7 +82,7 @@ API side (admin or user), and credentials.
     user: 'rneuhauser'
     key: '69sNafUbAR'
 
-::
+User API: ::
 
   napilo = require 'studio_napi/lib/lo'
 
@@ -74,30 +91,45 @@ API side (admin or user), and credentials.
     user: 'rneuhauser'
     key: '69sNafUbAR'
 
-The value returned is a function which takes 3 or 4 arguments:
+`unapi`, `anapi`
+++++++++++++++++
 
-::
+The value returned from `napilo.session` is a function which takes
+3 or 4 arguments:
 
-  httpmethod, apimethod, [params,] done
+Synopsis ::
+
+  anapi = (httpmethod, apimethod[, params], done) ->
+  unapi = (httpmethod, apimethod[, params], done) ->
 
 HTTP method
-  one of `DELETE`, `GET`, `POST`, `PUT`.
+  One of `DELETE`, `GET`, `POST`, `PUT`.
 apimethod
-  shortened API method path (without the leading `/api/v2`)
+  Shortened API method path (without the leading `/api/v2`)
   substrings matching Perl-compatible regular expression /:(\w+)\b/
   are replaced by params[$1].
 params
-  optionally, an object of API parameters.  params not used in
+  Optionally, an object of API parameters.  Params not used in
   `apimethod` substitutions comprise the query string.
 done: `(error, response) -> ...`
-  if `error` is falsy, `reponse` contains a POJO derived from the XML
+  If `error` is falsy, `reponse` contains a POJO derived from the XML
   response received from Studio server.
 
+`DELETE`, `GET`, `POST`, `PUT`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 To support a slightly more DSLish code, `studio_napi` publishes global
-functions corresponding to used HTTP methods; see example.
+functions corresponding to used HTTP methods; see examples.
+
+Synopsis ::
+
+  DELETE = (apimethod[, params], done) ->
+  GET    = (apimethod[, params], done) ->
+  POST   = (apimethod[, params], done) ->
+  PUT    = (apimethod[, params], done) ->
 
 Examples
-++++++++
+~~~~~~~~
 
 All examples assume the following code: ::
 
@@ -157,11 +189,26 @@ string: ::
 High-level Interface
 ====================
 
+`napihi.session`
+++++++++++++++++
+
 `studio_napi/lib/hi` exposes a `session` function which takes
 an object specifying the Studio server to connect to, the desired
-API side (admin or user), and credentials.
+API side (admin or user), and credentials (see your Studio profile)..
 
-::
+Synopsis ::
+
+  napihi = require 'studio_napi/lib/hi'
+
+  napihi.session (admin|user):
+    url: <url>
+    user: <username>
+    key: <API key>
+
+Examples
+~~~~~~~~
+
+Admin API: ::
 
   napihi = require 'studio_napi/lib/hi'
 
@@ -170,7 +217,7 @@ API side (admin or user), and credentials.
     user: 'rneuhauser'
     key: '69sNafUbAR'
 
-::
+User API: ::
 
   napihi = require 'studio_napi/lib/hi'
 
@@ -179,8 +226,8 @@ API side (admin or user), and credentials.
     user: 'rneuhauser'
     key: '69sNafUbAR'
 
-Admin
-+++++
+`admin`
++++++++
 
 The admin side is a simple object with methods corresponding 1:1
 to the low-level admin endpoints:
@@ -209,8 +256,8 @@ Example: ::
       (expect r).to.have.property p
 
 
-User
-++++
+`user`
+++++++
 
 The user side is an internal DSL.
 
