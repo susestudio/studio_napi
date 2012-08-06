@@ -224,6 +224,14 @@ Common parts of the vocabulary: ::
   EmailAddress  =o  /^.+@.+$/
   String        =o  /.*/
   URL           =o  /^https?:\/\/.+$/
+  Version       =o  /^\d+\.\d+\.\d+$/
+  MBytes        =o  Nonnegative Integer
+  LocalPath     =o  /^(?:\/[^/]+)+/
+  TrueFalse     =o  OneOf 'true', 'false'
+  Username      =o  /^[-\w]+$/
+  Groupname     =o  /^[-\w]+$/
+  Basename      =o  /^[^/]+$/
+
 
 `anapi GET /about`
 ~~~~~~~~~~~~~~~~~~
@@ -259,7 +267,7 @@ Result ::
     load: Decimal
 
   Disk =o \
-    path: Localpath
+    path: LocalPath
     used: Percent
     available: Bytes
 
@@ -302,12 +310,12 @@ Result ::
 Result ::
 
   Disk =o \
-    filesystem: Localpath
+    filesystem: LocalPath
     total: Bytes
     used: Bytes
     used_percentage: Percent
     available: Bytes
-    mount_point: Localpath
+    mount_point: LocalPath
 
   summary:
     since: Seconds
@@ -331,7 +339,7 @@ Result ::
   DiskSize      =o  /^\d+(?:\.\d+)[KMGTPYZ]B$/
 
   Account =o account:
-    username: String
+    username: Username
     displayname: String
     email: EmailAddress
     created_at: Timestamp
@@ -358,9 +366,6 @@ Result ::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Result ::
-
-  Version       =o  /^\d+\.\d+\.\d+$/
-  MBytes        =o  Nonnegative Integer
 
   Build =o \
     id: Id
@@ -393,10 +398,10 @@ Result ::
     command: String
     description: String
     enabled: TrueFalse
-    user: String
+    user: Username
 
   DbUser =o \
-    username: String
+    username: Username
     password: String
     database_list: ListOf String, /,\s*/
 
@@ -406,18 +411,18 @@ Result ::
 
   LVMVolume =o \
     size: MBytes
-    path: Localpath
+    path: LocalPath
 
   Script =o \
     enabled: TrueFalse
     script: Text
 
   User =o \
-    name: String
+    name: Username
     password: String
-    group: String
-    shell: Localpath
-    homedir: Localpath
+    group: Groupname
+    shell: LocalPath
+    homedir: LocalPath
 
   configuration:
     id: Id
@@ -431,7 +436,7 @@ Result ::
       timezone:
         location: Timezone
     network:
-      type: OneOf 'manual', ...
+      type: OneOf 'dhcp', 'manual'
       hostname: Hostname
       ip: IP
       netmask: IP
@@ -439,7 +444,7 @@ Result ::
       nameservers: ListOf IP, /,\s*/
     firewall:
       enabled: TrueFalse
-      open_ports: ArrayOf String
+      open_ports: ArrayOf 'ssh', 'http'
     users: ArrayOf User
     eulas: ArrayOf Text
     databases: ArrayOf Database
@@ -454,7 +459,7 @@ Result ::
       webyast_enabled: TrueFalse
       public_clonable: TrueFalse
       runlevel: OneOf [1..5]
-      automatic_login: String
+      automatic_login: Username
     lvm:
       enabled: TrueFalse
       volume_group: String
@@ -530,7 +535,7 @@ Result ::
     version: Version
     state: OneOf 'finished', ...
     expired: TrueFalse
-    image_type: OneOf 'oem', ...
+    image_type: OneOf 'azure dasd ec2 iso net oem oemiso ovf vhd vmx xen zfcp'.split ' '
     checksum:
       md5: Hex32
       sha1: Hex40
@@ -554,7 +559,7 @@ Result ::
   File =o \
     id: Id
     filename: Basename
-    path: Dirname
+    path: LocalPath
     owner: Username
     group: Groupname
     permissions: /^[0-7]{3}$/
