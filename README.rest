@@ -189,6 +189,487 @@ string: ::
   POST form uploads, file uploads, request bodies are neither
   described nor implemented ATM.
 
+
+`unapi`, `anapi` Endpoints
+++++++++++++++++++++++++++
+
+An endpoint is a combination of:
+  - HTTP method
+  - URL template
+  - parameters
+
+Inputs and outputs are described using a would-be object structure
+description language.
+
+Common parts of the vocabulary: ::
+
+  Decimal       =o  /^\d+\.\d+/
+  Percent       =o  /^\d+%/
+  Id            =o  Nonnegative Integer
+  Count         =o  Nonnegative Integer
+  Seconds       =o  Nonnegative Integer
+  IP            =o  (v) ->
+    r = v.match /^(\d{1,3})\.(\d{1,3})\.(\d{1,3}).(\d{1,3})$/
+    Fail unless r and r[4]
+    for b in r[1..]
+      Fail if b < 1 or b > 254
+  Hostname      =o  /^[a-z]+[-a-z]*[a-z](:?\.[a-z]+[-a-z]*[a-z])*$/
+  Host          =o  OneOf IP, Hostname
+  Port          =o  OneOf Interval 1, 65536 + 1
+  HostPort      =o  "#{Host}:#{Port}"
+  Envname       =o  OneOf 'development', 'production', 'testing'
+  Hex32         =o  /^[a-f0-9]{32}$/i
+  Hex40         =o  /^[a-f0-9]{40}$/i
+  Timestamp     =o  /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/
+  EmailAddress  =o  /^.+@.+$/
+  String        =o  /.*/
+  URL           =o  /^https?:\/\/.+$/
+
+`anapi GET /about`
+~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  about:
+    server_name: HostPort
+    environment: Envname
+    git_revision: Hex40
+
+`anapi GET /active_users`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  active_users:
+    since: Seconds
+    users: ArrayOf Id
+
+`anapi GET /health_check`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  Runner =o \
+    id: Id
+    address: HostPort
+    status: OneOf 'auto_disabled', 'disabled', 'pinged', 'registered', 'unreachable'
+    last_pinged: Timestamp
+    slots: Count
+    used_slots: Count
+    load: Decimal
+
+  Disk =o \
+    path: Localpath
+    used: Percent
+    available: Bytes
+
+  ServiceState =o OneOf 'ok', 'error'
+
+  health_check:
+    state: ServiceState
+    mysql: ServiceState
+    thoth: ServiceState
+    rmds: ServiceState
+    kiwi_runners: ArrayOf Runner
+    testdrive_runners: ArrayOf Runner
+    disks: ArrayOf Disk
+
+`anapi GET /job_history`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  job_history:
+    since: Seconds
+    builds:
+      succeeded: Count
+      failed: Count
+      successrate: Count
+    testdrives: Count
+
+`anapi GET /running_jobs`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  running_jobs:
+    builds: ArrayOf Id
+    testdrives: ArrayOf Id
+
+`anapi GET /summary`
+~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  Disk =o \
+    filesystem: Localpath
+    total: Bytes
+    used: Bytes
+    used_percentage: Percent
+    available: Bytes
+    mount_point: Localpath
+
+  summary:
+    since: Seconds
+    last_bug_status_refresh_time: OneOf undefined, Timestamp
+    unassigned_failures_count: Count
+    builds:
+      succeeded: Count
+      failed: Count
+      errored: Count
+      successrate: Count
+    testdrives: Count
+    active_users: ArrayOf Id
+    disks: ArrayOf Disk
+    bugs: ArrayOf Id
+
+`unapi GET /account`
+~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  DiskSize      =o  /^\d+(?:\.\d+)[KMGTPYZ]B$/
+
+  Account =o account:
+    username: String
+    displayname: String
+    email: EmailAddress
+    created_at: Timestamp
+    openid_urls: ArrayOf URL
+    disk_quota:
+      available: DiskSize
+      used: Percent
+
+`unapi GET /api_version`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  version: /^\d+(?:\.\d+)+$/
+
+`unapi GET /appliances`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  appliances: ArrayOf Appliance
+
+`unapi GET /appliances/:app`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  Version       =o  /^\d+\.\d+\.\d+$/
+  MBytes        =o  Nonnegative Integer
+
+  Build =o \
+    id: Id
+    version: Version
+    image_type: String
+    image_size: MBytes
+    compressed_image_size: MBytes
+    download_url: URL
+
+  Appliance =o \
+    id: Id
+    name: String
+    last_edited: Timestamp
+    edit_url: URL
+    icon_url: URL
+    basesystem: String
+    parent:
+      id: Id
+      name: String
+    builds: ArrayOf Build
+
+  apliance: Appliance
+
+`unapi GET /appliances/:app/configuration`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  Autostart =o \
+    command: String
+    description: String
+    enabled: TrueFalse
+    user: String
+
+  DbUser =o \
+    username: String
+    password: String
+    database_list: ListOf String, /,\s*/
+
+  Database =o \
+    type: OneOf 'mysql', 'pgsql'
+    users: ArrayOf DbUser
+
+  LVMVolume =o \
+    size: MBytes
+    path: Localpath
+
+  Script =o \
+    enabled: TrueFalse
+    script: Text
+
+  User =o \
+    name: String
+    password: String
+    group: String
+    shell: Localpath
+    homedir: Localpath
+
+  configuration:
+    id: Id
+    name: String
+    description: Text
+    website: URL
+    tags: ArrayOf Tag
+    locale:
+      keyboard_layout: String
+      language: Locale
+      timezone:
+        location: Timezone
+    network:
+      type: OneOf 'manual', ...
+      hostname: Hostname
+      ip: IP
+      netmask: IP
+      route: IP
+      nameservers: ListOf IP, /,\s*/
+    firewall:
+      enabled: TrueFalse
+      open_ports: ArrayOf String
+    users: ArrayOf User
+    eulas: ArrayOf Text
+    databases: ArrayOf Database
+    autostarts: ArrayOf Autostart
+    settings:
+      memory_size: MBytes
+      disk_size: GBytes
+      swap_size: MBytes
+      pae_enabled: TrueFalse
+      xen_host_mode_enabled: TrueFalse
+      cdrom_enabled: TrueFalse
+      webyast_enabled: TrueFalse
+      public_clonable: TrueFalse
+      runlevel: OneOf [1..5]
+      automatic_login: String
+    lvm:
+      enabled: TrueFalse
+      volume_group: String
+      volumes: ArrayOf LVMVolume
+    scripts:
+      build: Script
+      boot: Script
+      autoyast: Script
+
+`unapi GET /appliances/:app/gpg_keys`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  GPGKey =o \
+    id: Id
+    name: String
+    target: String
+    key: Text
+
+  gpg_keys: ArrayOf GPGKey
+
+`unapi GET /appliances/:app/gpg_key/:key`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  gpg_key: GPGKey
+
+`unapi GET /appliances/:app/sharing`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  appliance:
+    id: Id
+    read_users: ArrayOf String
+
+
+`unapi GET /appliances/:app/software`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  software:
+    appliance_id: Id
+    patterns: ArrayOf SoftwarePattern
+    packages: ArrayOf Package
+
+`unapi GET /appliances/:app/status`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  Issue =o \
+    type: OneOf 'error', ...
+    text: String
+    solution:
+      type: OneOf 'install', ...
+      package: PackageName
+
+  status:
+    state: OneOf 'error', 'ok'
+    issues: ArrayOf Issue
+
+`unapi GET /builds`
+~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  Build =o \
+    id: Id
+    version: Version
+    state: OneOf 'finished', ...
+    expired: TrueFalse
+    image_type: OneOf 'oem', ...
+    checksum:
+      md5: Hex32
+      sha1: Hex40
+    size: MBytes
+    compressed_image_size: MBytes
+
+  builds: ArrayOf Build
+
+`unapi GET /builds/:bld`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  build: Build
+
+`unapi GET /files`
+~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  File =o \
+    id: Id
+    filename: Basename
+    path: Dirname
+    owner: Username
+    group: Groupname
+    permissions: /^[0-7]{3}$/
+    enabled: TrueFalse
+    download_url: URL
+
+  file: ArrayOf File
+
+`unapi GET /files/:file`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  file: File
+
+`unapi GET /repositories`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  Repository =o \
+    id: Id
+    name: String
+    type: OneOf 'rpm-md', ...
+    base_system: String
+    base_url: URL
+    matches:
+      repository_name: String
+      repository_base_url: URL
+
+  repositories: ArrayOf Repository
+
+`unapi GET /repositories/:repo`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  repository: Repository
+
+`unapi GET /rpms`
+~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  RPM =o \
+    id: Id
+    filename: Basename
+    size: Bytes
+    archive: TrueFalse
+
+  rpms:
+    base_system: String
+    rpms: ArrayOf RPM
+
+`unapi GET /rpms/:rpm`
+~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  rpm:
+    id: Id
+    filename: Basename
+    size: Bytes
+    archive: TrueFalse
+    base_system: String
+
+`unapi GET /running_builds`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  RunningBuild =o \
+    id: Id
+    state: OneOf 'running', ...
+    percent: OneOf [0..100]
+    time_elapsed: Seconds
+    message: String
+
+  running_builds: ArrayOf RunningBuild
+
+`unapi GET /running_builds/:bld`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  running_build: RunningBuild
+
+`unapi GET /testdrives`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  TestDrive =o \
+    id: Id
+    state: OneOf 'running', ...
+    build_id: Id
+
+  testdrives: ArrayOf TestDrive
+
+`unapi POST /testdrives`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result ::
+
+  testdrive:
+    id: Id
+    state: OneOf 'new', ...
+    build_id: Id
+    url: URL
+    server:
+      vnc:
+        host: Hostname
+        port: Port
+        password: String
+
 High-level Interface
 ====================
 
