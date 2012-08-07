@@ -250,444 +250,528 @@ An endpoint is a combination of:
 `anapi GET /about`
 ~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  about:
-    server_name: HostPort
-    environment: Envname
-    git_revision: Hex40
+:Result:
+  ::
+
+    about:
+      server_name: HostPort
+      environment: Envname
+      git_revision: Hex40
 
 `anapi GET /active_users`
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  active_users:
-    since: Seconds
-    users: ArrayOf Id
+:Result:
+  ::
+
+    active_users:
+      since: Seconds
+      users: ArrayOf Id
 
 `anapi GET /health_check`
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  Runner =o \
-    id: Id
-    address: HostPort
-    status: OneOf 'auto_disabled', 'disabled', 'pinged', 'registered', 'unreachable'
-    last_pinged: Timestamp
-    slots: Count
-    used_slots: Count
-    load: Decimal
+:Result:
+  ::
 
-  Disk =o \
-    path: LocalPath
-    used: Percent
-    available: Bytes
+    Runner =o \
+      id: Id
+      address: HostPort
+      status: OneOf 'auto_disabled', 'disabled', 'pinged', 'registered', 'unreachable'
+      last_pinged: Timestamp
+      slots: Count
+      used_slots: Count
+      load: Decimal
 
-  ServiceState =o OneOf 'ok', 'error'
+    Disk =o \
+      path: LocalPath
+      used: Percent
+      available: Bytes
 
-  health_check:
-    state: ServiceState
-    mysql: ServiceState
-    thoth: ServiceState
-    rmds: ServiceState
-    kiwi_runners: ArrayOf Runner
-    testdrive_runners: ArrayOf Runner
-    disks: ArrayOf Disk
+    ServiceState =o OneOf 'ok', 'error'
+
+    health_check:
+      state: ServiceState
+      mysql: ServiceState
+      thoth: ServiceState
+      rmds: ServiceState
+      kiwi_runners: ArrayOf Runner
+      testdrive_runners: ArrayOf Runner
+      disks: ArrayOf Disk
 
 `anapi GET /job_history`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  job_history:
-    since: Seconds
-    builds:
-      succeeded: Count
-      failed: Count
-      successrate: Count
-    testdrives: Count
+:Result:
+  ::
+
+    job_history:
+      since: Seconds
+      builds:
+        succeeded: Count
+        failed: Count
+        successrate: Count
+      testdrives: Count
 
 `anapi GET /running_jobs`
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  running_jobs:
-    builds: ArrayOf Id
-    testdrives: ArrayOf Id
+:Result:
+  ::
+
+    running_jobs:
+      builds: ArrayOf Id
+      testdrives: ArrayOf Id
 
 `anapi GET /summary`
 ~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  Disk =o \
-    filesystem: LocalPath
-    total: Bytes
-    used: Bytes
-    used_percentage: Percent
-    available: Bytes
-    mount_point: LocalPath
+:Result:
+  ::
 
-  summary:
-    since: Seconds
-    last_bug_status_refresh_time: OneOf undefined, Timestamp
-    unassigned_failures_count: Count
-    builds:
-      succeeded: Count
-      failed: Count
-      errored: Count
-      successrate: Count
-    testdrives: Count
-    active_users: ArrayOf Id
-    disks: ArrayOf Disk
-    bugs: ArrayOf Id
+    Disk =o \
+      filesystem: LocalPath
+      total: Bytes
+      used: Bytes
+      used_percentage: Percent
+      available: Bytes
+      mount_point: LocalPath
+
+    summary:
+      since: Seconds
+      last_bug_status_refresh_time: OneOf undefined, Timestamp
+      unassigned_failures_count: Count
+      builds:
+        succeeded: Count
+        failed: Count
+        errored: Count
+        successrate: Count
+      testdrives: Count
+      active_users: ArrayOf Id
+      disks: ArrayOf Disk
+      bugs: ArrayOf Id
 
 `unapi GET /account`
 ~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  DiskSize      =o  /^\d+(?:\.\d+)[KMGTPYZ]B$/
+:Result:
+  ::
 
-  Account =o account:
-    username: Username
-    displayname: String
-    email: EmailAddress
-    created_at: Timestamp
-    openid_urls: ArrayOf URL
-    disk_quota:
-      available: DiskSize
-      used: Percent
+    DiskSize      =o  /^\d+(?:\.\d+)[KMGTPYZ]B$/
+
+    Account =o account:
+      username: Username
+      displayname: String
+      email: EmailAddress
+      created_at: Timestamp
+      openid_urls: ArrayOf URL
+      disk_quota:
+        available: DiskSize
+        used: Percent
 
 `unapi GET /api_version`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  version: /^\d+(?:\.\d+)+$/
+:Result:
+  ::
+
+    version: /^\d+(?:\.\d+)+$/
 
 `unapi GET /appliances`
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  appliances: ArrayOf Appliance
+:Result:
+  ::
+
+    appliances: ArrayOf Appliance
 
 `unapi GET /appliances/:app`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  Build =o \
-    id: Id
-    version: Version
-    image_type: ImageType
-    image_size: MBytes
-    compressed_image_size: MBytes
-    download_url: URL
+:Result:
+  ::
 
-  Appliance =o \
-    id: Id
-    name: String
-    last_edited: Timestamp
-    edit_url: URL
-    icon_url: URL
-    basesystem: BaseSystem
-    parent:
+    Build =o \
+      id: Id
+      version: Version
+      image_type: ImageType
+      image_size: MBytes
+      compressed_image_size: MBytes
+      download_url: URL
+
+    Appliance =o \
       id: Id
       name: String
-    builds: ArrayOf Build
+      last_edited: Timestamp
+      edit_url: URL
+      icon_url: URL
+      basesystem: BaseSystem
+      parent:
+        id: Id
+        name: String
+      builds: ArrayOf Build
 
-  apliance: Appliance
+    apliance: Appliance
 
 `unapi GET /appliances/:app/configuration`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  Autostart =o \
-    command: String
-    description: String
-    enabled: TrueFalse
-    user: Username
+:Result:
+  ::
 
-  DbUser =o \
-    username: Username
-    password: String
-    database_list: ListOf String, /,\s*/
-
-  Database =o \
-    type: OneOf 'mysql', 'pgsql'
-    users: ArrayOf DbUser
-
-  LVMVolume =o \
-    size: MBytes
-    path: LocalPath
-
-  Script =o \
-    enabled: TrueFalse
-    script: Text
-
-  User =o \
-    name: Username
-    password: String
-    group: Groupname
-    shell: LocalPath
-    homedir: LocalPath
-
-  configuration:
-    id: Id
-    name: String
-    description: Text
-    website: URL
-    tags: ArrayOf Tag
-    locale:
-      keyboard_layout: String
-      language: Locale
-      timezone:
-        location: Timezone
-    network:
-      type: OneOf 'dhcp', 'manual'
-      hostname: Hostname
-      ip: IP
-      netmask: IP
-      route: IP
-      nameservers: ListOf IP, /,\s*/
-    firewall:
+    Autostart =o \
+      command: String
+      description: String
       enabled: TrueFalse
-      open_ports: ArrayOf 'ssh', 'http'
-    users: ArrayOf User
-    eulas: ArrayOf Text
-    databases: ArrayOf Database
-    autostarts: ArrayOf Autostart
-    settings:
-      memory_size: MBytes
-      disk_size: GBytes
-      swap_size: MBytes
-      pae_enabled: TrueFalse
-      xen_host_mode_enabled: TrueFalse
-      cdrom_enabled: TrueFalse
-      webyast_enabled: TrueFalse
-      public_clonable: TrueFalse
-      runlevel: RunLevel
-      automatic_login: Username
-    lvm:
+      user: Username
+
+    DbUser =o \
+      username: Username
+      password: String
+      database_list: ListOf String, /,\s*/
+
+    Database =o \
+      type: OneOf 'mysql', 'pgsql'
+      users: ArrayOf DbUser
+
+    LVMVolume =o \
+      size: MBytes
+      path: LocalPath
+
+    Script =o \
       enabled: TrueFalse
-      volume_group: LVMGroupName
-      volumes: ArrayOf LVMVolume
-    scripts:
-      build: Script
-      boot: Script
-      autoyast: Script
+      script: Text
+
+    User =o \
+      name: Username
+      password: String
+      group: Groupname
+      shell: LocalPath
+      homedir: LocalPath
+
+    configuration:
+      id: Id
+      name: String
+      description: Text
+      website: URL
+      tags: ArrayOf Tag
+      locale:
+        keyboard_layout: String
+        language: Locale
+        timezone:
+          location: Timezone
+      network:
+        type: OneOf 'dhcp', 'manual'
+        hostname: Hostname
+        ip: IP
+        netmask: IP
+        route: IP
+        nameservers: ListOf IP, /,\s*/
+      firewall:
+        enabled: TrueFalse
+        open_ports: ArrayOf 'ssh', 'http'
+      users: ArrayOf User
+      eulas: ArrayOf Text
+      databases: ArrayOf Database
+      autostarts: ArrayOf Autostart
+      settings:
+        memory_size: MBytes
+        disk_size: GBytes
+        swap_size: MBytes
+        pae_enabled: TrueFalse
+        xen_host_mode_enabled: TrueFalse
+        cdrom_enabled: TrueFalse
+        webyast_enabled: TrueFalse
+        public_clonable: TrueFalse
+        runlevel: RunLevel
+        automatic_login: Username
+      lvm:
+        enabled: TrueFalse
+        volume_group: LVMGroupName
+        volumes: ArrayOf LVMVolume
+      scripts:
+        build: Script
+        boot: Script
+        autoyast: Script
 
 `unapi GET /appliances/:app/gpg_keys`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  GPGKey =o \
-    id: Id
-    name: String
-    target: String
-    key: Text
+:Result:
+  ::
 
-  gpg_keys: ArrayOf GPGKey
+    GPGKey =o \
+      id: Id
+      name: String
+      target: String
+      key: Text
+
+    gpg_keys: ArrayOf GPGKey
 
 `unapi GET /appliances/:app/gpg_key/:key`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  gpg_key: GPGKey
+:Result:
+  ::
+
+    gpg_key: GPGKey
 
 `unapi GET /appliances/:app/sharing`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  appliance:
-    id: Id
-    read_users: ArrayOf Username
+:Result:
+  ::
+
+    appliance:
+      id: Id
+      read_users: ArrayOf Username
 
 
 `unapi GET /appliances/:app/software`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  software:
-    appliance_id: Id
-    patterns: ArrayOf SoftwarePattern
-    packages: ArrayOf Package
+:Result:
+  ::
+
+    software:
+      appliance_id: Id
+      patterns: ArrayOf SoftwarePattern
+      packages: ArrayOf Package
 
 `unapi GET /appliances/:app/status`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  Issue =o \
-    type: OneOf 'error', ...
-    text: String
-    solution:
-      type: OneOf 'install', ...
-      package: PackageName
+:Result:
+  ::
 
-  status:
-    state: OneOf 'error', 'ok'
-    issues: ArrayOf Issue
+    Issue =o \
+      type: OneOf 'error', ...
+      text: String
+      solution:
+        type: OneOf 'install', ...
+        package: PackageName
+
+    status:
+      state: OneOf 'error', 'ok'
+      issues: ArrayOf Issue
 
 `unapi GET /builds`
 ~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  Build =o \
-    id: Id
-    version: Version
-    state: OneOf 'finished', ...
-    expired: TrueFalse
-    image_type: ImageType
-    checksum:
-      md5: Hex32
-      sha1: Hex40
-    size: MBytes
-    compressed_image_size: MBytes
+:Result:
+  ::
 
-  builds: ArrayOf Build
+    Build =o \
+      id: Id
+      version: Version
+      state: OneOf 'finished', ...
+      expired: TrueFalse
+      image_type: ImageType
+      checksum:
+        md5: Hex32
+        sha1: Hex40
+      size: MBytes
+      compressed_image_size: MBytes
+
+    builds: ArrayOf Build
 
 `unapi GET /builds/:bld`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  build: Build
+:Result:
+  ::
+
+    build: Build
 
 `unapi GET /files`
 ~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  File =o \
-    id: Id
-    filename: Basename
-    path: LocalPath
-    owner: Username
-    group: Groupname
-    permissions: /^[0-7]{3}$/
-    enabled: TrueFalse
-    download_url: URL
+:Result:
+  ::
 
-  file: ArrayOf File
+    File =o \
+      id: Id
+      filename: Basename
+      path: LocalPath
+      owner: Username
+      group: Groupname
+      permissions: /^[0-7]{3}$/
+      enabled: TrueFalse
+      download_url: URL
+
+    file: ArrayOf File
 
 `unapi GET /files/:file`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  file: File
+:Result:
+  ::
+
+    file: File
 
 `unapi GET /repositories`
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  Repository =o \
-    id: Id
-    name: String
-    type: OneOf 'rpm-md', ...
-    base_system: BaseSystem
-    base_url: URL
-    matches:
-      repository_name: String
-      repository_base_url: URL
+:Result:
+  ::
 
-  repositories: ArrayOf Repository
+    Repository =o \
+      id: Id
+      name: String
+      type: OneOf 'rpm-md', ...
+      base_system: BaseSystem
+      base_url: URL
+      matches:
+        repository_name: String
+        repository_base_url: URL
+
+    repositories: ArrayOf Repository
 
 `unapi GET /repositories/:repo`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  repository: Repository
+:Result:
+  ::
+
+    repository: Repository
 
 `unapi GET /rpms`
 ~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  RPM =o \
-    id: Id
-    filename: Basename
-    size: Bytes
-    archive: TrueFalse
+:Result:
+  ::
 
-  rpms:
-    base_system: BaseSystem
-    rpms: ArrayOf RPM
+    RPM =o \
+      id: Id
+      filename: Basename
+      size: Bytes
+      archive: TrueFalse
+
+    rpms:
+      base_system: BaseSystem
+      rpms: ArrayOf RPM
 
 `unapi GET /rpms/:rpm`
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  rpm:
-    id: Id
-    filename: Basename
-    size: Bytes
-    archive: TrueFalse
-    base_system: BaseSystem
+:Result:
+  ::
+
+    rpm:
+      id: Id
+      filename: Basename
+      size: Bytes
+      archive: TrueFalse
+      base_system: BaseSystem
 
 `unapi GET /running_builds`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  RunningBuild =o \
-    id: Id
-    state: OneOf 'running', ...
-    percent: OneOf [0..100]
-    time_elapsed: Seconds
-    message: String
+:Result:
+  ::
 
-  running_builds: ArrayOf RunningBuild
+    RunningBuild =o \
+      id: Id
+      state: OneOf 'running', ...
+      percent: OneOf [0..100]
+      time_elapsed: Seconds
+      message: String
+
+    running_builds: ArrayOf RunningBuild
 
 `unapi GET /running_builds/:bld`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  running_build: RunningBuild
+:Result:
+  ::
+
+    running_build: RunningBuild
 
 `unapi GET /testdrives`
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  TestDrive =o \
-    id: Id
-    state: OneOf 'running', ...
-    build_id: Id
+:Result:
+  ::
 
-  testdrives: ArrayOf TestDrive
+    TestDrive =o \
+      id: Id
+      state: OneOf 'running', ...
+      build_id: Id
+
+    testdrives: ArrayOf TestDrive
 
 `unapi POST /testdrives`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Result ::
+:Input: default.
 
-  testdrive:
-    id: Id
-    state: OneOf 'new', ...
-    build_id: Id
-    url: URL
-    server:
-      vnc:
-        host: Hostname
-        port: Port
-        password: String
+:Result:
+  ::
+
+    testdrive:
+      id: Id
+      state: OneOf 'new', ...
+      build_id: Id
+      url: URL
+      server:
+        vnc:
+          host: Hostname
+          port: Port
+          password: String
 
 High-level Interface
 ====================
@@ -768,137 +852,153 @@ to the low-level admin endpoints:
 `user.create appliance`
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  appliance:
-    named: String
-    based_on: BaseSystem
+    appliance:
+      named: String
+      based_on: BaseSystem
 
 `app.add package`
 ~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  package:
-    named: PackageName
-    from: RepositoryName
-    version: Version
+    package:
+      named: PackageName
+      from: RepositoryName
+      version: Version
 
 `app.add pattern`
 ~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  pattern:
-    named: SWPatternName
-    from: RepositoryName
+    pattern:
+      named: SWPatternName
+      from: RepositoryName
 
 `app.add user`
 ~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  user:
-    named: Username
-    id: Id
-    member_of: ArrayOf Groupname
-    identified_by:
-      password: String
+    user:
+      named: Username
+      id: Id
+      member_of: ArrayOf Groupname
+      identified_by:
+        password: String
 
 `app.configure LVM`
 ~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  LVM:
-    enabled: YesNo
-    group: LVMGroupName
-    comprising: Map LocalPath, DiskSize
+    LVM:
+      enabled: YesNo
+      group: LVMGroupName
+      comprising: Map LocalPath, DiskSize
 
 `app.configure PostgreSQL`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  PostgreSQL: ArrayOf DbUser
+    PostgreSQL: ArrayOf DbUser
 
 `app.configure network`
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  network:
-    hostname: Hostname
-    address: IP
-    netmask: IP
-    gateway: IP
-    resolvers: ListOf IP, '/,\s*/
+    network:
+      hostname: Hostname
+      address: IP
+      netmask: IP
+      gateway: IP
+      resolvers: ListOf IP, '/,\s*/
 
 
 `app.configure RAM`
 ~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  RAM: DiskSize
+    RAM: DiskSize
 
 `app.configure disk`
 ~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  disk: DiskSize
+    disk: DiskSize
 
 `app.configure swap`
 ~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  swap: DiskSize
+    swap: DiskSize
 
 `app.select locale`
 ~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  locale:
-    language: String
-    keyboard: String
+    locale:
+      language: String
+      keyboard: String
 
 `app.select runlevel`
 ~~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  runlevel: RunLevel
+    runlevel: RunLevel
 
 `app.toggle PostgreSQL`
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  PostgreSQL: OnOff
+    PostgreSQL: OnOff
 
 `app.toggle MySQL`
 ~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  MySQL: OnOff
+    MySQL: OnOff
 
 `app.toggle PAE`
 ~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  PAE: OnOff
+    PAE: OnOff
 
 `app.toggle Xen_DOM0`
 ~~~~~~~~~~~~~~~~~~~~~
 
-Input ::
+:Input:
+  ::
 
-  Xen_DOM0: OnOff
+    Xen_DOM0: OnOff
 
 
 `user` Examples
