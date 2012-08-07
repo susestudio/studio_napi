@@ -1,5 +1,4 @@
 .*.sw?
 .sw?
-NOTES.html
-README.html
+*.html
 node_modules/

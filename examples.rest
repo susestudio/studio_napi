@@ -1,0 +1,201 @@
+.. vim: ft=rst sts=2 sw=2 tw=70
+.. default-role:: literal
+
+======================================================================
+                         studio_napi Examples
+======================================================================
+----------------------------------------------------------------------
+              SUSE Studio API client library for Node.js
+----------------------------------------------------------------------
+
+:Author: Roman Neuhauser
+:Contact: rneuhauser@suse.cz
+:Copyright: This document is in the public domain.
+
+.. This file is marked up using reStructuredText.
+   Lines beginning with ".." are reST directives.
+   "foo_" or "`foo bar`_" is a link, defined at ".. _foo" or
+   ".. _foo bar".
+   "::" introduces a literal block (usually some form of code).
+   "`foo`" is some kind of identifier.
+   Suspicious backslashes in the text ("`std::string`\s") are required
+   for reST to recognize the preceding character as syntax.
+
+.. contents::
+
+.. important links:
+
+.. _studio_napi: https://github.com/roman-neuhauser/studio_napi
+.. _SUSE Studio: http://susestudio.com/
+.. _Node.js: http://nodejs.org/
+.. _NPM: http://npmjs.org/
+.. _NPM Registry: http://search.npmjs.org/
+
+
+Low-level Interface
+===================
+
+All examples assume the following code: ::
+
+  assert = require 'assert'
+  expect = (require 'chai').expect
+  napilo = require 'studio_napi/lib/lo'
+
+  anapi = napilo.session admin:
+    url: 'http://susestudio.com/api/v2/admin'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+  unapi = napilo.session user:
+    url: 'http://susestudio.com/api/v2/user'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+A simple GET request
+++++++++++++++++++++
+
+::
+
+  # GET /api/v2/admin/about
+
+  anapi GET '/about', (e, r) ->
+
+    assert.ifError e, "/about failed: #{e}"
+
+    for p in 'server_name environment git_revision'.split ' '
+      (expect r).to.have.property p
+
+URL path substitutions
+++++++++++++++++++++++
+
+::
+
+  # GET /api/v2/user/appliances/42
+
+  unapi GET '/appliances/:app', app: 42, (e, r) ->
+
+    assert.ifError e, "/appliances/:app failed: #{e}"
+
+    (expect r).to.have.property 'appliance'
+
+Query string parameters
++++++++++++++++++++++++
+
+::
+
+  # GET /api/v2/admin/health_check?runner_threshold=75
+
+  anapi GET '/health_check', runner_threshold: 75, (e, r) ->
+
+    assert.ifError e, "/health_check failed: #{e}"
+
+    for p in 'state kiwi_runners testdrive_runners disks'.split ' '
+      (expect r).to.have.property p
+
+
+High-level Interface
+====================
+
+All examples assume the following code: ::
+
+  assert = require 'assert'
+  expect = (require 'chai').expect
+  napihi = require 'studio_napi/lib/hi'
+
+  admin = napihi.session admin:
+    url: 'http://susestudio.com/api/v2/admin'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+  user = napihi.session user:
+    url: 'http://susestudio.com/api/v2/user'
+    user: 'rneuhauser'
+    key: '69sNafUbAR'
+
+A simple request
+++++++++++++++++
+
+::
+
+  admin.about (e, r) ->
+
+    assert.ifError e, "/about failed: #{e}"
+
+    for p in 'server_name environment git_revision'.split ' '
+      (expect r).to.have.property p
+
+Parameters
+++++++++++
+
+::
+
+  admin.health_check, runner_threshold: 75, (e, r) ->
+
+    assert.ifError e, "/health_check failed: #{e}"
+
+    for p in 'state kiwi_runners testdrive_runners disks'.split ' '
+      (expect r).to.have.property p
+
+
+Appliance Configuration
++++++++++++++++++++++++
+
+::
+
+  app = user.create appliance:
+    named: 'my system'
+    based_on: 'SLES11 SP2'
+
+  app.configure LVM:
+    enabled: yes
+    group: 'mighty-lvm'
+    comprising:
+      "/var": "800G"
+      "/fuvar": "12T"
+
+  app.configure PostgreSQL: [
+    { user: 'db_user', password: 'secret', databases: 'foo bar' }
+    { user: 'db_admin', password: 'top-secret' }
+  ]
+
+  app.toggle PostgreSQL: on
+  app.toggle MySQL: off
+
+  app.select runlevel: 3
+
+  app.add package:
+    named: 'djbdns'
+    from: 'My Repository'
+    version: '1.2.3'
+
+  app.add pattern:
+    named: 'development'
+    from: 'His Repository'
+
+  app.add user:
+    named: 'toor'
+    id: 1000
+    member_of: 'wheel'
+    identified_by:
+      password: 'secret'
+
+  app.select locale:
+    language: 'POSIX'
+    keyboard: 'English (US)'
+
+  app.configure network:
+    hostname: 'thisbox'
+    address: '1.2.3.4'
+    netmask: '255.255.0.0'
+    gateway: '1.2.1.1'
+    resolvers: '1.3.1.53 1.3.2.53'
+
+  app.configure RAM: '1G'
+  app.configure disk: '3T'
+  app.configure swap: '8G'
+
+  app.toggle PAE: on
+  app.toggle Xen_DOM0: off
+
+  app.commit()
+

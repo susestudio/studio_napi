@@ -12,6 +12,11 @@
 , "main": "lib/index.coffee"
 , "files": [
     "GNUmakefile"
+
+  , "README.rest"
+  , "examples.rest"
+  , "reference.rest"
+
   , "lib/hi/admin.coffee"
   , "lib/hi/index.coffee"
   , "lib/hi/user.coffee"

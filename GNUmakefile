@@ -4,7 +4,7 @@
 
 RST2HTML ?=	$(call first_in_path,rst2html.py rst2html)
 
-htmlfiles =	README.html NOTES.html
+htmlfiles =	README.html NOTES.html examples.html reference.html
 
 html: $(htmlfiles)
 

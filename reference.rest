@@ -1,0 +1,1022 @@
+.. vim: ft=rst sts=2 sw=2 tw=70
+.. default-role:: literal
+
+======================================================================
+                        studio_napi Reference
+======================================================================
+----------------------------------------------------------------------
+              SUSE Studio API client library for Node.js
+----------------------------------------------------------------------
+
+:Author: Roman Neuhauser
+:Contact: rneuhauser@suse.cz
+:Copyright: This document is in the public domain.
+
+.. This file is marked up using reStructuredText.
+   Lines beginning with ".." are reST directives.
+   "foo_" or "`foo bar`_" is a link, defined at ".. _foo" or
+   ".. _foo bar".
+   "::" introduces a literal block (usually some form of code).
+   "`foo`" is some kind of identifier.
+   Suspicious backslashes in the text ("`std::string`\s") are required
+   for reST to recognize the preceding character as syntax.
+
+.. contents::
+
+.. important links:
+
+.. _studio_napi: https://github.com/roman-neuhauser/studio_napi
+.. _SUSE Studio: http://susestudio.com/
+.. _Node.js: http://nodejs.org/
+.. _NPM: http://npmjs.org/
+.. _NPM Registry: http://search.npmjs.org/
+
+POJO Description Language
+=========================
+
+Inputs and outputs are described using a would-be object structure
+description language.
+
+Common parts of the vocabulary: ::
+
+  Decimal             =o  /^\d+\.\d+/
+  Percent             =o  /^\d+%/
+  Id                  =o  Nonnegative Integer
+  Count               =o  Nonnegative Integer
+  Seconds             =o  Nonnegative Integer
+  IP                  =o  (v) ->
+    r = v.match /^(\d{1,3})\.(\d{1,3})\.(\d{1,3}).(\d{1,3})$/
+    Fail unless r and r[4]
+    for b in r[1..]
+      Fail if b < 1 or b > 254
+  Hostname            =o  /^[a-z]+[-a-z]*[a-z](:?\.[a-z]+[-a-z]*[a-z])*$/
+  Host                =o  OneOf IP, Hostname
+  Port                =o  OneOf Interval 1, 65536 + 1
+  HostPort            =o  "#{Host}:#{Port}"
+  Envname             =o  OneOf 'development', 'production', 'testing'
+  Hex32               =o  /^[a-f0-9]{32}$/i
+  Hex40               =o  /^[a-f0-9]{40}$/i
+  Timestamp           =o  /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/
+  EmailAddress        =o  /^.+@.+$/
+  String              =o  /.*/
+  URL                 =o  /^https?:\/\/.+$/
+  Version             =o  /^\d+\.\d+\.\d+$/
+  MBytes              =o  Nonnegative Integer
+  LocalPath           =o  /^(?:\/[^/]+)+/
+  TrueFalse           =o  OneOf 'true', 'false'
+  Username            =o  /^[-\w]+$/
+  Groupname           =o  /^[-\w]+$/
+  Basename            =o  /^[^/]+$/
+  RunLevel            =o  OneOf [1..5]
+  OnOff               =o  TypeOf Boolean
+  YesNo               =o  TypeOf Boolean
+  PackageName         =o  String
+  RepositoryName      =o  String
+  SWPatternName       =o  String
+  LVMGroupName        =o  String
+  Locale              =o  String
+  BaseSystem          =o  String
+  ImageType           =o  OneOf \
+    'azure dasd ec2 iso net oem oemiso ovf vhd vmx xen zfcp'.split ' '
+
+
+Low-level Interface
+===================
+
+This is a fairly straightforward async functional interface
+using POJOs in place of XML and streams for binary data.
+
+`session`
++++++++++
+
+`studio_napi/lib/lo` exposes a `session` function which takes
+an object specifying the Studio server to connect to, the desired
+API side (admin or user), and credentials (see your Studio profile).
+
+**Synopsis** ::
+
+  napilo = require 'studio_napi/lib/lo'
+
+  napilo.session (admin|user):
+    url: <url>
+    user: <username>
+    key: <API key>
+
+
+`DELETE`, `GET`, `POST`, `PUT`
+++++++++++++++++++++++++++++++
+
+To support a slightly more DSLish code, `studio_napi` publishes global
+functions corresponding to used HTTP methods; see `examples.rest`_.
+
+.. _examples.rest: examples.html
+
+**Synopsis** ::
+
+  DELETE = (apimethod[, params], done) ->
+  GET    = (apimethod[, params], done) ->
+  POST   = (apimethod[, params], done) ->
+  PUT    = (apimethod[, params], done) ->
+
+
+`unapi`, `anapi`
+++++++++++++++++
+
+The value returned from `session` is a function which takes
+3 or 4 arguments:
+
+**Synopsis** ::
+
+  anapi = (httpmethod, apimethod[, params], done) ->
+  unapi = (httpmethod, apimethod[, params], done) ->
+
+HTTP method
+  One of `DELETE`, `GET`, `POST`, `PUT`.
+apimethod
+  Shortened API method path (without the leading `/api/v2`)
+  substrings matching Perl-compatible regular expression /:(\w+)\b/
+  are replaced by params[$1].
+params
+  Optionally, an object of API parameters.  Params not used in
+  `apimethod` substitutions comprise the query string.
+done: `(error, response) -> ...`
+  If `error` is falsy, `reponse` contains a POJO derived from the XML
+  response received from Studio server.
+
+.. note:: FIXME
+
+  POST form uploads, file uploads, request bodies are neither
+  described nor implemented ATM.
+
+
+`unapi`, `anapi` Endpoints
+++++++++++++++++++++++++++
+
+An endpoint is a combination of:
+  - HTTP method
+  - URL template
+  - parameters
+
+`anapi GET /about`
+~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    about:
+      server_name: HostPort
+      environment: Envname
+      git_revision: Hex40
+
+`anapi GET /active_users`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    active_users:
+      since: Seconds
+      users: ArrayOf Id
+
+`anapi GET /health_check`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    runner_threshold: Optional Nonnegative Integer
+
+:Result:
+  ::
+
+    Runner =o \
+      id: Id
+      address: HostPort
+      status: OneOf 'auto_disabled', 'disabled', 'pinged', 'registered', 'unreachable'
+      last_pinged: Timestamp
+      slots: Count
+      used_slots: Count
+      load: Decimal
+
+    Disk =o \
+      path: LocalPath
+      used: Percent
+      available: Bytes
+
+    ServiceState =o OneOf 'ok', 'error'
+
+    health_check:
+      state: ServiceState
+      mysql: ServiceState
+      thoth: ServiceState
+      rmds: ServiceState
+      kiwi_runners: ArrayOf Runner
+      testdrive_runners: ArrayOf Runner
+      disks: ArrayOf Disk
+
+`anapi GET /job_history`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    job_history:
+      since: Seconds
+      builds:
+        succeeded: Count
+        failed: Count
+        successrate: Count
+      testdrives: Count
+
+`anapi GET /running_jobs`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    running_jobs:
+      builds: ArrayOf Id
+      testdrives: ArrayOf Id
+
+`anapi GET /summary`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    Disk =o \
+      filesystem: LocalPath
+      total: Bytes
+      used: Bytes
+      used_percentage: Percent
+      available: Bytes
+      mount_point: LocalPath
+
+    summary:
+      since: Seconds
+      last_bug_status_refresh_time: OneOf undefined, Timestamp
+      unassigned_failures_count: Count
+      builds:
+        succeeded: Count
+        failed: Count
+        errored: Count
+        successrate: Count
+      testdrives: Count
+      active_users: ArrayOf Id
+      disks: ArrayOf Disk
+      bugs: ArrayOf Id
+
+`unapi GET /account`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    DiskSize      =o  /^\d+(?:\.\d+)[KMGTPYZ]B$/
+
+    Account =o account:
+      username: Username
+      displayname: String
+      email: EmailAddress
+      created_at: Timestamp
+      openid_urls: ArrayOf URL
+      disk_quota:
+        available: DiskSize
+        used: Percent
+
+`unapi GET /api_version`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    version: /^\d+(?:\.\d+)+$/
+
+`unapi GET /appliances`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    appliances: ArrayOf Appliance
+
+`unapi GET /appliances/:app`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    Build =o \
+      id: Id
+      version: Version
+      image_type: ImageType
+      image_size: MBytes
+      compressed_image_size: MBytes
+      download_url: URL
+
+    Appliance =o \
+      id: Id
+      name: String
+      last_edited: Timestamp
+      edit_url: URL
+      icon_url: URL
+      basesystem: BaseSystem
+      parent:
+        id: Id
+        name: String
+      builds: ArrayOf Build
+
+    apliance: Appliance
+
+`unapi GET /appliances/:app/configuration`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    Autostart =o \
+      command: String
+      description: String
+      enabled: TrueFalse
+      user: Username
+
+    DbUser =o \
+      username: Username
+      password: String
+      database_list: ListOf String, /,\s*/
+
+    Database =o \
+      type: OneOf 'mysql', 'pgsql'
+      users: ArrayOf DbUser
+
+    LVMVolume =o \
+      size: MBytes
+      path: LocalPath
+
+    Script =o \
+      enabled: TrueFalse
+      script: Text
+
+    User =o \
+      name: Username
+      password: String
+      group: Groupname
+      shell: LocalPath
+      homedir: LocalPath
+
+    configuration:
+      id: Id
+      name: String
+      description: Text
+      website: URL
+      tags: ArrayOf Tag
+      locale:
+        keyboard_layout: String
+        language: Locale
+        timezone:
+          location: Timezone
+      network:
+        type: OneOf 'dhcp', 'manual'
+        hostname: Hostname
+        ip: IP
+        netmask: IP
+        route: IP
+        nameservers: ListOf IP, /,\s*/
+      firewall:
+        enabled: TrueFalse
+        open_ports: ArrayOf 'ssh', 'http'
+      users: ArrayOf User
+      eulas: ArrayOf Text
+      databases: ArrayOf Database
+      autostarts: ArrayOf Autostart
+      settings:
+        memory_size: MBytes
+        disk_size: GBytes
+        swap_size: MBytes
+        pae_enabled: TrueFalse
+        xen_host_mode_enabled: TrueFalse
+        cdrom_enabled: TrueFalse
+        webyast_enabled: TrueFalse
+        public_clonable: TrueFalse
+        runlevel: RunLevel
+        automatic_login: Username
+      lvm:
+        enabled: TrueFalse
+        volume_group: LVMGroupName
+        volumes: ArrayOf LVMVolume
+      scripts:
+        build: Script
+        boot: Script
+        autoyast: Script
+
+`unapi GET /appliances/:app/gpg_keys`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    GPGKey =o \
+      id: Id
+      name: String
+      target: String
+      key: Text
+
+    gpg_keys: ArrayOf GPGKey
+
+`unapi GET /appliances/:app/gpg_key/:key`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+    key: Id
+
+:Result:
+  ::
+
+    gpg_key: GPGKey
+
+`unapi GET /appliances/:app/sharing`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    appliance:
+      id: Id
+      read_users: ArrayOf Username
+
+
+`unapi GET /appliances/:app/software`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    software:
+      appliance_id: Id
+      patterns: ArrayOf SoftwarePattern
+      packages: ArrayOf Package
+
+`unapi GET /appliances/:app/status`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    Issue =o \
+      type: OneOf 'error', ...
+      text: String
+      solution:
+        type: OneOf 'install', ...
+        package: PackageName
+
+    status:
+      state: OneOf 'error', 'ok'
+      issues: ArrayOf Issue
+
+`unapi GET /builds`
+~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    Build =o \
+      id: Id
+      version: Version
+      state: OneOf 'finished', ...
+      expired: TrueFalse
+      image_type: ImageType
+      checksum:
+        md5: Hex32
+        sha1: Hex40
+      size: MBytes
+      compressed_image_size: MBytes
+
+    builds: ArrayOf Build
+
+`unapi GET /builds/:bld`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    bld: Id
+
+:Result:
+  ::
+
+    build: Build
+
+`unapi GET /files`
+~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    File =o \
+      id: Id
+      filename: Basename
+      path: LocalPath
+      owner: Username
+      group: Groupname
+      permissions: /^[0-7]{3}$/
+      enabled: TrueFalse
+      download_url: URL
+
+    file: ArrayOf File
+
+`unapi GET /files/:file`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    file: Id
+
+:Result:
+  ::
+
+    file: File
+
+`unapi GET /repositories`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    Repository =o \
+      id: Id
+      name: String
+      type: OneOf 'rpm-md', ...
+      base_system: BaseSystem
+      base_url: URL
+      matches:
+        repository_name: String
+        repository_base_url: URL
+
+    repositories: ArrayOf Repository
+
+`unapi GET /repositories/:repo`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    repo: Id
+
+:Result:
+  ::
+
+    repository: Repository
+
+`unapi GET /rpms`
+~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    RPM =o \
+      id: Id
+      filename: Basename
+      size: Bytes
+      archive: TrueFalse
+
+    rpms:
+      base_system: BaseSystem
+      rpms: ArrayOf RPM
+
+`unapi GET /rpms/:rpm`
+~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    rpm: Id
+
+:Result:
+  ::
+
+    rpm:
+      id: Id
+      filename: Basename
+      size: Bytes
+      archive: TrueFalse
+      base_system: BaseSystem
+
+`unapi GET /running_builds`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    RunningBuild =o \
+      id: Id
+      state: OneOf 'running', ...
+      percent: OneOf [0..100]
+      time_elapsed: Seconds
+      message: String
+
+    running_builds: ArrayOf RunningBuild
+
+`unapi GET /running_builds/:bld`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    bld: Id
+
+:Result:
+  ::
+
+    running_build: RunningBuild
+
+`unapi GET /testdrives`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    TestDrive =o \
+      id: Id
+      state: OneOf 'running', ...
+      build_id: Id
+
+    testdrives: ArrayOf TestDrive
+
+`unapi POST /testdrives`
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    bld: Id
+
+:Result:
+  ::
+
+    testdrive:
+      id: Id
+      state: OneOf 'new', ...
+      build_id: Id
+      url: URL
+      server:
+        vnc:
+          host: Hostname
+          port: Port
+          password: String
+
+High-level Interface
+====================
+
+The high-level interface is exposed by `studio_napi/lib/hi`.
+The starting point is the `session` function which returns either
+an object suitable for accessing the user or admin side, depending
+on the input.
+
+`session`
++++++++++
+
+**Synopsis** ::
+
+  napihi = require 'studio_napi/lib/hi'
+
+  napihi.session (admin|user):
+    url: <url>
+    user: <username>
+    key: <API key>
+
+Admin session is acquired by calling `session` with `admin`
+credentials.
+
+:Input:
+  ::
+
+    admin:
+      url: URL
+      user: Username
+      key: String
+
+:Result:
+  ::
+
+    HAdmin:
+
+      about: (done) ->
+      active_users: (done) ->
+      health_check: ([params,] done) ->
+      job_history: (done) ->
+      running_jobs: (done) ->
+      summary: (done) ->
+
+User session is acquired by calling `session` with `user`
+credentials.
+
+:Input:
+  ::
+
+    user:
+      url: URL
+      user: Username
+      key: String
+
+:Result:
+  ::
+
+    HUser:
+
+      create: (appliance) ->
+
+
+`admin`
++++++++
+
+The admin side is a simple object with methods corresponding 1:1
+to the low-level admin endpoints:
+
+`admin.about`
+~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.active_users`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.health_check`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    runner_threshold: Optional Nonnegative Integer
+
+:Result: default.
+
+`admin.job_history`
+~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.running_jobs`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.summary`
+~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+
+`user`
+++++++
+
+`user.create appliance`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    appliance:
+      named: String
+      based_on: BaseSystem
+
+:Result:
+  ::
+
+    HAppliance:
+
+      add: (package) ->
+      add: (pattern) ->
+      add: (user) ->
+
+      configure: (LVM) ->
+      configure: (MySQL) ->
+      configure: (PostgreSQL) ->
+      configure: (RAM) ->
+      configure: (disk) ->
+      configure: (network) ->
+      configure: (swap) ->
+
+      select: (locale) ->
+      select: (runlevel) ->
+
+      toggle: (MySQL) ->
+      toggle: (PAE) ->
+      toggle: (PostgreSQL) ->
+      toggle: (Xen_DOM0) ->
+
+      commit: () ->
+
+`app.add package`
+~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    package:
+      named: PackageName
+      from: RepositoryName
+      version: Version
+
+`app.add pattern`
+~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    pattern:
+      named: SWPatternName
+      from: RepositoryName
+
+`app.add user`
+~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    user:
+      named: Username
+      id: Id
+      member_of: ArrayOf Groupname
+      identified_by:
+        password: String
+
+`app.configure LVM`
+~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    LVM:
+      enabled: YesNo
+      group: LVMGroupName
+      comprising: Map LocalPath, DiskSize
+
+`app.configure PostgreSQL`
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    PostgreSQL: ArrayOf DbUser
+
+`app.configure network`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    network:
+      hostname: Hostname
+      address: IP
+      netmask: IP
+      gateway: IP
+      resolvers: ListOf IP, '/,\s*/
+
+
+`app.configure RAM`
+~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    RAM: DiskSize
+
+`app.configure disk`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    disk: DiskSize
+
+`app.configure swap`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    swap: DiskSize
+
+`app.select locale`
+~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    locale:
+      language: String
+      keyboard: String
+
+`app.select runlevel`
+~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    runlevel: RunLevel
+
+`app.toggle PostgreSQL`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    PostgreSQL: OnOff
+
+`app.toggle MySQL`
+~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    MySQL: OnOff
+
+`app.toggle PAE`
+~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    PAE: OnOff
+
+`app.toggle Xen_DOM0`
+~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    Xen_DOM0: OnOff
+
+
