@@ -47,6 +47,55 @@ implemented to a large extent, the last remaining bits are being
 fleshed out; the high-level interface has been designed and we
 started the implementation.
 
+POJO Description Language
+=========================
+
+Inputs and outputs are described using a would-be object structure
+description language.
+
+Common parts of the vocabulary: ::
+
+  Decimal       =o  /^\d+\.\d+/
+  Percent       =o  /^\d+%/
+  Id            =o  Nonnegative Integer
+  Count         =o  Nonnegative Integer
+  Seconds       =o  Nonnegative Integer
+  IP            =o  (v) ->
+    r = v.match /^(\d{1,3})\.(\d{1,3})\.(\d{1,3}).(\d{1,3})$/
+    Fail unless r and r[4]
+    for b in r[1..]
+      Fail if b < 1 or b > 254
+  Hostname      =o  /^[a-z]+[-a-z]*[a-z](:?\.[a-z]+[-a-z]*[a-z])*$/
+  Host          =o  OneOf IP, Hostname
+  Port          =o  OneOf Interval 1, 65536 + 1
+  HostPort      =o  "#{Host}:#{Port}"
+  Envname       =o  OneOf 'development', 'production', 'testing'
+  Hex32         =o  /^[a-f0-9]{32}$/i
+  Hex40         =o  /^[a-f0-9]{40}$/i
+  Timestamp     =o  /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/
+  EmailAddress  =o  /^.+@.+$/
+  String        =o  /.*/
+  URL           =o  /^https?:\/\/.+$/
+  Version       =o  /^\d+\.\d+\.\d+$/
+  MBytes        =o  Nonnegative Integer
+  LocalPath     =o  /^(?:\/[^/]+)+/
+  TrueFalse     =o  OneOf 'true', 'false'
+  Username      =o  /^[-\w]+$/
+  Groupname     =o  /^[-\w]+$/
+  Basename      =o  /^[^/]+$/
+  RunLevel      =o  OneOf [1..5]
+  OnOff         =o  TypeOf Boolean
+  YesNo         =o  TypeOf Boolean
+  PackageName   =o  String
+  RepositoryName =o String
+  SWPatternName =o  String
+  LVMGroupName  =o  String
+  Locale        =o  String
+  BaseSystem    =o  String
+  ImageType     =o  OneOf \
+    'azure dasd ec2 iso net oem oemiso ovf vhd vmx xen zfcp'.split ' '
+
+
 
 Low-level Interface
 ===================
@@ -198,41 +247,6 @@ An endpoint is a combination of:
   - URL template
   - parameters
 
-Inputs and outputs are described using a would-be object structure
-description language.
-
-Common parts of the vocabulary: ::
-
-  Decimal       =o  /^\d+\.\d+/
-  Percent       =o  /^\d+%/
-  Id            =o  Nonnegative Integer
-  Count         =o  Nonnegative Integer
-  Seconds       =o  Nonnegative Integer
-  IP            =o  (v) ->
-    r = v.match /^(\d{1,3})\.(\d{1,3})\.(\d{1,3}).(\d{1,3})$/
-    Fail unless r and r[4]
-    for b in r[1..]
-      Fail if b < 1 or b > 254
-  Hostname      =o  /^[a-z]+[-a-z]*[a-z](:?\.[a-z]+[-a-z]*[a-z])*$/
-  Host          =o  OneOf IP, Hostname
-  Port          =o  OneOf Interval 1, 65536 + 1
-  HostPort      =o  "#{Host}:#{Port}"
-  Envname       =o  OneOf 'development', 'production', 'testing'
-  Hex32         =o  /^[a-f0-9]{32}$/i
-  Hex40         =o  /^[a-f0-9]{40}$/i
-  Timestamp     =o  /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/
-  EmailAddress  =o  /^.+@.+$/
-  String        =o  /.*/
-  URL           =o  /^https?:\/\/.+$/
-  Version       =o  /^\d+\.\d+\.\d+$/
-  MBytes        =o  Nonnegative Integer
-  LocalPath     =o  /^(?:\/[^/]+)+/
-  TrueFalse     =o  OneOf 'true', 'false'
-  Username      =o  /^[-\w]+$/
-  Groupname     =o  /^[-\w]+$/
-  Basename      =o  /^[^/]+$/
-
-
 `anapi GET /about`
 ~~~~~~~~~~~~~~~~~~
 
@@ -370,7 +384,7 @@ Result ::
   Build =o \
     id: Id
     version: Version
-    image_type: String
+    image_type: ImageType
     image_size: MBytes
     compressed_image_size: MBytes
     download_url: URL
@@ -381,7 +395,7 @@ Result ::
     last_edited: Timestamp
     edit_url: URL
     icon_url: URL
-    basesystem: String
+    basesystem: BaseSystem
     parent:
       id: Id
       name: String
@@ -458,11 +472,11 @@ Result ::
       cdrom_enabled: TrueFalse
       webyast_enabled: TrueFalse
       public_clonable: TrueFalse
-      runlevel: OneOf [1..5]
+      runlevel: RunLevel
       automatic_login: Username
     lvm:
       enabled: TrueFalse
-      volume_group: String
+      volume_group: LVMGroupName
       volumes: ArrayOf LVMVolume
     scripts:
       build: Script
@@ -496,7 +510,7 @@ Result ::
 
   appliance:
     id: Id
-    read_users: ArrayOf String
+    read_users: ArrayOf Username
 
 
 `unapi GET /appliances/:app/software`
@@ -535,7 +549,7 @@ Result ::
     version: Version
     state: OneOf 'finished', ...
     expired: TrueFalse
-    image_type: OneOf 'azure dasd ec2 iso net oem oemiso ovf vhd vmx xen zfcp'.split ' '
+    image_type: ImageType
     checksum:
       md5: Hex32
       sha1: Hex40
@@ -584,7 +598,7 @@ Result ::
     id: Id
     name: String
     type: OneOf 'rpm-md', ...
-    base_system: String
+    base_system: BaseSystem
     base_url: URL
     matches:
       repository_name: String
@@ -611,7 +625,7 @@ Result ::
     archive: TrueFalse
 
   rpms:
-    base_system: String
+    base_system: BaseSystem
     rpms: ArrayOf RPM
 
 `unapi GET /rpms/:rpm`
@@ -624,7 +638,7 @@ Result ::
     filename: Basename
     size: Bytes
     archive: TrueFalse
-    base_system: String
+    base_system: BaseSystem
 
 `unapi GET /running_builds`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -750,6 +764,142 @@ to the low-level admin endpoints:
 
 `user`
 ++++++
+
+`user.create appliance`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  appliance:
+    named: String
+    based_on: BaseSystem
+
+`app.add package`
+~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  package:
+    named: PackageName
+    from: RepositoryName
+    version: Version
+
+`app.add pattern`
+~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  pattern:
+    named: SWPatternName
+    from: RepositoryName
+
+`app.add user`
+~~~~~~~~~~~~~~
+
+Input ::
+
+  user:
+    named: Username
+    id: Id
+    member_of: ArrayOf Groupname
+    identified_by:
+      password: String
+
+`app.configure LVM`
+~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  LVM:
+    enabled: YesNo
+    group: LVMGroupName
+    comprising: Map LocalPath, DiskSize
+
+`app.configure PostgreSQL`
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  PostgreSQL: ArrayOf DbUser
+
+`app.configure network`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  network:
+    hostname: Hostname
+    address: IP
+    netmask: IP
+    gateway: IP
+    resolvers: ListOf IP, '/,\s*/
+
+
+`app.configure RAM`
+~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  RAM: DiskSize
+
+`app.configure disk`
+~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  disk: DiskSize
+
+`app.configure swap`
+~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  swap: DiskSize
+
+`app.select locale`
+~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  locale:
+    language: String
+    keyboard: String
+
+`app.select runlevel`
+~~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  runlevel: RunLevel
+
+`app.toggle PostgreSQL`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  PostgreSQL: OnOff
+
+`app.toggle MySQL`
+~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  MySQL: OnOff
+
+`app.toggle PAE`
+~~~~~~~~~~~~~~~~
+
+Input ::
+
+  PAE: OnOff
+
+`app.toggle Xen_DOM0`
+~~~~~~~~~~~~~~~~~~~~~
+
+Input ::
+
+  Xen_DOM0: OnOff
+
 
 `user` Examples
 ~~~~~~~~~~~~~~~~
