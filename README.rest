@@ -776,21 +776,58 @@ An endpoint is a combination of:
 High-level Interface
 ====================
 
-`napihi.session`
-++++++++++++++++
+The high-level interface is exposed by `studio_napi/lib/hi`.
+The starting point is the `session` function which returns either
+an object suitable for accessing the user or admin side, depending
+on the input.
 
-`studio_napi/lib/hi` exposes a `session` function which takes
-an object specifying the Studio server to connect to, the desired
-API side (admin or user), and credentials (see your Studio profile)..
-
-**Synopsis** ::
+::
 
   napihi = require 'studio_napi/lib/hi'
 
-  napihi.session (admin|user):
-    url: <url>
-    user: <username>
-    key: <API key>
+`napihi.session`
+++++++++++++++++
+
+Admin session is acquired by calling `session` with `admin`
+credentials.
+
+:Input:
+  ::
+
+    admin:
+      url: URL
+      user: Username
+      key: String
+
+:Result:
+  ::
+
+    HAdmin:
+
+      about: (done) ->
+      active_users: (done) ->
+      health_check: ([params,] done) ->
+      job_history: (done) ->
+      running_jobs: (done) ->
+      summary: (done) ->
+
+User session is acquired by calling `session` with `user`
+credentials.
+
+:Input:
+  ::
+
+    user:
+      url: URL
+      user: Username
+      key: String
+
+:Result:
+  ::
+
+    HUser:
+
+      create: (appliance) ->
 
 `napihi.session` Examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -818,6 +855,47 @@ User API: ::
 
 The admin side is a simple object with methods corresponding 1:1
 to the low-level admin endpoints:
+
+`admin.about`
+~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.active_users`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.health_check`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    runner_threshold: Optional Nonnegative Integer
+
+:Result: default.
+
+`admin.job_history`
+~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.running_jobs`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
+`admin.summary`
+~~~~~~~~~~~~~~~
+
+:Input: default.
+:Result: default.
+
 
 `admin` Examples
 ~~~~~~~~~~~~~~~~
@@ -858,6 +936,33 @@ to the low-level admin endpoints:
     appliance:
       named: String
       based_on: BaseSystem
+
+:Result:
+  ::
+
+    HAppliance:
+
+      add: (package) ->
+      add: (pattern) ->
+      add: (user) ->
+
+      configure: (LVM) ->
+      configure: (MySQL) ->
+      configure: (PostgreSQL) ->
+      configure: (RAM) ->
+      configure: (disk) ->
+      configure: (network) ->
+      configure: (swap) ->
+
+      select: (locale) ->
+      select: (runlevel) ->
+
+      toggle: (MySQL) ->
+      toggle: (PAE) ->
+      toggle: (PostgreSQL) ->
+      toggle: (Xen_DOM0) ->
+
+      commit: () ->
 
 `app.add package`
 ~~~~~~~~~~~~~~~~~
@@ -1003,8 +1108,6 @@ to the low-level admin endpoints:
 
 `user` Examples
 ~~~~~~~~~~~~~~~~
-
-The user side is an internal DSL.
 
 ::
 
