@@ -876,7 +876,7 @@ to the low-level admin endpoints:
       toggle: (PostgreSQL) ->
       toggle: (Xen_DOM0) ->
 
-      commit: () ->
+      commit: (done) ->
 
 `app.add package`
 ~~~~~~~~~~~~~~~~~

@@ -197,5 +197,6 @@ Appliance Configuration
   app.toggle PAE: on
   app.toggle Xen_DOM0: off
 
-  app.commit()
+  app.commit (e) ->
+    assert.ifError e, "app.commit failed: #{e}"
 
