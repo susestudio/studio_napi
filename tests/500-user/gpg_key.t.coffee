@@ -1,6 +1,4 @@
-tools = require '../user'
-
-unapi = tools.fileapi
+{parse, transform} = require './setup'
 
 key = '''
   -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -36,11 +34,12 @@ key = '''
   -----END PGP PUBLIC KEY BLOCK-----
   '''
 
-describe 'User API', ->
+describe 'XML -> POJO xforms, user: GET /appliances/:app/gpg_key/:key', ->
 
   it 'gives info for a GPG key', (done) ->
-    unapi GET '/appliances/:app/gpg_key/:key', {app: 42, key: 69}, async done, (err, r) ->
+    parse 'tests/user/gpg_key.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/gpg_key/:key', r
       contains r, gpg_key:
         id: '27'
         name: 'test1'

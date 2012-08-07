@@ -1,12 +1,11 @@
-tools = require '../user'
+{parse, transform} = require './setup'
 
-unapi = tools.fileapi
-
-describe 'User API', ->
+describe 'XML -> POJO xforms, user: GET /rpms', ->
 
   it 'gives information about all uploaded rpms for a base system', (done) ->
-    unapi GET '/rpms', {base_system: 'SLED11'}, async done, (err, r) ->
+    parse 'tests/user/rpms.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /rpms', r
       contains r, rpms:
         base_system: 'SLED11'
         rpms: [

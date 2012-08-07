@@ -1,12 +1,11 @@
-tools = require '../user'
+{parse, transform} = require './setup'
 
-unapi = tools.fileapi
-
-describe 'User API', ->
+describe 'XML -> POJO xforms, user: GET /files/:file', ->
 
   it 'gives metadata for an overlay file', (done) ->
-    unapi GET '/files/:file', async done, (err, r) ->
+    parse 'tests/user/file.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /files/:file', r
       contains r, file:
         id: '21'
         filename: 'api.txt'

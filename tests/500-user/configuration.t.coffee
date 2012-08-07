@@ -1,8 +1,6 @@
-tools = require '../user'
+{parse, transform} = require './setup'
 
-unapi = tools.fileapi
-
-describe 'User API "configuration"', ->
+describe 'XML -> POJO xforms, user: GET /appliances/:app/configuration', ->
 
   exp = configuration: # {{{
 
@@ -177,63 +175,73 @@ describe 'User API "configuration"', ->
   # }}}
 
   it 'includes locale information', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.locale')
         .deep.equal(exp.configuration.locale)
 
   it 'includes network information', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.network')
         .deep.equal(exp.configuration.network)
 
   it 'includes firewall information', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.firewall')
         .deep.equal(exp.configuration.firewall)
 
   it 'includes configured users', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.users')
         .deep.equal(exp.configuration.users)
 
   it 'includes configured EULAs', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.eulas')
         .deep.equal(exp.configuration.eulas)
 
   it 'includes database configs', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.databases')
         .deep.equal(exp.configuration.databases)
 
   it 'includes configured autostart programs', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.autostarts')
         .deep.equal(exp.configuration.autostarts)
 
   it 'includes basic image settings', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.settings')
         .deep.equal(exp.configuration.settings)
 
   it 'includes LVM config', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.lvm')
         .deep.equal(exp.configuration.lvm)
 
   describe 'custom scripts', ->
     it 'includes custom build script', (done) ->
-      unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+      parse 'tests/user/configuration.xml', async done, (err, r) ->
         no_error err
+        r = transform 'GET /appliances/:app/configuration', r
         (expect r).to.have.deep.property('configuration.scripts.build')
         (expect r).to.have.deep.property(
           'configuration.scripts.build.script'
@@ -244,8 +252,9 @@ describe 'User API "configuration"', ->
         )
 
     it 'includes custom boot script', (done) ->
-      unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+      parse 'tests/user/configuration.xml', async done, (err, r) ->
         no_error err
+        r = transform 'GET /appliances/:app/configuration', r
         (expect r).to.have.deep.property('configuration.scripts.boot')
         (expect r).to.have.deep.property(
           'configuration.scripts.boot.script'
@@ -256,13 +265,15 @@ describe 'User API "configuration"', ->
         )
 
   it 'includes custom scripts', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       (expect r).to.have.deep.property('configuration.scripts')
       (expect r.configuration.scripts).to.deep.equal(exp.configuration.scripts)
 
   it 'gives configuration of an appliance', (done) ->
-    unapi GET '/appliances/:app/configuration', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/configuration.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/configuration', r
       contains r, exp
 

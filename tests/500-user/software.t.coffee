@@ -1,12 +1,11 @@
-tools = require '../user'
+{parse, transform} = require './setup'
 
-unapi = tools.fileapi
-
-describe 'User API', ->
+describe 'XML -> POJO xforms, user: GET /appliances/:app/software', ->
 
   it 'gives all selected packages and patterns of an appliance', (done) ->
-    unapi GET '/appliances/:app/software', async done, (err, r) ->
+    parse 'tests/user/software.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/software', r
       contains r, software:
         appliance_id: '42'
         patterns: [

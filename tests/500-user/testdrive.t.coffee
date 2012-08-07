@@ -1,12 +1,11 @@
-tools = require '../user'
+{parse, transform} = require './setup'
 
-unapi = tools.fileapi
+describe 'XML -> POJO xforms, user: POST /testdrives', ->
 
-describe 'User API', ->
-
-  it 'gives info on a testdrive', (done) ->
-    unapi POST '/testdrives', {build_id: 69}, async done, (err, r) ->
+  it 'starts a new testdrive', (done) ->
+    parse 'tests/user/testdrive.xml', async done, (err, r) ->
       no_error err
+      r = transform 'POST /testdrives', r
       contains r, testdrive:
         id: '1234'
         state: 'new'

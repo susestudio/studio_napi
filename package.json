@@ -48,6 +48,7 @@
   , "tests/500-user/rpms.t.coffee"
   , "tests/500-user/running_build.t.coffee"
   , "tests/500-user/running_builds.t.coffee"
+  , "tests/500-user/setup.coffee"
   , "tests/500-user/sharing.t.coffee"
   , "tests/500-user/software.t.coffee"
   , "tests/500-user/testdrive.t.coffee"

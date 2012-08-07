@@ -1,12 +1,11 @@
-tools = require '../user'
+{parse, transform} = require './setup'
 
-unapi = tools.fileapi
-
-describe 'User API', ->
+describe 'XML -> POJO xforms, user: GET /appliances/:app/sharing', ->
 
   it 'gives users permitted to clone an appliance', (done) ->
-    unapi GET '/appliances/:app/sharing', {app: 42}, async done, (err, r) ->
+    parse 'tests/user/sharing.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /appliances/:app/sharing', r
       contains r, appliance:
         id: '22'
         read_users: [

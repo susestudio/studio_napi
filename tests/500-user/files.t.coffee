@@ -1,12 +1,11 @@
-tools = require '../user'
+{parse, transform} = require './setup'
 
-unapi = tools.fileapi
-
-describe 'User API', ->
+describe 'XML -> POJO xforms, user: GET /files', ->
 
   it 'gives metadata for all overlay files in an appliance', (done) ->
-    unapi GET '/files', {appliance_id: 42}, async done, (err, r) ->
+    parse 'tests/user/files.xml', async done, (err, r) ->
       no_error err
+      r = transform 'GET /files', r
       contains r, files: [
         {
           id: '21'
