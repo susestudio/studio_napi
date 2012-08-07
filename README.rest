@@ -275,7 +275,10 @@ An endpoint is a combination of:
 `anapi GET /health_check`
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    runner_threshold: Optional Nonnegative Integer
 
 :Result:
   ::
@@ -406,7 +409,10 @@ An endpoint is a combination of:
 `unapi GET /appliances/:app`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
 
 :Result:
   ::
@@ -436,7 +442,10 @@ An endpoint is a combination of:
 `unapi GET /appliances/:app/configuration`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
 
 :Result:
   ::
@@ -519,7 +528,10 @@ An endpoint is a combination of:
 `unapi GET /appliances/:app/gpg_keys`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
 
 :Result:
   ::
@@ -535,7 +547,11 @@ An endpoint is a combination of:
 `unapi GET /appliances/:app/gpg_key/:key`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
+    key: Id
 
 :Result:
   ::
@@ -545,7 +561,10 @@ An endpoint is a combination of:
 `unapi GET /appliances/:app/sharing`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
 
 :Result:
   ::
@@ -558,7 +577,10 @@ An endpoint is a combination of:
 `unapi GET /appliances/:app/software`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
 
 :Result:
   ::
@@ -571,7 +593,10 @@ An endpoint is a combination of:
 `unapi GET /appliances/:app/status`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
 
 :Result:
   ::
@@ -590,7 +615,10 @@ An endpoint is a combination of:
 `unapi GET /builds`
 ~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    app: Id
 
 :Result:
   ::
@@ -612,7 +640,10 @@ An endpoint is a combination of:
 `unapi GET /builds/:bld`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    bld: Id
 
 :Result:
   ::
@@ -642,7 +673,10 @@ An endpoint is a combination of:
 `unapi GET /files/:file`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    file: Id
 
 :Result:
   ::
@@ -672,7 +706,10 @@ An endpoint is a combination of:
 `unapi GET /repositories/:repo`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    repo: Id
 
 :Result:
   ::
@@ -700,7 +737,10 @@ An endpoint is a combination of:
 `unapi GET /rpms/:rpm`
 ~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    rpm: Id
 
 :Result:
   ::
@@ -732,7 +772,10 @@ An endpoint is a combination of:
 `unapi GET /running_builds/:bld`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    bld: Id
 
 :Result:
   ::
@@ -757,7 +800,10 @@ An endpoint is a combination of:
 `unapi POST /testdrives`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Input: default.
+:Input:
+  ::
+
+    bld: Id
 
 :Result:
   ::
