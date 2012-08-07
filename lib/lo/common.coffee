@@ -38,6 +38,7 @@ exports.api = (methods) -> (rpc, xml) ->
 
   (httpmethod, apimethod, args..., done) ->
     unless apimethod? and done?
+      # FIXME: coverage
       [httpmethod, apimethod, args..., done] = httpmethod
     sig = "#{httpmethod} #{apimethod}"
 
@@ -48,12 +49,14 @@ exports.api = (methods) -> (rpc, xml) ->
       return done err if err
       xml.parse data, (err, result) ->
         return done err if err
+        # FIXME: coverage
         done undefined, xml2pojo sig, result
 
 url = require 'url'
 
 exports.rpc = (httpc, options) ->
   if not options?
+    # FIXME: coverage
     [httpc, options] = [(require './http').request, httpc]
   options = options.options
   server = url.parse options.url
