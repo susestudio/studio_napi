@@ -1,6 +1,4 @@
 tools = require './tools'
-fs = require 'fs'
-xml = require '../lib/lo/xml'
 admin = require '../lib/lo/admin'
 
 transform = admin.transform
