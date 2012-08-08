@@ -8,4 +8,3 @@ exports.api2file = api2file =
   'GET /running_jobs': 'running_jobs'
   'GET /summary': 'summary'
 
-exports.fileapi = tools.fileapi 'admin', api2file

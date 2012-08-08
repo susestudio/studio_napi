@@ -23,4 +23,3 @@ api2file =
   'GET /testdrives': 'testdrives'
   'POST /testdrives': 'testdrive'
 
-exports.fileapi = tools.fileapi 'user', api2file

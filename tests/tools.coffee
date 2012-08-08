@@ -34,7 +34,4 @@ filerpc = (dir, api2file) -> (httpmethod, apimethod, args..., done) ->
   file = api2file["#{httpmethod} #{apimethod}"] or apimethod[1..]
   fs.readFile "tests/#{dir}/#{file}.xml", done
 
-exports.fileapi = (dir, api2file) ->
-  (require "../lib/lo/#{dir}").api filerpc dir, api2file
-
 exports.filerpc = filerpc
