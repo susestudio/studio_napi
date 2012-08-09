@@ -29,7 +29,6 @@
   , "tests/lo/100-rpc.t.coffee"
   , "tests/lo/150-api.t.coffee"
   , "tests/lo/200-xml2pojo-admin.t.coffee"
-  , "tests/lo/300-admin-http.t.coffee"
   , "tests/lo/200-xml2pojo-user/account.t.coffee"
   , "tests/lo/200-xml2pojo-user/api_version.t.coffee"
   , "tests/lo/200-xml2pojo-user/appliance.t.coffee"
@@ -53,6 +52,7 @@
   , "tests/lo/200-xml2pojo-user/software.t.coffee"
   , "tests/lo/200-xml2pojo-user/testdrive.t.coffee"
   , "tests/lo/200-xml2pojo-user/testdrives.t.coffee"
+  , "tests/lo/300-admin-http.t.coffee"
 
   , "tests/hi/lib-hi.coffee"
   , "tests/lo/admin.coffee"
