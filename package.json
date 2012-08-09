@@ -54,7 +54,12 @@
   , "tests/lo/200-xml2pojo-user/testdrive.t.coffee"
   , "tests/lo/200-xml2pojo-user/testdrives.t.coffee"
 
+  , "tests/hi/lib-hi.coffee"
   , "tests/lo/admin.coffee"
+  , "tests/lo/lib-lo-admin.coffee"
+  , "tests/lo/lib-lo-common.coffee"
+  , "tests/lo/lib-lo-user.coffee"
+  , "tests/lo/lib-lo-xml.coffee"
   , "tests/lo/user.coffee"
   , "tests/tools.coffee"
 

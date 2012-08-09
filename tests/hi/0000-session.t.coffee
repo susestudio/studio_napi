@@ -1,5 +1,5 @@
 tools = require '../tools'
-studio = require '../../lib/hi'
+studio = require './lib-hi'
 
 describe 'High-level User API:', ->
 

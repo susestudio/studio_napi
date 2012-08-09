@@ -1,7 +1,7 @@
 expect = (require 'chai').expect
 tools = require './admin'
-common = require '../../lib/lo/common'
-admin = require '../../lib/lo/admin'
+common = require './lib-lo-common'
+admin = require './lib-lo-admin'
 
 http = require 'http'
 parseurl = (require 'url').parse

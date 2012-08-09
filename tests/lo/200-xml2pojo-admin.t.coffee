@@ -1,5 +1,5 @@
 tools = require '../tools'
-admin = require '../../lib/lo/admin'
+admin = require './lib-lo-admin'
 
 transform = admin.transform
 parse = tools.parse
