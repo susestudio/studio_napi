@@ -1,6 +1,6 @@
 expect = (require 'chai').expect
 
-xml = require '../lib/lo/xml'
+xml = require '../../lib/lo/xml'
 
 describe 'XML parser', ->
 

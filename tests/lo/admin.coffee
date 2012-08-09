@@ -1,4 +1,4 @@
-tools = require './tools'
+tools = require '../tools'
 
 exports.api2file = api2file =
   'GET /about': 'about'

@@ -1,8 +1,8 @@
 expect = (require 'chai').expect
 sinon = require 'sinon'
-tools = require './tools'
+tools = require '../tools'
 
-common = require '../lib/lo/common'
+common = require '../../lib/lo/common'
 
 methods =
   'GET /fubar':

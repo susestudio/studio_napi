@@ -1,6 +1,6 @@
 expect = (require 'chai').expect
-rpc = (require '../lib/lo/common').rpc
-tools = require './tools'
+rpc = (require '../../lib/lo/common').rpc
+tools = require '../tools'
 
 describe 'RPC (HTTP) client', ->
 
