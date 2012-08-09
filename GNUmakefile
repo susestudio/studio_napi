@@ -15,7 +15,9 @@ check:
 	npm test
 
 do-check:
-	mocha -C --recursive --compilers t.coffee:coffee-script tests
+	mocha -C --compilers t.coffee:coffee-script \
+	  $$(find tests/lo -name \*.t.coffee | sort) \
+	  $$(find tests/hi -name \*.t.coffee | sort)
 
 define first_in_path
   $(firstword $(wildcard \
