@@ -858,6 +858,7 @@ to the low-level admin endpoints:
 
       add: (package) ->
       add: (pattern) ->
+      add: (repository) ->
       add: (user) ->
 
       configure: (LVM) ->
@@ -898,6 +899,15 @@ to the low-level admin endpoints:
     pattern:
       named: SWPatternName
       from: RepositoryName
+
+`app.add repository`
+~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    repository:
+      named: RepositoryName
 
 `app.add user`
 ~~~~~~~~~~~~~~
