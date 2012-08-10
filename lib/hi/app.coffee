@@ -1,8 +1,35 @@
+assert = require 'assert'
+
+requires = (o, props) ->
+  props = props.split /\s+/ if typeof props is 'string'
+  assert (p of o), p for p in props
+
+handlers =
+  add:
+    package: (o) ->
+      requires o, 'named from version'
+
+    pattern: (o) ->
+      requires o, 'named from'
+
+    user: (o) ->
+      requires o, 'named'
+      if 'id' of o and typeof o.id isnt 'number'
+        throw new TypeError
+      if 'identified_by' of o
+        assert ('password' of o.identified_by), 'identified_by.password'
+
 exports.frontend = (cfg) ->
+
+  add: (o) ->
+
+    for p of o
+      assert (p of handlers.add), "unknown request #{p}"
+      handlers.add[p] o[p]
+
   commit: (err, app, done) ->
   name: cfg.named
   base_system: cfg.based_on
-  add: (foo) ->
   configure: (foo) ->
   select: (foo) ->
   toggle: (foo) ->

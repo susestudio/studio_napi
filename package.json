@@ -27,6 +27,8 @@
 
   , "tests/hi/0000-session.t.coffee"
   , "tests/hi/1000-admin.t.coffee"
+  , "tests/hi/2000-user.t.coffee"
+  , "tests/hi/2100-app-add.t.coffee"
 
   , "tests/lo/050-xml.t.coffee"
   , "tests/lo/100-rpc.t.coffee"
