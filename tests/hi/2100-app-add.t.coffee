@@ -44,6 +44,10 @@ describe 'High-level User API:', ->
           named: 'my-package'
           version: '1.2.3'
         (expect f).to.throw()
+        f = -> app.add package:
+          version: '1.2.3'
+          from: 'A Repository'
+        (expect f).to.throw()
 
     describe '`app.add pattern:`', ->
 
