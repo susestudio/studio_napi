@@ -4,6 +4,9 @@ requires = (o, props) ->
   props = props.split /\s+/ if typeof props is 'string'
   assert (p of o), p for p in props
 
+is_numeric = (s) ->
+  typeof s is 'number' or typeof s is 'string' and /^\d+$/.test s
+
 handlers =
   add:
     package: (o) ->
@@ -14,8 +17,8 @@ handlers =
 
     user: (o) ->
       requires o, 'named'
-      if 'id' of o and typeof o.id isnt 'number'
-        throw new TypeError
+      if 'id' of o
+        throw new TypeError unless is_numeric o.id
       if 'identified_by' of o
         assert ('password' of o.identified_by), 'identified_by.password'
 

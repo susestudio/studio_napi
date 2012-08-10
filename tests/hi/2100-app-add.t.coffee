@@ -72,7 +72,10 @@ describe 'High-level User API:', ->
         (expect f).to.throw()
 
       it 'wants numeric id', ->
-        f = -> app.add user:
-          named: 'snafu'
-          id: 'fubar'
-        (expect f).to.throw(TypeError)
+        f = (id) -> () ->
+          app.add user:
+            named: 'snafu'
+            id: id
+        (expect f 'fubar').to.throw(TypeError)
+        (expect f '1000').to.not.throw()
+        (expect f 1000).to.not.throw()
