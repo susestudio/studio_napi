@@ -7,7 +7,7 @@ requires = (o, props) ->
 is_numeric = (s) ->
   typeof s is 'number' or typeof s is 'string' and /^\d+$/.test s
 
-handlers =
+apphandlers = (acf) ->
   add:
     package: (o) ->
       requires o, 'named from version'
@@ -17,6 +17,8 @@ handlers =
 
     repository: (o) ->
       requires o, 'named'
+      acf.repos ?= {}
+      acf.repos[o.named] = yes
 
     user: (o) ->
       requires o, 'named'
@@ -25,13 +27,21 @@ handlers =
       if 'identified_by' of o
         assert ('password' of o.identified_by), 'identified_by.password'
 
-exports.frontend = (cfg) ->
+exports.frontend = (cfg, apimpl) ->
 
-  add: (o) ->
+  handlers_ = apphandlers cfg
 
-    for p of o
-      assert (p of handlers.add), "unknown request #{p}"
-      handlers.add[p] o[p]
+  add: (o, done) ->
+
+    try
+      handlers = handlers_.add
+      for p of o
+        assert (p of handlers), "unknown request #{p}"
+        handlers[p] o[p]
+    catch e
+      if done? then return done e else throw e
+
+    done undefined, @ if done?
 
   commit: (err, app, done) ->
   name: cfg.named
