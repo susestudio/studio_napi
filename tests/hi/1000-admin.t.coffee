@@ -4,6 +4,11 @@ studio = require './lib-hi'
 
 describe 'High-level Admin API:', ->
 
+  credentials = admin:
+    url: 'http://susestudio.com/api/v2/admin'
+    user: 'rneuhauser'
+    key: 'ELaM8usq3Ryb'
+
   methods = '''
     about
     active_users
@@ -18,10 +23,7 @@ describe 'High-level Admin API:', ->
     admin =
 
     beforeEach () ->
-      admin = studio.session admin:
-        url: 'http://susestudio.com/api/admin'
-        user: 'rneuhauser'
-        key: 'ELaM8usq3Ryb'
+      admin = studio.session credentials
 
     for meth in methods
 
@@ -41,12 +43,7 @@ describe 'High-level Admin API:', ->
           it "uses GET /#{meth}", (done) ->
             apimpl = sinon.stub().callsArg(2)
 
-            admin = studio.session { admin:
-              url: 'http://susestudio.com/api/admin'
-              user: 'rneuhauser'
-              key: 'ELaM8usq3Ryb'
-            }
-            , (a) -> apimpl a...
+            admin = studio.session credentials, (a) -> apimpl a...
 
             admin[meth] (err, r) ->
               no_error err
