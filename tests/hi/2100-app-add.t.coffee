@@ -18,6 +18,15 @@ describe 'High-level User API:', ->
         named: 'Snafu!'
         based_on: 'FubarOS'
 
+    describe '`app.add repository:`', ->
+
+      it 'requires property "named"', ->
+        f = -> app.add repository: undefined
+        (expect f).to.throw()
+
+        app.add repository:
+          named: 'My Repository'
+
     describe '`app.add package:`', ->
 
       it 'accepts complete package info', ->

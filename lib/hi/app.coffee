@@ -15,6 +15,9 @@ handlers =
     pattern: (o) ->
       requires o, 'named from'
 
+    repository: (o) ->
+      requires o, 'named'
+
     user: (o) ->
       requires o, 'named'
       if 'id' of o
