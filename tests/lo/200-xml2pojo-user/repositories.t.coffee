@@ -1,11 +1,11 @@
 {parse, transform} = require './setup'
 
-describe 'XML -> POJO xforms, user: GET /repositories', ->
+describe 'XML -> POJO xforms, user:', ->
 
-  it 'gives all repositories for an appliance', (done) ->
+test = (request) -> (done) ->
     parse 'tests/user/repositories.xml', async done, (err, r) ->
       no_error err
-      r = transform 'GET /repositories', r
+      r = transform request, r
       contains r, repositories: [
         {
           id: '7'
@@ -20,3 +20,10 @@ describe 'XML -> POJO xforms, user: GET /repositories', ->
         }
       ]
 
+  describe 'GET /repositories', ->
+    it 'gives a list of repositories'
+    , test 'GET /repositories'
+
+  describe 'GET /appliances/:app/repositories', ->
+    it 'gives all repositories for an appliance'
+    , test 'GET /appliances/:app/repositories'

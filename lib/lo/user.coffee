@@ -54,6 +54,11 @@ transforms =
     root: 'gpg_key'
     output: asis
 
+  'GET /appliances/:app/repositories':
+    root: 'repositories'
+    output: (xo) ->
+      as_array xo.repository
+
   'GET /appliances/:app/sharing':
     root: 'appliance'
     output: (xo) ->
