@@ -134,8 +134,8 @@ HTTP method
   One of `DELETE`, `GET`, `POST`, `PUT`.
 apimethod
   Shortened API method path (without the leading `/api/v2`)
-  substrings matching Perl-compatible regular expression /:(\w+)\b/
-  are replaced by params[$1].
+  substrings matching Perl-compatible regular expression `/:(\w+)\b/`
+  are replaced by `params[$1]`.
 params
   Optionally, an object of API parameters.  Params not used in
   `apimethod` substitutions comprise the query string.
