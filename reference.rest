@@ -140,7 +140,7 @@ params
   Optionally, an object of API parameters.  Params not used in
   `apimethod` substitutions comprise the query string.
 done: `(error, response) -> ...`
-  If `error` is falsy, `reponse` contains a POJO derived from the XML
+  If `error` is falsy, `response` contains a POJO derived from the XML
   response received from Studio server.
 
 .. note:: FIXME
@@ -952,7 +952,7 @@ to the low-level admin endpoints:
       address: IP
       netmask: IP
       gateway: IP
-      resolvers: ListOf IP, '/,\s*/
+      resolvers: ListOf IP, /,\s*/
 
 
 `app.configure RAM`
