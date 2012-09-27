@@ -45,13 +45,6 @@ Things about APIv2 that irk me
 * admin API prefix is actually '/api/v2/admin', not just
   '/api/admin' as the documentation claims.
 
-* there's no way to sync/update a repository, see email
-  from ken@novell.com to appliances@lists.novell.com, subject
-  "SSO Missing REST API for Triggering a Update of Repository"
-
-  there's now a patch for this, it will be included in both
-  onsite_1_2 and master.
-
 * there's no way to toggle network in a testdrive, see email
   from ytsarev@suse.com to appliances@lists.novell.com, subject
   "Re: SSO Missing REST API for Triggering a Update of Repository"
