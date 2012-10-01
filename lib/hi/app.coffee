@@ -42,32 +42,25 @@ exports.frontend = (cfg, apimpl) ->
 
   handlers_ = apphandlers cfg
 
-  add: (o, done) ->
+  fe_method = (mname) ->
+    handlers = handlers_[mname]
 
-    try
-      handlers = handlers_.add
-      for p of o
-        assert (p of handlers), "unknown request #{p}"
-        handlers[p] o[p]
-    catch e
-      if done? then return done e else throw e
+    (o, done) ->
+      try
+        for p of o
+          assert (p of handlers), "unknown request #{p}"
+          handlers[p] o[p]
+      catch e
+        if done? then return done e else throw e
 
-    done undefined, @ if done?
+      done undefined, @ if done?
+
+  add: fe_method 'add'
 
   commit: (err, app, done) ->
   name: cfg.named
   base_system: cfg.based_on
-  configure: (o, done) ->
-
-    try
-      handlers = handlers_.configure
-      for p of o
-        assert (p of handlers), "unknown request #{p}"
-        handlers[p] o[p]
-    catch e
-      if done? then return done e else throw e
-
-    done undefined, @ if done?
+  configure: fe_method 'configure'
 
   select: (foo) ->
   toggle: (foo) ->
