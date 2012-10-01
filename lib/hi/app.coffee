@@ -7,6 +7,9 @@ requires = (o, props) ->
 is_numeric = (s) ->
   typeof s is 'number' or typeof s is 'string' and /^\d+$/.test s
 
+is_size = (s) ->
+  s.match /^\d+[KMGTPYZ]B$/
+
 apphandlers = (acf) ->
   add:
     package: (o) ->
@@ -27,6 +30,14 @@ apphandlers = (acf) ->
       if 'identified_by' of o
         assert ('password' of o.identified_by), 'identified_by.password'
 
+  configure:
+    RAM: (o) ->
+      throw new TypeError unless is_size o
+    disk: (o) ->
+      throw new TypeError unless is_size o
+    swap: (o) ->
+      throw new TypeError unless is_size o
+
 exports.frontend = (cfg, apimpl) ->
 
   handlers_ = apphandlers cfg
@@ -46,7 +57,18 @@ exports.frontend = (cfg, apimpl) ->
   commit: (err, app, done) ->
   name: cfg.named
   base_system: cfg.based_on
-  configure: (foo) ->
+  configure: (o, done) ->
+
+    try
+      handlers = handlers_.configure
+      for p of o
+        assert (p of handlers), "unknown request #{p}"
+        handlers[p] o[p]
+    catch e
+      if done? then return done e else throw e
+
+    done undefined, @ if done?
+
   select: (foo) ->
   toggle: (foo) ->
 
