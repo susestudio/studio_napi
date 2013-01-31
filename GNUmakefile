@@ -2,9 +2,12 @@
 # mocha(1) is in $PATH even if it's only installed locally
 # (npm adds <package_dir>/node_modules/.bin to $PATH)
 
+MOCHA ?=	mocha -C --compilers t.coffee:coffee-script
 RST2HTML ?=	$(call first_in_path,rst2html.py rst2html)
 
 htmlfiles =	README.html NOTES.html examples.html reference.html
+testfiles =	$$(find tests/lo -name \*.t.coffee | sort) \
+		$$(find tests/hi -name \*.t.coffee | sort)
 
 html: $(htmlfiles)
 
@@ -15,9 +18,7 @@ check:
 	npm test
 
 do-check:
-	mocha -C --compilers t.coffee:coffee-script \
-	  $$(find tests/lo -name \*.t.coffee | sort) \
-	  $$(find tests/hi -name \*.t.coffee | sort)
+	$(MOCHA) $(testfiles)
 
 define first_in_path
   $(firstword $(wildcard \
