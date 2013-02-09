@@ -18,12 +18,15 @@
   , "reference.rest"
 
   , "lib/hi/admin.coffee"
+  , "lib/hi/app.coffee"
   , "lib/hi/index.coffee"
   , "lib/hi/user.coffee"
   , "lib/lo/admin.coffee"
   , "lib/lo/common.coffee"
+  , "lib/lo/http.coffee"
   , "lib/lo/index.coffee"
   , "lib/lo/user.coffee"
+  , "lib/lo/xml.coffee"
 
   , "tests/hi/0000-session.t.coffee"
   , "tests/hi/1000-admin.t.coffee"
