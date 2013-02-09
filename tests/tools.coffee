@@ -3,6 +3,18 @@ xml = require '../lib/lo/xml'
 expect = (require 'chai').expect
 diff = (require 'difflet')(indent: 2, comment: true).compare
 
+config_file = (path) ->
+  cfg = {}
+  (fs.readFileSync path, 'utf8')
+    .split(/\n/)
+    .filter((l) -> !l.match /^\s*#|^\s*$/)
+    .map((l) -> l.split /\s*=\s*/, 2)
+    .forEach (pair) ->
+      cfg[pair[0]] = pair[1]
+  cfg
+
+exports.config_file = config_file
+
 # FIXME: does not handle arrays well
 contains = (actual, expected) ->
   unless expected instanceof Object

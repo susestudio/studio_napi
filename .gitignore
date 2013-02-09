@@ -2,3 +2,5 @@
 .sw?
 *.html
 node_modules/
+cfg/*
+!cfg/*.sample
