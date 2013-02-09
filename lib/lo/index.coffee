@@ -6,7 +6,10 @@ session = (creds, rpcimpl = null) ->
   , "did you want an admin session or a user session? (got #{mode})"
   sess = creds[mode]
   assert sess.url, "missing session: url"
+  unless rpcimpl?
+    common = require '../lo/common'
+    rpcimpl = common.rpc
   lo = require "./#{mode}"
-  lo.api (rpcimpl or lo.rpc) options: sess
+  lo.api rpcimpl options: sess
 
 exports.session = session
