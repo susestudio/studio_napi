@@ -17,7 +17,7 @@ describe 'common.api', ->
   it 'fails early for unknown endpoints', ->
     myrpc = sinon.mock().never()
     mycb = sinon.mock().once().withExactArgs \
-      'GET /snafu: unknown method'
+      new Error 'GET /snafu: unknown method'
 
     napi = (common.api methods) myrpc
     napi GET '/snafu', omg: 'wtf', mycb

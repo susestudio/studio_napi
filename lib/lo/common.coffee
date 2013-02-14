@@ -43,7 +43,7 @@ exports.api = (methods) -> (rpc, xml) ->
     sig = "#{httpmethod} #{apimethod}"
 
     unless methods[sig]
-      return done "#{sig}: unknown method"
+      return done new Error "#{sig}: unknown method"
 
     rpc httpmethod, apimethod, args..., (err, data) ->
       return done err if err
