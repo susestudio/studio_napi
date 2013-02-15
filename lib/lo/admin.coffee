@@ -9,7 +9,10 @@ since = (parsed) ->
 
 runners = (parsed, kind) ->
   unless parsed["#{kind}s"] instanceof Array
-    parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]
+    if parsed["#{kind}s"][kind] instanceof Array
+      parsed["#{kind}s"] = parsed["#{kind}s"][kind]
+    else
+      parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]
   parsed
 
 transforms =
