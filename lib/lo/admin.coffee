@@ -19,7 +19,10 @@ transforms =
 
   'GET /active_users':
     root: 'active_users'
-    output: since
+    output: (parsed) ->
+      day: parsed.day
+      total: parsed.total
+      groups: parsed.groups.group
 
   'GET /health_check':
     root: 'health_check'

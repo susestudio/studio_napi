@@ -48,12 +48,19 @@ describe 'Admin API (HTTP RPC)', ->
           git_revision: '074b2a42d48c7b8256c1b9328a7b29a944aeb8c7'
 
   describe '/active_users', ->
-    it 'gives build/testdrive data', (done) ->
+    it 'gives overview of active users', (done) ->
       anapi GET '/active_users', async done, (err, r) ->
         no_error err
         contains r, active_users:
-          since: '86400'
-          users: []
+          day: '2013-02-14'
+          total: '2'
+          groups: [
+            { name: 'beta-testers',  value: '1' }
+            { name: 'azure-testers', value: '0' }
+            { name: 'sid-testers',   value: '0' }
+            { name: 'log viewers',   value: '0' }
+            { name: 'Users',         value: '1' }
+          ]
 
   describe '/job_history', ->
     it 'gives build/testdrive stats', (done) ->

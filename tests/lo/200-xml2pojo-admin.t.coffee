@@ -17,13 +17,20 @@ describe 'XML -> POJO xforms, admin:', ->
           git_revision: '074b2a42d48c7b8256c1b9328a7b29a944aeb8c7'
 
   describe 'GET /active_users', ->
-    it 'gives build/testdrive data', (done) ->
+    it 'gives overview of active users', (done) ->
       parse 'tests/admin/active_users.xml', async done, (err, r) ->
         no_error err
         r = transform 'GET /active_users', r
         contains r, active_users:
-          since: '86400'
-          users: []
+          day: '2013-02-14'
+          total: '2'
+          groups: [
+            { name: 'beta-testers',  value: '1' }
+            { name: 'azure-testers', value: '0' }
+            { name: 'sid-testers',   value: '0' }
+            { name: 'log viewers',   value: '0' }
+            { name: 'Users',         value: '1' }
+          ]
 
   describe 'GET /job_history', ->
     it 'gives build/testdrive stats', (done) ->

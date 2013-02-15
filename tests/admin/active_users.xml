@@ -1,5 +1,26 @@
 <active_users>
-  <since scale="seconds">86400</since>
-  <users type="array">
-  </users>
+  <day>2013-02-14</day>
+  <total>2</total>
+  <groups type="array">
+    <group>
+      <name>beta-testers</name>
+      <value>1</value>
+    </group>
+    <group>
+      <name>azure-testers</name>
+      <value>0</value>
+    </group>
+    <group>
+      <name>sid-testers</name>
+      <value>0</value>
+    </group>
+    <group>
+      <name>log viewers</name>
+      <value>0</value>
+    </group>
+    <group>
+      <name>Users</name>
+      <value>1</value>
+    </group>
+  </groups>
 </active_users>
