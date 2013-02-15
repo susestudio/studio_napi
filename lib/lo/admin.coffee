@@ -8,11 +8,14 @@ since = (parsed) ->
   parsed
 
 runners = (parsed, kind) ->
-  unless parsed["#{kind}s"] instanceof Array
-    if parsed["#{kind}s"][kind] instanceof Array
-      parsed["#{kind}s"] = parsed["#{kind}s"][kind]
+  kinds = "#{kind}s"
+  unless parsed[kinds] instanceof Array
+    if parsed[kinds][kind] is undefined
+      parsed[kinds] = []
+    else if parsed[kinds][kind] instanceof Array
+      parsed[kinds] = parsed[kinds][kind]
     else
-      parsed["#{kind}s"] = [parsed["#{kind}s"][kind]]
+      parsed[kinds] = [parsed[kinds][kind]]
   parsed
 
 transforms =
@@ -50,7 +53,10 @@ transforms =
 
   'GET /running_jobs':
     root: 'running_jobs'
-    output: asis
+    output: (parsed) ->
+      runners parsed, 'build'
+      runners parsed, 'testdrive'
+      parsed
 
   'GET /summary':
     root: 'summary'
