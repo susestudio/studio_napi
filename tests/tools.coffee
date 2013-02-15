@@ -5,6 +5,8 @@ diff = (require 'difflet')(indent: 2, comment: true).compare
 
 # FIXME: does not handle arrays well
 contains = (actual, expected) ->
+  unless expected instanceof Object
+    throw new Error "contains function requires objects"
   for p, v of expected
     if v instanceof Object
       contains actual[p], v

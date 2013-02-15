@@ -6,7 +6,8 @@ MOCHA ?=	mocha -C --compilers t.coffee:coffee-script
 RST2HTML ?=	$(call first_in_path,rst2html.py rst2html)
 
 htmlfiles =	README.html NOTES.html examples.html reference.html
-testfiles =	$$(find tests/lo -name \*.t.coffee | sort) \
+testfiles =	$$(find tests -maxdepth 1 -name \*.t.coffee | sort) \
+		$$(find tests/lo -name \*.t.coffee | sort) \
 		$$(find tests/hi -name \*.t.coffee | sort)
 
 html: $(htmlfiles)
