@@ -37,6 +37,9 @@ global.async = (done, test) -> (args...) ->
   test args...
   done()
 
+global.responds_to = (req, test) ->
+  it "responds to #{req}", test
+
 parse = (file, done) ->
   fs.readFile file, (e, r) ->
     return done e if e
