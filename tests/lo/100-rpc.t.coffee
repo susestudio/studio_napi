@@ -44,3 +44,25 @@ describe 'RPC (HTTP) client', ->
       , path: '/here/there/snafu/bar/omg/rofl'
       done()
 
+  it 'puts extraneous API params in the query string', (done) ->
+
+    anrpc 'GET', '/snafu/:foo', foo: 'bar', a: 'b', c: 'd', (err, res) ->
+      no_error err
+      contains res, opts \
+        method: 'GET'
+      , path: '/here/there/snafu/bar?a=b&c=d'
+      done()
+
+  it 'generates *almost* RFC2396-compliant paths and query strings', (done) ->
+
+    # see rant in lib/lo/url.coffee
+
+    s = "-_.~!'()*%:/?#[]@$&+,;="
+    r = "-_.~!'()*%25%3A%2F%3F%23%5B%5D%40%24%26%2B%2C%3B%3D"
+    anrpc 'GET', '/snafu/:a', a: s, b: s, (err, res) ->
+      no_error err
+      contains res, opts \
+        method: 'GET'
+      , path: "/here/there/snafu/#{r}?b=#{r}"
+      done()
+

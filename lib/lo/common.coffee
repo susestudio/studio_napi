@@ -53,7 +53,7 @@ exports.api = (methods) -> (rpc, xml) ->
         return done result.error if result.error and result.error.code
         done undefined, xml2pojo sig, result
 
-url = require 'url'
+{url, qstring} = require './url'
 
 exports.rpc = (httpc, options) ->
   if not options?
@@ -62,11 +62,19 @@ exports.rpc = (httpc, options) ->
   options = options.options
   server = url.parse options.url
   (httpmethod, apimethod, args..., done) ->
+    qs = ''
     if args.length
-      apimethod = apimethod.replace /:(\w+)/g, (_, param) -> args[0][param]
+      inpath = {}
+      apimethod = apimethod.replace /:(\w+)/g, (_, param) ->
+        inpath[param] = yes
+        qstring.escape args[0][param]
+      query = {}
+      query[k] = v for k, v of args[0] when not inpath[k]
+      qs = qstring.stringify query
+      qs = "?#{qs}" if qs.length
     reqopts =
       method: httpmethod
-      path: "#{server.pathname}#{apimethod}"
+      path: "#{server.pathname}#{apimethod}#{qs}"
       port: server.port
       hostname: server.hostname
       auth: "#{options.user}:#{options.key}"
