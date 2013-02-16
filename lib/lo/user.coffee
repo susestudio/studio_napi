@@ -98,7 +98,9 @@ transforms =
 
   'GET /builds/:bld':
     root: 'build'
-    output: asis
+    output: (xo) ->
+      xo.profile.steps = xo.profile.steps.step
+      xo
 
   'GET /files':
     root: 'files'

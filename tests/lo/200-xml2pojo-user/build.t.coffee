@@ -18,4 +18,21 @@ describe 'XML -> POJO xforms, user: GET /builds/:bld', ->
         size: '238'
         compressed_image_size: '87'
         download_url: 'http://susestudio.com/download/bf1a0f08884ebac13f30b0fc62dfc44a/Cornelius_JeOS.x86_64-0.0.1.oem.tar.gz'
+        log:
+          build: []
+          kiwi: []
+        profile:
+          steps: [
+            {
+              name: 'Setting%20up%20build%20directories'
+              time: '0'
+              percent: '0'
+            },
+            {
+              name: 'Fetching%20appliance%20configuration',
+              time: '9',
+              percent: '2',
+            },
+            # etc etc
+          ]
 
