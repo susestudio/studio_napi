@@ -66,3 +66,17 @@ describe 'common.api', ->
 
     mycb.verify()
 
+  it 'reports errors returned from server', ->
+    response =
+      error:
+        code: 'internal_error'
+
+    myrpc = (a, b, c..., cb) -> cb()
+    myxml = parse: (a, cb) -> cb undefined, response
+
+    mycb = sinon.mock().once().withExactArgs response.error
+
+    napi = (common.api methods) myrpc, myxml
+    napi GET '/fubar', mycb
+
+    mycb.verify()

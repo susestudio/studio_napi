@@ -48,8 +48,9 @@ exports.api = (methods) -> (rpc, xml) ->
     rpc httpmethod, apimethod, args..., (err, data) ->
       return done err if err
       xml.parse data, (err, result) ->
-        return done err if err
         # FIXME: coverage
+        return done err if err
+        return done result.error if result.error and result.error.code
         done undefined, xml2pojo sig, result
 
 url = require 'url'
