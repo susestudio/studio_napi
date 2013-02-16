@@ -41,12 +41,12 @@ describe 'High-level Admin API:', ->
         describe "#{meth}()", ->
 
           it "uses GET /#{meth}", (done) ->
-            apimpl = sinon.stub().callsArg(2)
+            apimpl = sinon.mock().once().callsArg(2)
 
             admin = studio.session credentials, (a) -> apimpl a...
 
             admin[meth] (err, r) ->
               no_error err
-              (expect apimpl.calledWith 'GET', "/#{meth}").to.be.true
+              apimpl.verify()
               done()
 

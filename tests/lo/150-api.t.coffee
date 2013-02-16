@@ -53,11 +53,8 @@ describe 'common.api', ->
     mycb.verify()
 
   it 'reports failures from xml parser', ->
-    myrpc = sinon.stub()
-      .callsArgWith(3, null, 'mydata')
-    xml = parse: ->
-    sinon.stub(xml, 'parse')
-      .callsArgWith(1, 'xml parsing error')
+    myrpc = (a, b, c..., cb) -> cb()
+    xml = parse: (_, cb) -> cb 'xml parsing error'
 
     mycb = sinon.mock().once().withExactArgs 'xml parsing error'
 
