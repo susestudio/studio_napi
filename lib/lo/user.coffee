@@ -2,12 +2,13 @@ common = require './common'
 
 asis = common.asis
 as_array = common.as_array
+to_array = common.to_array
 
 transforms =
   'GET /account':
     root: 'account'
     output: (xo) ->
-      xo.openid_urls = as_array xo.openid_urls.openid_url
+      to_array xo, 'openid_url'
       xo
 
   'GET /api_version':
@@ -19,27 +20,27 @@ transforms =
     output: (xo) ->
       xo = as_array xo.appliance
       for a in xo
-        a.builds = as_array a.builds.build
+        to_array a, 'build'
       xo
 
   'GET /appliances/:app':
     root: 'appliance'
     output: (xo) ->
-      xo.builds = as_array xo.builds.build
+      to_array xo, 'build'
       xo
 
   'GET /appliances/:app/configuration':
     root: 'configuration'
     output: (xo) ->
-      xo.tags = as_array xo.tags.tag
+      to_array xo, 'tag'
       xo.firewall.open_ports = as_array xo.firewall.open_port
       delete xo.firewall.open_port
-      xo.users = as_array xo.users.user
-      xo.eulas = as_array xo.eulas.eula
-      xo.databases = as_array xo.databases.database
+      to_array xo, 'user'
+      to_array xo, 'eula'
+      to_array xo, 'database'
       for d in xo.databases
-        d.users = as_array d.users.user
-      xo.autostarts = as_array xo.autostarts.autostart
+        to_array d, 'user'
+      to_array xo, 'autostart'
       if xo.settings.pae_enabled not instanceof String
         xo.settings.pae_enabled = 'false'
       xo.lvm.volumes = as_array xo.lvm.volumes.volume

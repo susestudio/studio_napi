@@ -7,8 +7,21 @@ asis = (parsed) -> parsed
 as_array = (parsed) ->
     if parsed instanceof Array
       parsed
+    else if parsed is undefined
+      []
     else
       [parsed]
+
+to_array = (parsed, kind) ->
+  kinds = "#{kind}s"
+  unless parsed[kinds] instanceof Array
+    if parsed[kinds][kind] is undefined
+      parsed[kinds] = []
+    else if parsed[kinds][kind] instanceof Array
+      parsed[kinds] = parsed[kinds][kind]
+    else
+      parsed[kinds] = [parsed[kinds][kind]]
+  parsed
 
 deattr = (xo) ->
   if xo instanceof Array
@@ -22,6 +35,7 @@ deattr = (xo) ->
 
 exports.asis = asis
 exports.as_array = as_array
+exports.to_array = to_array
 
 transform = (transforms) -> (sig, result) ->
   t = transforms[sig]

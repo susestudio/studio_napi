@@ -1,21 +1,10 @@
 common = require './common'
 
 asis = common.asis
-as_array = common.as_array
+to_array = common.to_array
 
 since = (parsed) ->
   parsed.since = parsed.since['#']
-  parsed
-
-runners = (parsed, kind) ->
-  kinds = "#{kind}s"
-  unless parsed[kinds] instanceof Array
-    if parsed[kinds][kind] is undefined
-      parsed[kinds] = []
-    else if parsed[kinds][kind] instanceof Array
-      parsed[kinds] = parsed[kinds][kind]
-    else
-      parsed[kinds] = [parsed[kinds][kind]]
   parsed
 
 transforms =
@@ -33,8 +22,8 @@ transforms =
   'GET /health_check':
     root: 'health_check'
     output: (parsed) ->
-      runners parsed, 'kiwi_runner'
-      runners parsed, 'testdrive_runner'
+      to_array parsed, 'kiwi_runner'
+      to_array parsed, 'testdrive_runner'
       unless parsed.disks instanceof Array
         if parsed.disks.disk instanceof Array
           parsed.disks = parsed.disks.disk
@@ -54,8 +43,8 @@ transforms =
   'GET /running_jobs':
     root: 'running_jobs'
     output: (parsed) ->
-      runners parsed, 'build'
-      runners parsed, 'testdrive'
+      to_array parsed, 'build'
+      to_array parsed, 'testdrive'
       parsed
 
   'GET /summary':
