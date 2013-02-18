@@ -47,4 +47,7 @@ Things about APIv2 that irk me
 
 * there's no way to toggle network in a testdrive, see email
   from ytsarev@suse.com to appliances@lists.novell.com, subject
-  "Re: SSO Missing REST API for Triggering a Update of Repository"
+  "Re: SSO Missing REST API for Triggering a Update of Repository".
+  i have a wip patch to enable this; qemu-kvm receives the commands
+  but network does not get enabled; maybe there's a race?
+
