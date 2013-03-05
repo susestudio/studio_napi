@@ -29,6 +29,10 @@ transforms =
       to_array xo, 'build'
       xo
 
+  'DELETE /appliances/:app':
+    root: 'success'
+    output: -> true
+
   'GET /appliances/:app/configuration':
     root: 'configuration'
     output: (xo) ->

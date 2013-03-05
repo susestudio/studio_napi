@@ -1,3 +1,4 @@
+sinon = require 'sinon'
 tools = require '../tools'
 studio = require './lib-hi'
 
@@ -10,6 +11,7 @@ describe 'High-level User API:', ->
 
   methods = '''
     create
+    delete
   '''.split /\s+/
 
   describe 'method presence', ->
@@ -44,3 +46,22 @@ describe 'High-level User API:', ->
       for meth in 'add configure select toggle commit'.split ' '
         (expect app, "app.#{meth}").to.have.property(meth)
           .that.is.a('function')
+
+  describe '`user.delete appliance: ...`', ->
+
+    user =
+
+    it 'uses DELETE /appliances/:app', (done) ->
+      cb = (e, r) ->
+        no_error e
+        apimpl.verify()
+        done()
+
+      apimpl = sinon.mock().once()
+        .withExactArgs('DELETE', '/appliances/:app', app: 42, cb)
+        .callsArg(3)
+
+      user = studio.session credentials, (a) -> apimpl a...
+
+      user.delete appliance: 42, cb
+

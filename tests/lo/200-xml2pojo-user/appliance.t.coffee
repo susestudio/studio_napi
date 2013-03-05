@@ -1,8 +1,8 @@
 {parse, transform} = require './setup'
 
-describe 'XML -> POJO xforms, user: GET /appliances/:app', ->
+describe 'XML -> POJO xforms, user: /appliances/:app', ->
 
-  it 'gives information about the appliance', (done) ->
+  it 'GET gives information about the appliance', (done) ->
     parse 'tests/user/GET_appliance.xml', async done, (err, r) ->
       no_error err
       r = transform 'GET /appliances/:app', r
@@ -28,3 +28,8 @@ describe 'XML -> POJO xforms, user: GET /appliances/:app', ->
         ]
       }
 
+  it 'DELETE is successful', (done) ->
+    parse 'tests/user/DELETE_appliance.xml', async done, (err, r) ->
+      no_error err
+      r = transform 'DELETE /appliances/:app', r
+      contains r, success: true

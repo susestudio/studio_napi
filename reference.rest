@@ -349,6 +349,19 @@ An endpoint is a combination of:
 
     apliance: Appliance
 
+`unapi DELETE /appliances/:app`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    app: Id
+
+:Result:
+  ::
+
+    success: true
+
 `unapi GET /appliances/:app/configuration`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -789,6 +802,7 @@ credentials.
     HUser:
 
       create: (appliance) ->
+      delete: (appliance) ->
 
 
 `admin`
@@ -878,6 +892,19 @@ to the low-level admin endpoints:
       toggle: (Xen_DOM0) ->
 
       commit: (done) ->
+
+`user.delete appliance`
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input:
+  ::
+
+    appliance: Id
+
+:Result:
+  ::
+
+    success: Boolean
 
 `app.add package`
 ~~~~~~~~~~~~~~~~~
