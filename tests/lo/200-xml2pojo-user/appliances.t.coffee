@@ -3,7 +3,7 @@
 describe 'XML -> POJO xforms, user: GET /appliances', ->
 
   it 'lists all appliances of the current user', (done) ->
-    parse 'tests/user/appliances.xml', async done, (err, r) ->
+    parse 'tests/user/GET_appliances.xml', async done, (err, r) ->
       no_error err
       r = transform 'GET /appliances', r
       contains r, appliances: [

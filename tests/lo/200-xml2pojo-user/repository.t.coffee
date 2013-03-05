@@ -3,7 +3,7 @@
 describe 'XML -> POJO xforms, user: GET /repositories/:repo', ->
 
   it 'gives info for a repository', (done) ->
-    parse 'tests/user/repository.xml', async done, (err, r) ->
+    parse 'tests/user/GET_repository.xml', async done, (err, r) ->
       no_error err
       r = transform 'GET /repositories/:repo', r
       contains r, repository:

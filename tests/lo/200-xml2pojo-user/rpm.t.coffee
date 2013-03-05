@@ -3,7 +3,7 @@
 describe 'XML -> POJO xforms, user: GET /rpms/:rpm', ->
 
   it 'gives information about an uploaded rpm', (done) ->
-    parse 'tests/user/rpm.xml', async done, (err, r) ->
+    parse 'tests/user/GET_rpm.xml', async done, (err, r) ->
       no_error err
       r = transform 'GET /rpms/:rpm', r
       contains r, rpm:

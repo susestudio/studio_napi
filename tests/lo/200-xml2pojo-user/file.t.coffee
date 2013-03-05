@@ -3,7 +3,7 @@
 describe 'XML -> POJO xforms, user: GET /files/:file', ->
 
   it 'gives metadata for an overlay file', (done) ->
-    parse 'tests/user/file.xml', async done, (err, r) ->
+    parse 'tests/user/GET_file.xml', async done, (err, r) ->
       no_error err
       r = transform 'GET /files/:file', r
       contains r, file:

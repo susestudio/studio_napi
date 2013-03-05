@@ -37,7 +37,7 @@ key = '''
 describe 'XML -> POJO xforms, user: GET /appliances/:app/gpg_keys', ->
 
   it 'gives info for a GPG key', (done) ->
-     parse 'tests/user/gpg_keys.xml', async done, (err, r) ->
+     parse 'tests/user/GET_gpg_keys.xml', async done, (err, r) ->
       no_error err
       r = transform 'GET /appliances/:app/gpg_keys', r
       contains r, gpg_keys: [

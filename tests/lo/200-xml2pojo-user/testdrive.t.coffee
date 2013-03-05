@@ -3,7 +3,7 @@
 describe 'XML -> POJO xforms, user: POST /testdrives', ->
 
   it 'starts a new testdrive', (done) ->
-    parse 'tests/user/testdrive.xml', async done, (err, r) ->
+    parse 'tests/user/GET_testdrive.xml', async done, (err, r) ->
       no_error err
       r = transform 'POST /testdrives', r
       contains r, testdrive:
