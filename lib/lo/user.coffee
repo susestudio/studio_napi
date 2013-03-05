@@ -157,6 +157,16 @@ transforms =
     root: 'running_build'
     output: asis
 
+  'GET /template_sets':
+    root: 'template_sets'
+    output: (xo) ->
+      xo = as_array xo.template_set
+      for ts in xo
+        ts.description = undefined unless ts.description.length
+        ts.templates = ts.template || []
+        delete ts.template
+      xo
+
   'POST /testdrives':
     root: 'testdrive'
     output: asis

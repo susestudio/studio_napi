@@ -706,6 +706,27 @@ An endpoint is a combination of:
 
     running_build: RunningBuild
 
+`unapi GET /template_sets`
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    Template =o \
+      id: Id
+      basesystem: Matches /^\S+$/
+      description: String
+      name: String
+
+    TemplateSet =o \
+      description: Id
+      name: OneOf 'running', ...
+      templates: ArrayOf Template
+
+    template_sets: ArrayOf TemplateSet
+
 `unapi GET /testdrives`
 ~~~~~~~~~~~~~~~~~~~~~~~
 

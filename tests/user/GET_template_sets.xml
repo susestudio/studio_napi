@@ -1,42 +1,158 @@
-<template_sets>
+<template_sets type="array">
   <template_set>
     <name>default</name>
-    <description>SUSE default templates</description>
-    <template>
-      <appliance_id>1</appliance_id>
-      <name>openSUSE 11.1, Just enough OS (JeOS)</name>
-      <description>Tiny, minimalistic appliances</description>
-      <basesystem>11.1</basesystem>
-    </template>
-    <template>
-      <appliance_id>2</appliance_id>
-      <name>openSUSE 11.1, Server</name>
-      <description>A text-only base</description>
-      <basesystem>11.1</basesystem>
-    </template>
-    <template>
-      <appliance_id>3</appliance_id>
-      <name>openSUSE 11.1, Minimal X</name>
-      <description>Graphical system + IceWM</description>
-      <basesystem>11.1</basesystem>
-    </template>
+    <description/>
     <template>
       <appliance_id>4</appliance_id>
-      <name>openSUSE 11.1, KDE 3 desktop</name>
-      <description>Base system + KDE 3</description>
-      <basesystem>11.1</basesystem>
+      <name>SLED 11 SP1, KDE 4 desktop</name>
+      <description>_("SLED 11 SP1, with KDE 4")</description>
+      <basesystem>SLED11_SP1</basesystem>
     </template>
     <template>
       <appliance_id>5</appliance_id>
-      <name>openSUSE 11.1, KDE 4 desktop</name>
-      <description>Base system + KDE 4</description>
-      <basesystem>11.1</basesystem>
+      <name>SLED 11 SP1, GNOME desktop</name>
+      <description>_("SLED 11 SP1, with GNOME")</description>
+      <basesystem>SLED11_SP1</basesystem>
     </template>
     <template>
-      <appliance_id>6</appliance_id>
-      <name>openSUSE 11.1, GNOME desktop</name>
-      <description>Base system + GNOME</description>
-      <basesystem>11.1</basesystem>
+      <appliance_id>21</appliance_id>
+      <name>openSUSE 12.2, GNOME desktop</name>
+      <description>_("Base system + GNOME")</description>
+      <basesystem>12.2</basesystem>
     </template>
+    <template>
+      <appliance_id>12</appliance_id>
+      <name>openSUSE 12.1, Just enough OS (JeOS)</name>
+      <description>_("Tiny, minimalistic appliances")</description>
+      <basesystem>12.1</basesystem>
+    </template>
+    <template>
+      <appliance_id>13</appliance_id>
+      <name>openSUSE 12.1, Server</name>
+      <description>_("A text-only base")</description>
+      <basesystem>12.1</basesystem>
+    </template>
+    <template>
+      <appliance_id>16</appliance_id>
+      <name>openSUSE 12.1, GNOME desktop</name>
+      <description>_("Base system + GNOME")</description>
+      <basesystem>12.1</basesystem>
+    </template>
+    <template>
+      <appliance_id>18</appliance_id>
+      <name>openSUSE 12.2, Server</name>
+      <description>_("A text-only base")</description>
+      <basesystem>12.2</basesystem>
+    </template>
+    <template>
+      <appliance_id>15</appliance_id>
+      <name>openSUSE 12.1, KDE 4 desktop</name>
+      <description>_("Base system + KDE 4")</description>
+      <basesystem>12.1</basesystem>
+    </template>
+    <template>
+      <appliance_id>3</appliance_id>
+      <name>SLES 10 SP4, Server</name>
+      <description>_("SLES 10 SP4")</description>
+      <basesystem>SLES10_SP4</basesystem>
+    </template>
+    <template>
+      <appliance_id>1</appliance_id>
+      <name>SLED 10 SP4, KDE 3 desktop</name>
+      <description>_("SLED 10 SP4, with KDE")</description>
+      <basesystem>SLED10_SP4</basesystem>
+    </template>
+    <template>
+      <appliance_id>20</appliance_id>
+      <name>openSUSE 12.2, KDE 4 desktop</name>
+      <description>_("Base system + KDE 4")</description>
+      <basesystem>12.2</basesystem>
+    </template>
+    <template>
+      <appliance_id>2</appliance_id>
+      <name>SLED 10 SP4, GNOME desktop</name>
+      <description>_("SLED 10 SP4, with GNOME")</description>
+      <basesystem>SLED10_SP4</basesystem>
+    </template>
+    <template>
+      <appliance_id>17</appliance_id>
+      <name>openSUSE 12.2, Just enough OS (JeOS)</name>
+      <description>_("Tiny, minimalistic appliances")</description>
+      <basesystem>12.2</basesystem>
+    </template>
+    <template>
+      <appliance_id>23</appliance_id>
+      <name>SLED 11 SP2, GNOME desktop</name>
+      <description>_("SLED 11 SP2, with GNOME")</description>
+      <basesystem>SLED11_SP2</basesystem>
+    </template>
+    <template>
+      <appliance_id>230</appliance_id>
+      <name>SLES 11 SP1, Just enough OS (JeOS)</name>
+      <description>_("Minimal SLES 11 SP1")</description>
+      <basesystem>SLES11_SP1</basesystem>
+    </template>
+    <template>
+      <appliance_id>231</appliance_id>
+      <name>SLES 11 SP1, Server</name>
+      <description>_("SLES 11 SP1")</description>
+      <basesystem>SLES11_SP1</basesystem>
+    </template>
+    <template>
+      <appliance_id>233</appliance_id>
+      <name>SLES 11 SP2, Server</name>
+      <description>_("SLES 11 SP2")</description>
+      <basesystem>SLES11_SP2</basesystem>
+    </template>
+    <template>
+      <appliance_id>234</appliance_id>
+      <name>SLED 11 SP2, KDE 4 desktop</name>
+      <description>_("SLED 11 SP2, with KDE 4")</description>
+      <basesystem>SLED11_SP2</basesystem>
+    </template>
+    <template>
+      <appliance_id>235</appliance_id>
+      <name>SLED 11 SP2, GNOME desktop</name>
+      <description>_("SLED 11 SP2, with GNOME")</description>
+      <basesystem>SLED11_SP2</basesystem>
+    </template>
+    <template>
+      <appliance_id>232</appliance_id>
+      <name>SLES 11 SP2, Just enough OS (JeOS)</name>
+      <description>_("Minimal SLES 11 SP2")</description>
+      <basesystem>SLES11_SP2</basesystem>
+    </template>
+    <template>
+      <appliance_id>322</appliance_id>
+      <name>openSUSE 12.3, GNOME desktop</name>
+      <description>_("Base system + GNOME")</description>
+      <basesystem>12.3</basesystem>
+    </template>
+    <template>
+      <appliance_id>320</appliance_id>
+      <name>openSUSE 12.3, Server</name>
+      <description>_("A text-only base")</description>
+      <basesystem>12.3</basesystem>
+    </template>
+    <template>
+      <appliance_id>319</appliance_id>
+      <name>openSUSE 12.3, Just enough OS (JeOS)</name>
+      <description>_("Tiny, minimalistic appliances")</description>
+      <basesystem>12.3</basesystem>
+    </template>
+    <template>
+      <appliance_id>321</appliance_id>
+      <name>openSUSE 12.3, KDE 4 desktop</name>
+      <description>_("Base system + KDE 4")</description>
+      <basesystem>12.3</basesystem>
+    </template>
+  </template_set>
+  <template_set>
+    <name>featured</name>
+    <description/>
+  </template_set>
+  <template_set>
+    <name>partners</name>
+    <description/>
   </template_set>
 </template_sets>
