@@ -14,6 +14,7 @@ as_array = (parsed) ->
 
 to_array = (parsed, kind) ->
   kinds = "#{kind}s"
+  return parsed unless kinds of parsed
   unless parsed[kinds] instanceof Array
     if parsed[kinds][kind] is undefined
       parsed[kinds] = []

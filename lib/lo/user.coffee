@@ -38,12 +38,14 @@ transforms =
       to_array xo, 'user'
       to_array xo, 'eula'
       to_array xo, 'database'
-      for d in xo.databases
-        to_array d, 'user'
+      if 'databases' of xo
+        for d in xo.databases
+          to_array d, 'user'
       to_array xo, 'autostart'
       if xo.settings.pae_enabled not instanceof String
         xo.settings.pae_enabled = 'false'
-      xo.lvm.volumes = as_array xo.lvm.volumes.volume
+      if xo.lvm.volumes
+        xo.lvm.volumes = as_array xo.lvm.volumes.volume
       xo
 
   'GET /appliances/:app/gpg_keys':
