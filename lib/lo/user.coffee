@@ -10,6 +10,12 @@ appliance =
     to_array xo, 'build'
     xo
 
+template_set = (ts) ->
+  ts.description = undefined unless ts.description.length
+  ts.templates = ts.template || []
+  delete ts.template
+  ts
+
 transforms =
   'GET /account':
     root: 'account'
@@ -162,10 +168,12 @@ transforms =
     output: (xo) ->
       xo = as_array xo.template_set
       for ts in xo
-        ts.description = undefined unless ts.description.length
-        ts.templates = ts.template || []
-        delete ts.template
+        template_set ts
       xo
+
+  'GET /template_sets/:set':
+    root: 'template_set'
+    output: template_set
 
   'POST /testdrives':
     root: 'testdrive'

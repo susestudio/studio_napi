@@ -15,8 +15,11 @@ frontend = (unapi) ->
     unapi GET '/rpms', done
   @repositories = (done) ->
     unapi GET '/repositories', done
-  @templates = (done) ->
-    unapi GET '/template_sets', done
+  @templates = (set..., done) ->
+    if set.length
+      unapi GET '/template_sets/:set', set: set[0], done
+    else
+      unapi GET '/template_sets', done
   @
 
 exports.frontend = frontend
