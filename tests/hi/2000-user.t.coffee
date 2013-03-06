@@ -15,6 +15,7 @@ describe 'High-level User API:', ->
     delete
     packages
     repositories
+    templates
   '''.split /\s+/
 
   describe 'method presence', ->
@@ -117,4 +118,20 @@ describe 'High-level User API:', ->
       user = studio.session credentials, (a) -> apimpl a...
 
       user.repositories cb
+
+  describe '`user.templates`', ->
+
+    it 'uses GET /template_sets', (done) ->
+      cb = (e, r) ->
+        no_error e
+        apimpl.verify()
+        done()
+
+      apimpl = sinon.mock().once()
+        .withExactArgs('GET', '/template_sets', cb)
+        .callsArg(2)
+
+      user = studio.session credentials, (a) -> apimpl a...
+
+      user.templates cb
 

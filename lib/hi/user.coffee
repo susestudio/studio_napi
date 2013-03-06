@@ -15,6 +15,8 @@ frontend = (unapi) ->
     unapi GET '/rpms', done
   @repositories = (done) ->
     unapi GET '/repositories', done
+  @templates = (done) ->
+    unapi GET '/template_sets', done
   @
 
 exports.frontend = frontend
