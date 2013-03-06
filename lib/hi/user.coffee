@@ -13,6 +13,8 @@ frontend = (unapi) ->
     unapi DELETE "/appliances/:app", {app: data.appliance}, done
   @packages = (done) ->
     unapi GET '/rpms', done
+  @repositories = (done) ->
+    unapi GET '/repositories', done
   @
 
 exports.frontend = frontend

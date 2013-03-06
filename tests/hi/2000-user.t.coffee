@@ -14,6 +14,7 @@ describe 'High-level User API:', ->
     create
     delete
     packages
+    repositories
   '''.split /\s+/
 
   describe 'method presence', ->
@@ -100,4 +101,20 @@ describe 'High-level User API:', ->
       user = studio.session credentials, (a) -> apimpl a...
 
       user.packages cb
+
+  describe '`user.repositories`', ->
+
+    it 'uses GET /repositories', (done) ->
+      cb = (e, r) ->
+        no_error e
+        apimpl.verify()
+        done()
+
+      apimpl = sinon.mock().once()
+        .withExactArgs('GET', '/repositories', cb)
+        .callsArg(2)
+
+      user = studio.session credentials, (a) -> apimpl a...
+
+      user.repositories cb
 

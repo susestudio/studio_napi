@@ -958,6 +958,22 @@ to the low-level admin endpoints:
       archive: TrueFalse
     Packages   =o ArrayOf Package
 
+`user.repositories`
+~~~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    Repository    =o
+      id: Id
+      name: String
+      type: String
+      base_system: BaseSystem
+      base_url: URL
+    Repositories   =o ArrayOf Repository
+
 `app.add package`
 ~~~~~~~~~~~~~~~~~
 
