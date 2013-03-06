@@ -76,6 +76,7 @@ Common parts of the vocabulary: ::
   LVMGroupName        =o  String
   Locale              =o  String
   BaseSystem          =o  String
+  Arch                =o  OneOf 'i586 x86_64'.split ' '
   ImageType           =o  OneOf \
     'azure dasd ec2 iso net oem oemiso ovf vhd vmx xen zfcp'.split ' '
 
@@ -854,6 +855,42 @@ to the low-level admin endpoints:
 
 `user`
 ++++++
+
+`user.appliances`
+~~~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    Build:
+      id: Id
+      version: Version
+      image_type: ImageType
+      image_size: MBytes
+      compressed_image_size: MBytes
+      download_url: URL
+
+    DiskSize   o=  /^\d+ [KMGTPYZ]B$/
+
+    Appliance  o=
+      id: Id
+      name: String
+      arch: Arch
+      type: ImageType
+      last_edited: Timestamp
+      estimated_raw_size: DiskSize
+      estimated_compressed_size: DiskSize
+      edit_url: URL
+      basesystem: BaseSystem
+      uuid: UUID
+      parent:
+        id: Id
+        name: Name
+      builds: ArrayOf Build
+
+    appliances: ArrayOf Appliance
 
 `user.create appliance`
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -10,6 +10,7 @@ describe 'High-level User API:', ->
     key: 'ELaM8usq3Ryb'
 
   methods = '''
+    appliances
     create
     delete
   '''.split /\s+/
@@ -64,4 +65,22 @@ describe 'High-level User API:', ->
       user = studio.session credentials, (a) -> apimpl a...
 
       user.delete appliance: 42, cb
+
+  describe '`user.appliances`', ->
+
+    user =
+
+    it 'uses GET /appliances', (done) ->
+      cb = (e, r) ->
+        no_error e
+        apimpl.verify()
+        done()
+
+      apimpl = sinon.mock().once()
+        .withExactArgs('GET', '/appliances', cb)
+        .callsArg(2)
+
+      user = studio.session credentials, (a) -> apimpl a...
+
+      user.appliances cb
 
