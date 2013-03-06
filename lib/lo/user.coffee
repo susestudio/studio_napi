@@ -4,6 +4,12 @@ asis = common.asis
 as_array = common.as_array
 to_array = common.to_array
 
+appliance =
+  root: 'appliance'
+  output: (xo) ->
+    to_array xo, 'build'
+    xo
+
 transforms =
   'GET /account':
     root: 'account'
@@ -23,11 +29,11 @@ transforms =
         to_array a, 'build'
       xo
 
+  'POST /appliances':
+    appliance
+
   'GET /appliances/:app':
-    root: 'appliance'
-    output: (xo) ->
-      to_array xo, 'build'
-      xo
+    appliance
 
   'DELETE /appliances/:app':
     root: 'success'
