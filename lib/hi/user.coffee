@@ -11,6 +11,8 @@ frontend = (unapi) ->
   @delete = (data, done) ->
     assert 'appliance' of data
     unapi DELETE "/appliances/:app", {app: data.appliance}, done
+  @packages = (done) ->
+    unapi GET '/rpms', done
   @
 
 exports.frontend = frontend

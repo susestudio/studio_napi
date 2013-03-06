@@ -943,6 +943,21 @@ to the low-level admin endpoints:
 
     success: Boolean
 
+`user.packages`
+~~~~~~~~~~~~~~~
+
+:Input: default.
+
+:Result:
+  ::
+
+    Package    =o
+      id: Id
+      filename: Basename
+      size: Bytes
+      archive: TrueFalse
+    Packages   =o ArrayOf Package
+
 `app.add package`
 ~~~~~~~~~~~~~~~~~
 

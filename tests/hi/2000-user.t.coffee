@@ -13,6 +13,7 @@ describe 'High-level User API:', ->
     appliances
     create
     delete
+    packages
   '''.split /\s+/
 
   describe 'method presence', ->
@@ -83,4 +84,20 @@ describe 'High-level User API:', ->
       user = studio.session credentials, (a) -> apimpl a...
 
       user.appliances cb
+
+  describe '`user.packages`', ->
+
+    it 'uses GET /rpms', (done) ->
+      cb = (e, r) ->
+        no_error e
+        apimpl.verify()
+        done()
+
+      apimpl = sinon.mock().once()
+        .withExactArgs('GET', '/rpms', cb)
+        .callsArg(2)
+
+      user = studio.session credentials, (a) -> apimpl a...
+
+      user.packages cb
 
