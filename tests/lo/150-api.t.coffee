@@ -53,7 +53,12 @@ describe 'common.api', ->
     mycb.verify()
 
   it 'reports failures from xml parser', ->
-    myrpc = (a, b, c..., cb) -> cb()
+    myrpc = (a, b, c..., cb) ->
+      cb \
+        undefined
+      , ''
+      , headers:
+          'content-type': 'application/xml'
     xml = parse: (_, cb) -> cb 'xml parsing error'
 
     mycb = sinon.mock().once().withExactArgs 'xml parsing error'
@@ -68,7 +73,12 @@ describe 'common.api', ->
       error:
         code: 'internal_error'
 
-    myrpc = (a, b, c..., cb) -> cb()
+    myrpc = (a, b, c..., cb) ->
+      cb \
+        undefined
+      , ''
+      , headers:
+          'content-type': 'application/xml'
     myxml = parse: (a, cb) -> cb undefined, response
 
     mycb = sinon.mock().once().withExactArgs response.error

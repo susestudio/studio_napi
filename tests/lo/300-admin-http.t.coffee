@@ -20,7 +20,7 @@ describe 'Admin API (HTTP RPC)', ->
       sig = "#{req.method} /#{pathname}"
       file = tools.api2file[sig]
       fs.readFile "tests/admin/#{file}.xml", (err, contents) ->
-        done err if err
+        res.setHeader 'Content-Type', 'application/xml'
         res.end contents
 
     server.on 'error', done

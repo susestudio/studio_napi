@@ -6,6 +6,6 @@ exports.request = (options, done) ->
     res.on 'data', (chunk) ->
       body = Buffer.concat [body, chunk]
     res.on 'end', ->
-      done undefined, body
+      done undefined, body, res
   req.end()
 

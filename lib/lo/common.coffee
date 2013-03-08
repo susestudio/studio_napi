@@ -60,13 +60,16 @@ exports.api = (methods) -> (rpc, xml) ->
     unless methods[sig]
       return done new Error "#{sig}: unknown method"
 
-    rpc httpmethod, apimethod, args..., (err, data) ->
+    rpc httpmethod, apimethod, args..., (err, data, metadata) ->
       return done err if err
-      xml.parse data, (err, result) ->
-        # FIXME: coverage
-        return done err if err
-        return done result.error if result.error and result.error.code
-        done undefined, xml2pojo sig, result
+      if metadata.headers['content-type']?.match /^\w+\/xml\b/
+        xml.parse data, (err, result) ->
+          # FIXME: coverage
+          return done err if err
+          return done result.error if result.error and result.error.code
+          done undefined, xml2pojo sig, result
+      else
+        done undefined, data
 
 {url, qstring} = require './url'
 
