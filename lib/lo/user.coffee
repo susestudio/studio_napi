@@ -64,6 +64,8 @@ transforms =
         xo.lvm.volumes = as_array xo.lvm.volumes.volume
       xo
 
+  'GET /appliances/:app/configuration/logo': on
+
   'GET /appliances/:app/gpg_keys':
     root: 'gpg_keys'
     output: (xo) ->
