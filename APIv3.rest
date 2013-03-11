@@ -1,0 +1,82 @@
+.. vim: ft=rst sts=2 sw=2 tw=70
+.. default-role:: literal
+
+APIv3: REST
+===========
+
+This document discusses application of REST_ principles in the context
+of the Studio HTTP API.
+
+.. _REST: REST.rest
+
+Goals and Means
+***************
+
+Goals
++++++
+
+  Extensibility, scalability.
+
+We want the API to be durable in face of time and scale.
+We want to be able to evolve both the API interface and
+implementation, potentially keeping compatibility with old clients.
+We want to afford the same to clients.
+We would like to converge the api and web-ui controllers.
+
+Means
++++++
+
+  Generality, readability, late binding, interfaces first.
+
+The web-ui URLs should be meaningful to humans which means preference
+for natural identifiers.
+The quality of the interface should trump implementation concerns
+(up to a limit).
+
+Partial updates
+***************
+
+Partial updates (eg. appliance configuration) should use `PATCH`.
+HTTPbis:
+
+  Partial content updates are possible by targeting a separately
+  identified resource with state that overlaps a portion of the larger
+  resource, or by using a different method that has been specifically
+  defined for partial updates (for example, the PATCH method defined
+  in [RFC5789]).
+
+Expires header
+**************
+
+The `Expires` header should reflect real-world considerations such
+as the build expiration policy.
+
+Error responses
+***************
+
+APIv2 abuses 400 Bad Request for all kinds of error conditions.
+This status code is intended for "malformed syntax" situations,
+where *syntax* refers to the syntax of the HTTP request, not to
+application-level semantic problems with an otherwise correct
+HTTP request.
+A good chunk of current 400 responses should be 405 Method Not Allowed
+instead.
+
+Natural routes
+**************
+
+Routes exposed by v3 should use natural ids as much as possible.
+
+Routes with two synthetic ids where one id implies the only possible
+value of the other necessitate extra code to detect and mitigate
+inconsistencies.
+What happens with `GET /appliances/3/files/12` if the file with id=12
+is in fact part of appliance #6?
+
+Only unique and/or stable natural ids can be used.
+
+* appliance names are not unique even within the scope
+  of a single user -> bad
+* overlay file paths in an appliance (image) are not stable
+  (can change over time) but they're unique at any moment -> ok
+
