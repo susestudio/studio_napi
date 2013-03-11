@@ -23,7 +23,7 @@ deattr = (xo) ->
   xo
 
 exports.transform = (transforms) -> (sig, result) ->
-  t = transforms[sig]
+  t = transforms[sig].response
   result[t.root] = t.output result[t.root]
   deattr result
 
