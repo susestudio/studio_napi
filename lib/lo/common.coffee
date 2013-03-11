@@ -51,6 +51,15 @@ exports.api = (methods) -> (rpc, xml) ->
 
   xml2pojo = transform methods
 
+  response_handlers =
+    'application/xml': (sig) -> (data, done) ->
+      xml.parse data, (err, result) ->
+        return done err if err
+        return done result.error if result.error and result.error.code
+        done undefined, xml2pojo sig, result
+    '*/*': (sig) -> (data, done) ->
+      done undefined, data
+
   (httpmethod, apimethod, args..., done) ->
     unless apimethod? and done?
       # FIXME: coverage
@@ -62,14 +71,10 @@ exports.api = (methods) -> (rpc, xml) ->
 
     rpc httpmethod, apimethod, args..., (err, data, metadata) ->
       return done err if err
-      if metadata.headers['content-type']?.match /^\w+\/xml\b/
-        xml.parse data, (err, result) ->
-          # FIXME: coverage
-          return done err if err
-          return done result.error if result.error and result.error.code
-          done undefined, xml2pojo sig, result
-      else
-        done undefined, data
+      ct = metadata.headers['content-type'].match(/^[^;$]+/)[0]
+      ct = '*/*' unless ct of response_handlers
+      rh = response_handlers[ct] sig
+      rh data, done
 
 {url, qstring} = require './url'
 
