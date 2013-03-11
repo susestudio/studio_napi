@@ -52,13 +52,17 @@ exports.api = (methods) -> (rpc, xml) ->
   xml2pojo = transform methods
 
   response_handlers =
-    'application/xml': (sig) -> (data, done) ->
-      xml.parse data, (err, result) ->
-        return done err if err
-        return done result.error if result.error and result.error.code
-        done undefined, xml2pojo sig, result
-    '*/*': (sig) -> (data, done) ->
-      done undefined, data
+    'application/xml': (sig) -> (res, done) ->
+      body = new Buffer 0
+      res.on 'data', (chunk) ->
+        body = Buffer.concat [body, chunk]
+      res.on 'end', ->
+        xml.parse body, (err, result) ->
+          return done err if err
+          return done result.error if result.error and result.error.code
+          done undefined, xml2pojo sig, result
+    '*/*': (sig) -> (res, done) ->
+      done undefined, res
 
   (httpmethod, apimethod, args..., done) ->
     unless apimethod? and done?
@@ -69,12 +73,12 @@ exports.api = (methods) -> (rpc, xml) ->
     unless methods[sig]
       return done new Error "#{sig}: unknown method"
 
-    rpc httpmethod, apimethod, args..., (err, data, metadata) ->
+    rpc httpmethod, apimethod, args..., (err, res) ->
       return done err if err
-      ct = metadata.headers['content-type'].match(/^[^;$]+/)[0]
+      ct = res.headers['content-type'].match(/^[^;$]+/)[0]
       ct = '*/*' unless ct of response_handlers
       rh = response_handlers[ct] sig
-      rh data, done
+      rh res, done
 
 {url, qstring} = require './url'
 

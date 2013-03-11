@@ -12,6 +12,12 @@ methods =
     root: 'whatever'
     output: 'this is not xml'
 
+fakeHTTPresponse =
+  headers:
+    'content-type': 'application/xml'
+  on: (evt, handler) ->
+    do handler if evt is 'end'
+
 describe 'common.api', ->
 
   it 'fails early for unknown endpoints', ->
@@ -54,11 +60,7 @@ describe 'common.api', ->
 
   it 'reports failures from xml parser', ->
     myrpc = (a, b, c..., cb) ->
-      cb \
-        undefined
-      , ''
-      , headers:
-          'content-type': 'application/xml'
+      cb undefined, fakeHTTPresponse
     xml = parse: (_, cb) -> cb 'xml parsing error'
 
     mycb = sinon.mock().once().withExactArgs 'xml parsing error'
@@ -74,11 +76,7 @@ describe 'common.api', ->
         code: 'internal_error'
 
     myrpc = (a, b, c..., cb) ->
-      cb \
-        undefined
-      , ''
-      , headers:
-          'content-type': 'application/xml'
+      cb undefined, fakeHTTPresponse
     myxml = parse: (a, cb) -> cb undefined, response
 
     mycb = sinon.mock().once().withExactArgs response.error
