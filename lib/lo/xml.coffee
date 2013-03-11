@@ -11,3 +11,19 @@ parser = new xml2js.Parser(xml2js_options)
 
 exports.parse = (data, done) ->
   parser.parseString data, done
+
+deattr = (xo) ->
+  if xo instanceof Array
+    for v, i in xo
+      deattr v
+  else if xo instanceof Object
+    delete xo['@']
+    for p, v of xo
+      deattr v
+  xo
+
+exports.transform = (transforms) -> (sig, result) ->
+  t = transforms[sig]
+  result[t.root] = t.output result[t.root]
+  deattr result
+

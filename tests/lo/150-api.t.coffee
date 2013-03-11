@@ -48,7 +48,12 @@ describe 'common.api', ->
     , '/fubar'
     , omg: 'wtf'
     ).callsArgWith(3, 'rofl')
-    myxml = sinon.mock().never()
+    myxml =
+      parse: sinon.mock().never()
+      transform: sinon.mock().once()
+      verify: ->
+        @parse.verify()
+        @transform.verify()
     mycb = sinon.mock().once().withExactArgs 'rofl'
 
     napi = (common.api methods) myrpc, myxml
@@ -61,7 +66,9 @@ describe 'common.api', ->
   it 'reports failures from xml parser', ->
     myrpc = (a, b, c..., cb) ->
       cb undefined, fakeHTTPresponse
-    xml = parse: (_, cb) -> cb 'xml parsing error'
+    xml =
+      parse: (_, cb) -> cb 'xml parsing error'
+      transform: ->
 
     mycb = sinon.mock().once().withExactArgs 'xml parsing error'
 
@@ -77,7 +84,9 @@ describe 'common.api', ->
 
     myrpc = (a, b, c..., cb) ->
       cb undefined, fakeHTTPresponse
-    myxml = parse: (a, cb) -> cb undefined, response
+    myxml =
+      parse: (a, cb) -> cb undefined, response
+      transform: ->
 
     mycb = sinon.mock().once().withExactArgs response.error
 

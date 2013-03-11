@@ -56,6 +56,6 @@ transforms =
         parsed.disks = (disk for disk in parsed.disks['#'])
       since parsed
 
+exports.transforms = transforms
 exports.api = common.api transforms
-exports.transform = common.transform transforms
 

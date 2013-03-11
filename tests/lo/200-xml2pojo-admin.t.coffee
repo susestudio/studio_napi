@@ -1,7 +1,9 @@
 tools = require '../tools'
 admin = require './lib-lo-admin'
+xml   = require './lib-lo-xml'
 
-transform = admin.transform
+transform = xml.transform admin.transforms
+
 parse = tools.parse
 
 describe 'XML -> POJO xforms, admin:', ->

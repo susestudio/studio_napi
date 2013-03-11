@@ -187,6 +187,6 @@ transforms =
       as_array xo.testdrive
 
 
+exports.transforms = transforms
 exports.api = common.api transforms
-exports.transform = common.transform transforms
 

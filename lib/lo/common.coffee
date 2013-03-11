@@ -24,32 +24,15 @@ to_array = (parsed, kind) ->
       parsed[kinds] = [parsed[kinds][kind]]
   parsed
 
-deattr = (xo) ->
-  if xo instanceof Array
-    for v, i in xo
-      deattr v
-  else if xo instanceof Object
-    delete xo['@']
-    for p, v of xo
-      deattr v
-  xo
-
 exports.asis = asis
 exports.as_array = as_array
 exports.to_array = to_array
-
-transform = (transforms) -> (sig, result) ->
-  t = transforms[sig]
-  result[t.root] = t.output result[t.root]
-  deattr result
-
-exports.transform = transform
 
 exports.api = (methods) -> (rpc, xml) ->
 
   xml ?= (require './xml')
 
-  xml2pojo = transform methods
+  xml2pojo = xml.transform methods
 
   response_handlers =
     'application/xml': (sig) -> (res, done) ->
