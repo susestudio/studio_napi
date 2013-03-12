@@ -53,6 +53,14 @@ describe 'RPC (HTTP) client', ->
       , path: '/here/there/snafu/bar?a=b&c=d'
       done()
 
+  it 'complains about :words in `path` w/o entries in `args`', (done) ->
+
+    anrpc 'GET', '/snafu/:foo', bar: 'qux', (err, res) ->
+      (expect err, 'error').to.be.an.instanceof Error
+      (expect err, 'error').to.have.property 'message'
+      , "GET /snafu/:foo: parameter 'foo' not found in arguments"
+      done()
+
   it 'generates *almost* RFC2396-compliant paths and query strings', (done) ->
 
     # see rant in lib/lo/url.coffee

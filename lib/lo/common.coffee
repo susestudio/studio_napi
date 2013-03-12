@@ -72,19 +72,26 @@ exports.rpc = (httpc, options) ->
   options = options.options
   server = url.parse options.url
   (httpmethod, apimethod, args..., done) ->
-    qs = ''
+    path = apimethod
     if args.length
-      inpath = {}
-      apimethod = apimethod.replace /:(\w+)/g, (_, param) ->
+      args = args[0]
+    inpath = {}
+    try
+      path = path.replace /:(\w+)/g, (_, param) ->
+        throw new Error \
+          "#{httpmethod} #{apimethod}: parameter '#{param}' not found in arguments" \
+          unless param of args
         inpath[param] = yes
-        qstring.escape args[0][param]
-      query = {}
-      query[k] = v for k, v of args[0] when not inpath[k]
-      qs = qstring.stringify query
-      qs = "?#{qs}" if qs.length
+        qstring.escape args[param]
+    catch e
+      return done e
+    query = {}
+    query[k] = v for k, v of args when not inpath[k]
+    qs = qstring.stringify query
+    qs = "?#{qs}" if qs.length
     reqopts =
       method: httpmethod
-      path: "#{server.pathname}#{apimethod}#{qs}"
+      path: "#{server.pathname}#{path}#{qs}"
       port: server.port
       hostname: server.hostname
       auth: "#{options.user}:#{options.key}"
