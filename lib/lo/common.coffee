@@ -28,11 +28,13 @@ exports.asis = asis
 exports.as_array = as_array
 exports.to_array = to_array
 
-exports.api = (methods) -> (rpc, xml) ->
+exports.api = (methods) -> (rpcgen, xml) ->
 
   xml ?= (require './xml')
 
   xml2pojo = xml.transform methods
+
+  rpc = rpcgen methods
 
   response_handlers =
     'application/xml': (sig) -> (res, done) ->
@@ -80,7 +82,7 @@ build_qs = (args, inpath) ->
   qs = "?#{qs}" if qs.length
   qs
 
-exports.rpc = (httpc, options) ->
+exports.rpc = (httpc, options) -> (methods) ->
   if not options?
     # FIXME: coverage
     [httpc, options] = [(require './http').request, httpc]

@@ -20,11 +20,19 @@ describe 'RPC (HTTP) client', ->
 
   opts = (o) -> extend {}, expected_opts, o
 
+  methods =
+    'DELETE /fubar': yes
+    'PUT /snafu/:foo/omg/:wtf': yes
+    'GET /snafu/:foo': yes
+    'GET /snafu/:a': yes
+
+  options =
+    url: 'http://example.org:6942/here/there'
+    user: 'ytsarev'
+    key: 'blabla'
+
   beforeEach ->
-    anrpc = rpc httprequest, options:
-      url: 'http://example.org:6942/here/there'
-      user: 'ytsarev'
-      key: 'blabla'
+    anrpc = (rpc httprequest, options: options) methods
 
   it 'calls http.request with correctly transformed arguments', (done) ->
 
