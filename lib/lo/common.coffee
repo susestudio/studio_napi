@@ -65,6 +65,21 @@ exports.api = (methods) -> (rpc, xml) ->
 
 {url, qstring} = require './url'
 
+subst_path = (path, args, inpath) ->
+  path.replace /:(\w+)/g, (_, param) ->
+    throw new Error \
+      "parameter '#{param}' not found in arguments" \
+      unless param of args
+    inpath[param] = yes
+    qstring.escape args[param]
+
+build_qs = (args, inpath) ->
+  query = {}
+  query[k] = v for k, v of args when not inpath[k]
+  qs = qstring.stringify query
+  qs = "?#{qs}" if qs.length
+  qs
+
 exports.rpc = (httpc, options) ->
   if not options?
     # FIXME: coverage
@@ -77,18 +92,10 @@ exports.rpc = (httpc, options) ->
       args = args[0]
     inpath = {}
     try
-      path = path.replace /:(\w+)/g, (_, param) ->
-        throw new Error \
-          "#{httpmethod} #{apimethod}: parameter '#{param}' not found in arguments" \
-          unless param of args
-        inpath[param] = yes
-        qstring.escape args[param]
+      path = subst_path path, args, inpath
     catch e
-      return done e
-    query = {}
-    query[k] = v for k, v of args when not inpath[k]
-    qs = qstring.stringify query
-    qs = "?#{qs}" if qs.length
+      return done new Error "#{httpmethod} #{apimethod}: #{e.message}"
+    qs = build_qs args, inpath
     reqopts =
       method: httpmethod
       path: "#{server.pathname}#{path}#{qs}"
