@@ -15,13 +15,18 @@ Goals and Means
 Goals
 +++++
 
-  Extensibility, scalability.
+  Extensibility, scalability, pragmatism.
 
-We want the API to be durable in face of time and scale.
-We want to be able to evolve both the API interface and
-implementation, potentially keeping compatibility with old clients.
-We want to afford the same to clients.
-We would like to converge the api and web-ui controllers.
+* We want the API to be durable in face of time and scale.
+* We want to be able to evolve both the interface and implementation,
+  potentially keeping compatibility with old clients.
+* We want to afford the same to clients.
+* We want the API to cover the whole feature set of SUSE Studio.
+* We do not want to close the door to converging the api and web-ui
+  controllers without a very good reason.
+* We want the API to be usable with low effort on the part of the
+  client software authors.
+* Inexperienced programmers should be able to use the API.
 
 Means
 +++++
