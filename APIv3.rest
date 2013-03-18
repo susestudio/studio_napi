@@ -31,12 +31,21 @@ Goals
 Means
 +++++
 
-  Generality, readability, late binding, interfaces first.
+  Generality, readability, coarseness, late binding, interfaces first.
 
-The web-ui URLs should be meaningful to humans which means preference
-for natural identifiers.
-The quality of the interface should trump implementation concerns
-(up to a limit).
+* The web-ui URLs should be meaningful to humans which means preference
+  for natural identifiers.
+* The quality of the interface should trump implementation concerns
+  (up to a limit).
+* As is the case with all remote services, each use has large overhead
+  both in time and computer resources.  It's cheaper to give clients
+  more information than to force them to access the API twice.
+* Content negotiation enables late binding of an URI reference to a
+  representation, "enabling content negotiation to take place based on
+  characteristics of the request", and "to reference the concept
+  rather than some singular representation of that concept, thus
+  removing the need to change all existing links whenever the
+  representation changes".
 
 Partial updates
 ***************
