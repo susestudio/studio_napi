@@ -94,3 +94,45 @@ Only unique and/or stable natural ids can be used.
 * overlay file paths in an appliance (image) are not stable
   (can change over time) but they're unique at any moment -> ok
 
+Specifications
+**************
+
+HTTP 1.1
+http://tools.ietf.org/html/rfc2068
+
+HTTPbis
+http://tools.ietf.org/wg/httpbis/
+
+PATCH method for HTTP
+https://tools.ietf.org/rfc/rfc5789
+
+Prefer header
+http://datatracker.ietf.org/doc/draft-snell-http-prefer/
+
+URI Template
+http://tools.ietf.org/html/rfc6570
+
+JSON, application/json
+http://tools.ietf.org/html/rfc4627
+
+application/json-patch
+http://datatracker.ietf.org/doc/draft-ietf-appsawg-json-patch/
+
+JSON schema
+http://tools.ietf.org/html/draft-zyp-json-schema-04
+
+JSON pointer
+http://datatracker.ietf.org/doc/draft-ietf-appsawg-json-pointer/
+
+Link relations
+http://datatracker.ietf.org/doc/draft-snell-additional-link-relations/
+
+XML media types (foo/bar+xml)
+http://datatracker.ietf.org/doc/draft-ietf-appsawg-xml-mediatypes/
+
+On Linking Alternative Representations To Enable Discovery And Publishing
+http://www.w3.org/2001/tag/doc/alternatives-discovery.html
+
+REST
+http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+
