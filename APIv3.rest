@@ -65,8 +65,17 @@ Expires header
 The `Expires` header should reflect real-world considerations such
 as the build expiration policy.
 
+Status codes
+************
+
+We should issue status codes in conformance with HTTP and related
+standards.  This is especially important in non-interactive software,
+where using a wide brush can deprive the client of ability to take
+the most appropriate action and force a human intervention to
+disambiguate the situation.
+
 Error responses
-***************
++++++++++++++++
 
 APIv2 abuses 400 Bad Request for all kinds of error conditions.
 This status code is intended for "malformed syntax" situations,
