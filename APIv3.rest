@@ -103,6 +103,25 @@ Only unique and/or stable natural ids can be used.
 * overlay file paths in an appliance (image) are not stable
   (can change over time) but they're unique at any moment -> ok
 
+Representation descriptions
+***************************
+
+We can keep relying on informal descriptions, or employ a formal
+format.  Informal descriptions tend to be incomplete and ambiguous,
+formal descriptions do not suffer from ambiguities and would enable
+testing and validation (both server- and client-side).
+
+I propose describing representations used by the API using
+JSON Schema v4, which is being prepared for submission to IETF
+"in early 2013".
+
+JSON Schema v4
+++++++++++++++
+
+* http://json-schema.org/latest/json-schema-core.html
+* http://json-schema.org/latest/json-schema-validation.html
+
+
 Specifications
 **************
 
