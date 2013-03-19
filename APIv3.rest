@@ -136,3 +136,19 @@ http://www.w3.org/2001/tag/doc/alternatives-discovery.html
 REST
 http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
 
+Further Reading
+***************
+
+http://www.subbu.org/blog/2011/03/performance-of-restful-apps
+
+http://blog.steveklabnik.com/posts/2011-07-03-nobody-understands-rest-or-http
+
+http://developer.github.com/
+
+http://www.infoq.com/news/2010/03/rest-versioning-strategies
+
+http://www.subbu.org/blog/2007/12/vary-header-for-restful-applications
+
+http://stackoverflow.com/questions/389169/best-practices-for-api-versioning
+
+http://www.w3.org/DesignIssues/Axioms.html
