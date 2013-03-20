@@ -1,0 +1,11 @@
+# vim: ft=sh sw=2 ts=2 et
+
+rst2html="$($SHELL ${0%/*}/find-rst2html)"
+test -z "$rst2html" && exit 1
+rest="$1"
+html="$2"
+surl="${rest##*/}"
+
+sed -e '/^\.\. /s/\.rest/.html/' < $rest | \
+  $rst2html -stg --source-url $surl - $html
+

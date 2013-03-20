@@ -1,0 +1,14 @@
+# vim: ft=sh sw=2 ts=2 et
+
+for n in rst2html.py rst2html; do
+  command which $n && exit 0
+done 2>/dev/null || true
+
+{
+  echo "";
+  echo "rst2html is required to build HTML documentation.";
+  echo "Install Docutils from http://docutils.sf.net/.";
+  echo "";
+} >&2
+exit 1
+

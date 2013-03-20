@@ -4,7 +4,11 @@
 
 MOCHA ?=	mocha -C --compilers t.coffee:coffee-script \
 		  --globals DELETE,GET,POST,PUT
-RST2HTML ?=	$(call first_in_path,rst2html.py rst2html)
+
+SHELL =		/bin/sh
+RST2HTML ?=	$(SHELL) tools/rst2html
+
+export SHELL
 
 htmlfiles =	README.html NOTES.html examples.html reference.html
 testfiles =	$$(find tests -maxdepth 1 -name \*.t.coffee | sort) \
@@ -28,11 +32,6 @@ do-check:
 drive:
 	$(MOCHA) --timeout 3000 $(e2efiles)
 
-define first_in_path
-  $(firstword $(wildcard \
-    $(foreach p,$(1),$(addsuffix /$(p),$(subst :, ,$(PATH)))) \
-  ))
-endef
 
 MAKEFLAGS =	--no-print-directory \
 		--no-builtin-rules \

@@ -78,8 +78,8 @@ dependencies locally (in `./node_modules/`).
 Documentation
 =============
 
-See `reference.rest`_ and `examples.rest`_.
+See `reference`_ and `examples`_.
 
-.. _examples.rest: examples.html
-.. _reference.rest: reference.html
+.. _examples: examples.rest
+.. _reference: reference.rest
 
