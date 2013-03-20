@@ -32,6 +32,8 @@ do-check:
 drive:
 	$(MOCHA) --timeout 3000 $(e2efiles)
 
+clean:
+	$(RM) $(htmlfiles)
 
 MAKEFLAGS =	--no-print-directory \
 		--no-builtin-rules \
