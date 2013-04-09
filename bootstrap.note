@@ -1,2 +1,4 @@
+************************************************************
 `make drive` needs `cfg/admin` and `cfg/user` files to work.
 See README.rest for instructions.
+************************************************************
