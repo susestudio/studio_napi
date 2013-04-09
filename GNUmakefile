@@ -30,6 +30,9 @@ do-check:
 	$(MOCHA) $(testfiles)
 
 drive:
+	npm run-script drive
+
+do-drive:
 	$(MOCHA) --timeout 3000 $(e2efiles)
 
 clean:
@@ -39,6 +42,6 @@ MAKEFLAGS =	--no-print-directory \
 		--no-builtin-rules \
 		--no-builtin-variables
 
-.PHONY: check clean do-check drive html
+.PHONY: check clean do-check do-drive drive html
 
 # vim: ts=8 noet sw=2 sts=2
