@@ -108,9 +108,9 @@ API side (admin or user), and credentials (see your Studio profile).
 ++++++++++++++++++++++++++++++
 
 To support a slightly more DSLish code, `studio_napi` publishes global
-functions corresponding to used HTTP methods; see `examples.rest`_.
+functions corresponding to used HTTP methods; see `examples`_.
 
-.. _examples.rest: examples.html
+.. _examples: examples.rest
 
 **Synopsis** ::
 
