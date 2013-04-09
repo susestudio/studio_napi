@@ -39,6 +39,6 @@ MAKEFLAGS =	--no-print-directory \
 		--no-builtin-rules \
 		--no-builtin-variables
 
-.PHONY: check do-check drive html
+.PHONY: check clean do-check drive html
 
 # vim: ts=8 noet sw=2 sts=2
