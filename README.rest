@@ -68,11 +68,12 @@ If you want to hack on `studio_napi`: ::
 
   git clone https://github.com/roman-neuhauser/studio_napi.git
   cd studio_napi
-  npm install
-  npm test # or: make check
+  make wc         # post-checkout setup
+  make check      # unit tests
+  make drive      # end-to-end tests
   # happy hacking
 
-The `npm install` above downloads and installs studio_napi's
+The `make wc` above downloads and installs studio_napi's
 dependencies locally (in `./node_modules/`).
 
 
