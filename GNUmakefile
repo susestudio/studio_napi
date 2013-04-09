@@ -18,6 +18,11 @@ e2efiles =	$$(find drive -maxdepth 1 -name \*.t.coffee | sort) \
 		$$(find drive/lo -name \*.t.coffee | sort) \
 		$$(find drive/hi -name \*.t.coffee | sort)
 
+wc:
+	npm install
+	@echo
+	@cat bootstrap.note
+
 html: $(htmlfiles)
 
 %.html: %.rest
@@ -42,6 +47,6 @@ MAKEFLAGS =	--no-print-directory \
 		--no-builtin-rules \
 		--no-builtin-variables
 
-.PHONY: check clean do-check do-drive drive html
+.PHONY: check clean do-check do-drive drive html wc
 
 # vim: ts=8 noet sw=2 sts=2

@@ -4,14 +4,25 @@ expect = (require 'chai').expect
 diff = (require 'difflet')(indent: 2, comment: true).compare
 
 config_file = (path) ->
-  cfg = {}
-  (fs.readFileSync path, 'utf8')
-    .split(/\n/)
-    .filter((l) -> !l.match /^\s*#|^\s*$/)
-    .map((l) -> l.split /\s*=\s*/, 2)
-    .forEach (pair) ->
-      cfg[pair[0]] = pair[1]
-  cfg
+  try
+    cfg = {}
+    (fs.readFileSync path, 'utf8')
+      .split(/\n/)
+      .filter((l) -> !l.match /^\s*#|^\s*$/)
+      .map((l) -> l.split /\s*=\s*/, 2)
+      .forEach (pair) ->
+        cfg[pair[0]] = pair[1]
+    cfg
+  catch e
+    if e.code == 'ENOENT'
+      throw new Error """
+        Configuration file '#{path}' not found.
+
+        See README.rest for instructions.
+
+      """
+    else
+      throw e
 
 exports.config_file = config_file
 

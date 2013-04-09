@@ -75,6 +75,17 @@ If you want to hack on `studio_napi`: ::
 The `npm install` above downloads and installs studio_napi's
 dependencies locally (in `./node_modules/`).
 
+
+Credentials for end-to-end tests
+********************************
+
+`make drive` needs to be supplied with a SUSE Studio server URL,
+as well as api username and key.
+It expects these to exist in files called `cfg/admin` and `cfg/user`.
+Templates for these files are in the `cfg/`_ directory.
+
+.. _cfg/: cfg/
+
 Documentation
 =============
 
