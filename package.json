@@ -118,7 +118,7 @@
   }
 , "dependencies": {
     "clone": "~0.1"
-  , "coffee-script": "~1.4"
+  , "coffee-script": "~1.6"
   , "difflet": "~0.2"
   , "sinon": "~1.4"
   , "xml2js": ">=0.1.14"
