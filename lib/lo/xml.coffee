@@ -27,11 +27,27 @@ exports.transform = (transforms) -> (sig, result) ->
   result[t.root] = t.output result[t.root]
   deattr result
 
+# A CDATA section cannot contain the string "]]>" and therefore
+# it is not possible for a CDATA section to contain nested CDATA
+# sections.
+# The preferred approach to using CDATA sections for encoding text
+# that contains the triad "]]>" is to use multiple CDATA sections
+# by splitting each occurrence of the triad just before the ">".
+#
+# For example, to encode "]]>" one would write:
+#
+#   <![CDATA[]]]]><![CDATA[>]]>
+#
+#   -- http://en.wikipedia.org/wiki/CDATA#Nesting
+CDATA = (v) ->
+  "<![CDATA[#{(String v).replace /]]>/g, ']]]]><![CDATA[>'}]]>"
+
 xmldoc = ->
   children = []
   @append = (child) ->
     children.push child
     this
+  @CDATA = CDATA
   @toString = ->
     rv = ''
     rv += c.toString() for c in children
@@ -55,6 +71,7 @@ xmltag = (name) ->
   @append = (child) ->
     children.push child
     this
+  @CDATA = CDATA
   @toString = ->
     rv = "<#{name}"
     if @attrs
